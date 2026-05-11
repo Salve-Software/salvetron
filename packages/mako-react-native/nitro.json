@@ -1,0 +1,24 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": ["mako"],
+  "ios": {
+    "iosModuleName": "NitroMako"
+  },
+  "android": {
+    "androidNamespace": ["mako"],
+    "androidCxxLibName": "NitroMako"
+  },
+  "autolinking": {
+    "NitroMako": {
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridMako"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "HybridMako"
+      }
+    }
+  },
+  "ignorePaths": ["**/node_modules"]
+}
