@@ -54,6 +54,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
+          bundler: 'latest'
           bundler-cache: true
           working-directory: packages/mako-react-native/example
 
