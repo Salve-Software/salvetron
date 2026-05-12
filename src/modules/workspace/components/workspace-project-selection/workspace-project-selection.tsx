@@ -1,4 +1,3 @@
-import { useCallback, useMemo } from "react";
 import { DropdownMenu } from "../../../../shared/ui/dropdown-menu";
 import { DropdownOption } from "../../../../shared/ui/dropdown-menu/types";
 import {
@@ -12,14 +11,10 @@ export function WorkspaceProjectSelection() {
   const currentProject = useCurrentProject();
   const setCurrentProject = useSetCurrentProject();
 
-  const formatedWorkspaceProjects = useMemo((): DropdownOption[] => {
-    if (!wokspaceProjects) return [];
-    return wokspaceProjects?.map((project) => ({
-      label: project.appName,
-
-      value: project.projectId,
-    }));
-  }, [wokspaceProjects]);
+  const formatedWorkspaceProjects: DropdownOption[] = wokspaceProjects?.map((project) => ({
+    label: project.appName,
+    value: project.projectId,
+  })) ?? [];
 
   function handleSet(option: DropdownOption) {
     const project = wokspaceProjects?.find((p) => p.projectId === option.value);
@@ -28,7 +23,7 @@ export function WorkspaceProjectSelection() {
     }
   }
 
-  const renderItem = useCallback((option: DropdownOption) => {
+  function renderItem(option: DropdownOption) {
     return (
       <button
         key={option.value}
@@ -42,7 +37,7 @@ export function WorkspaceProjectSelection() {
         <span className="flex-1 truncate ">{option.label}</span>
       </button>
     );
-  }, []);
+  }
 
   return (
     <div

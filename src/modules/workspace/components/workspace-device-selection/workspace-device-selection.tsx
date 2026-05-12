@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { DropdownMenu } from "../../../../shared/ui/dropdown-menu";
 import { Icon } from "../../../../shared/ui/icon";
 import { DropdownOption } from "../../../../shared/ui/dropdown-menu/types";
@@ -10,21 +10,17 @@ export function WorkspaceDeviceSelection() {
   const workspaceDevice = useWorkspaceDevice();
   const setWorkspaceDevice = useSetWorkspaceDevice();
 
-  const formattedDevices = useMemo(
-    (): DropdownOption[] =>
-      devices.map((device) => ({
-        label: device.deviceName,
-        value: device.deviceId,
-        iconName: device.platform === "ios" ? "apple" : "android",
-      })),
-    [],
-  );
+  const formattedDevices: DropdownOption[] = devices.map((device) => ({
+    label: device.deviceName,
+    value: device.deviceId,
+    iconName: device.platform === "ios" ? "apple" : "android",
+  }));
 
   useEffect(() => {
     if (devices.length > 0) {
       setWorkspaceDevice(devices[0]);
     }
-  }, []);
+  }, [devices, setWorkspaceDevice]);
 
   function handleDeviceSelect(option: DropdownOption) {
     const device = devices.find((d) => d.deviceId === option.value);
@@ -33,7 +29,7 @@ export function WorkspaceDeviceSelection() {
     }
   }
 
-  const renderItem = useCallback((option: DropdownOption) => {
+  function renderItem(option: DropdownOption) {
     return (
       <button
         key={option.value}
@@ -53,7 +49,7 @@ export function WorkspaceDeviceSelection() {
         <span className="flex-1 truncate ml-3">{option.label}</span>
       </button>
     );
-  }, []);
+  }
 
   console.log("WORKSPACE DEVICE", workspaceDevice)
   return (
