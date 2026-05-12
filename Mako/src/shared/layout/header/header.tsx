@@ -1,3 +1,4 @@
+import { WorkspaceDeviceSelection } from "../../../modules/workspace/components/workspace-device-selection";
 import { WorkspaceProjectSelection } from "../../../modules/workspace/components/workspace-project-selection";
 
 export function Header() {
@@ -8,6 +9,7 @@ export function Header() {
     >
       <div className="flex gap-5 pl-23">
         <WorkspaceProjectSelection />
+        <WorkspaceDeviceSelection />
       </div>
     </div>
   );
