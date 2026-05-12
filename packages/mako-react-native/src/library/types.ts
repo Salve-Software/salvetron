@@ -46,6 +46,7 @@ export interface NetworkRequestEvent extends BaseEvent {
   url: string;
   headers?: Record<string, string>;
   body?: string;
+  projectId?: string;
 }
 
 export interface NetworkResponseEvent extends BaseEvent {
@@ -58,6 +59,7 @@ export interface NetworkResponseEvent extends BaseEvent {
   duration: number; // milliseconds
   headers?: Record<string, string>;
   body?: string;
+  projectId?: string;
 }
 
 export type NetworkEvent = NetworkRequestEvent | NetworkResponseEvent;
@@ -68,6 +70,7 @@ export interface LogEvent extends BaseEvent {
   level: LogLevel;
   message: string;
   metadata?: Record<string, unknown>;
+  projectId?: string;
 }
 
 /**
@@ -80,6 +83,7 @@ export interface NativeLogEvent extends BaseEvent {
   level: LogLevel;
   message: string;
   metadata?: Record<string, unknown>;
+  projectId?: string;
 }
 
 export interface DeviceInfoEvent {
@@ -89,9 +93,17 @@ export interface DeviceInfoEvent {
   platform: 'ios' | 'android';
   appName?: string;
   bundleId: string;
+  projectId: string;
 }
 
-export type MakoEvent = NetworkEvent | LogEvent | NativeLogEvent | DeviceInfoEvent;
+export interface ProjectInfoEvent {
+  type: 'project_info';
+  projectId: string;
+  appName: string;
+  bundleId: string;
+}
+
+export type MakoEvent = NetworkEvent | LogEvent | NativeLogEvent | DeviceInfoEvent | ProjectInfoEvent;
 
 // ============================================
 // Internal Types

@@ -11,3 +11,7 @@ export function useAddDevice() {
 export function useRemoveDevice() {
   return useDevicesStore((state) => state.removeDevice);
 }
+
+export function useGetDevicesByProject() {
+  return useDevicesStore((state) => state.getDevicesByProject);
+}

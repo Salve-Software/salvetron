@@ -9,7 +9,7 @@ use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::{mpsc, Mutex, RwLock};
 use tokio_tungstenite::tungstenite::Message;
 
-use types::{DeviceInfo, LogEvent, NetworkRequestEvent, NetworkResponseEvent, ServerStatus};
+use types::{DeviceInfo, LogEvent, NetworkRequestEvent, NetworkResponseEvent, ProjectInfo, ServerStatus};
 
 type WsSink = futures_util::stream::SplitSink<
     tokio_tungstenite::WebSocketStream<TcpStream>,
@@ -20,6 +20,7 @@ type WsSink = futures_util::stream::SplitSink<
 struct ConnectionInfo {
     sink: WsSink,
     device_id: Option<String>,
+    project_id: Option<String>,
 }
 
 /// WebSocket server state
@@ -191,6 +192,7 @@ async fn handle_connection(
         conns.insert(conn_id, ConnectionInfo {
             sink,
             device_id: None,
+            project_id: None,
         });
     }
 
@@ -242,9 +244,31 @@ async fn process_message(
     let event_type = value.get("type").and_then(|v| v.as_str()).unwrap_or("");
 
     match event_type {
+        "project_info" => {
+            let project: ProjectInfo = serde_json::from_value(value)?;
+            println!("[Mako] Project registered: {} ({})", project.app_name, project.project_id);
+
+            // Store project_id in connection
+            {
+                let mut conns = connections.write().await;
+                if let Some(info) = conns.get_mut(&conn_id) {
+                    info.project_id = Some(project.project_id.clone());
+                }
+            }
+
+            app.emit("mako:project_connected", &project)?;
+        }
         "device_info" => {
-            let device: DeviceInfo = serde_json::from_value(value)?;
+            let mut device: DeviceInfo = serde_json::from_value(value)?;
             println!("[Mako] Device registered: {} ({})", device.device_name, device.device_id);
+
+            // Get project_id from connection if not in event
+            if device.project_id.is_none() {
+                let conns = connections.read().await;
+                if let Some(info) = conns.get(&conn_id) {
+                    device.project_id = info.project_id.clone();
+                }
+            }
 
             // Store device_id in connection
             {
@@ -259,11 +283,16 @@ async fn process_message(
         "log" | "native" => {
             let mut log: LogEvent = serde_json::from_value(value)?;
 
-            // Attach device_id if not present
-            if log.device_id.is_none() {
+            // Attach device_id and project_id if not present
+            {
                 let conns = connections.read().await;
                 if let Some(info) = conns.get(&conn_id) {
-                    log.device_id = info.device_id.clone();
+                    if log.device_id.is_none() {
+                        log.device_id = info.device_id.clone();
+                    }
+                    if log.project_id.is_none() {
+                        log.project_id = info.project_id.clone();
+                    }
                 }
             }
 
@@ -272,10 +301,12 @@ async fn process_message(
         "network" => {
             let stage = value.get("stage").and_then(|v| v.as_str()).unwrap_or("");
 
-            // Get device_id from connection
-            let device_id = {
+            // Get device_id and project_id from connection
+            let (device_id, project_id) = {
                 let conns = connections.read().await;
-                conns.get(&conn_id).and_then(|i| i.device_id.clone())
+                conns.get(&conn_id)
+                    .map(|i| (i.device_id.clone(), i.project_id.clone()))
+                    .unwrap_or((None, None))
             };
 
             if stage == "request" {
@@ -283,11 +314,17 @@ async fn process_message(
                 if event.device_id.is_none() {
                     event.device_id = device_id;
                 }
+                if event.project_id.is_none() {
+                    event.project_id = project_id;
+                }
                 app.emit("mako:network_request", &event)?;
             } else {
                 let mut event: NetworkResponseEvent = serde_json::from_value(value)?;
                 if event.device_id.is_none() {
                     event.device_id = device_id;
+                }
+                if event.project_id.is_none() {
+                    event.project_id = project_id;
                 }
                 app.emit("mako:network_response", &event)?;
             }

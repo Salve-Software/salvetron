@@ -17,6 +17,7 @@ import {
   responseToString,
 } from './utils'
 import type { NetworkHandlerConfig } from './types'
+import { projectHandler } from '../project'
 
 export class NetworkHandler {
   private pendingRequests = new Map<XMLHttpRequest, PendingRequest>()
@@ -77,6 +78,7 @@ export class NetworkHandler {
       headers: request.headers,
       body: request.body,
       timestamp: request.startTime,
+      projectId: projectHandler.getProjectId(),
     }
     this.config.onEvent(event)
   }
@@ -105,6 +107,7 @@ export class NetworkHandler {
     if (!request) return
 
     const endTime = Date.now()
+    const projectId = projectHandler.getProjectId()
 
     const sendResponseEvent = (bodyString: string | undefined) => {
       const event: NetworkResponseEvent = {
@@ -118,6 +121,7 @@ export class NetworkHandler {
         headers: request.responseHeaders,
         body: bodyString,
         timestamp: endTime,
+        projectId,
       }
       this.config.onEvent(event)
       this.pendingRequests.delete(xhr)

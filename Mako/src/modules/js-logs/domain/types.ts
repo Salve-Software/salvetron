@@ -6,4 +6,5 @@ export interface JSLog {
   source: string;
   timestamp: number;
   type: string;
+  projectId?: string;
 }

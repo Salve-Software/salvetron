@@ -3,6 +3,7 @@ import { WebSocketServer } from "../../../../infra/web-socket-server";
 import { useAddDevice } from "../../../../modules/devices/store";
 import { useAddJSLog } from "../../../../modules/js-logs/store/use-js-logs-store";
 import { useAddNetworkLog } from "../../../../modules/network/store/use-network-store";
+import { useAddProject } from "../../../../modules/projects/store";
 
 const RealtimeServiceContext = React.createContext(null);
 
@@ -11,10 +12,16 @@ export function RealtimeServiceProvider({ children }: React.PropsWithChildren) {
   const addDevice = useAddDevice();
   const addJSLog = useAddJSLog();
   const addNetworkLog = useAddNetworkLog();
+  const addProject = useAddProject();
 
   useEffect(() => {
     const ws = new WebSocketServer();
     wsRef.current = ws;
+
+    ws.onProjectConnected = (project) => {
+      addProject(project);
+      console.log("PROJECT-CONNECTED", project);
+    };
 
     ws.onDeviceConnected = (device) => {
       addDevice(device);
@@ -24,14 +31,10 @@ export function RealtimeServiceProvider({ children }: React.PropsWithChildren) {
       addNetworkLog(network);
       console.log("NETWORK-RECEIVED", network);
     };
-    ws.onDeviceConnected = (device) => {
-      console.log("DEVICE-DISCONNECTED", device);
-    };
     ws.onLogReceived = (log) => {
       addJSLog(log);
       console.log("LOG-RECEIVED", log);
     };
-
 
     ws.start();
 

@@ -1,6 +1,19 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+/// Project info sent when RN app connects
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ProjectInfo {
+    #[serde(rename = "type")]
+    pub event_type: String,
+    #[serde(rename = "projectId")]
+    pub project_id: String,
+    #[serde(rename = "appName")]
+    pub app_name: String,
+    #[serde(rename = "bundleId")]
+    pub bundle_id: String,
+}
+
 /// Device info sent when RN app connects
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DeviceInfo {
@@ -15,6 +28,8 @@ pub struct DeviceInfo {
     pub app_name: Option<String>,
     #[serde(rename = "bundleId")]
     pub bundle_id: Option<String>,
+    #[serde(rename = "projectId")]
+    pub project_id: Option<String>,
 }
 
 /// Log event from JS or native
@@ -29,6 +44,8 @@ pub struct LogEvent {
     pub metadata: Option<HashMap<String, serde_json::Value>>,
     #[serde(rename = "deviceId")]
     pub device_id: Option<String>,
+    #[serde(rename = "projectId")]
+    pub project_id: Option<String>,
 }
 
 /// Network request event
@@ -46,6 +63,8 @@ pub struct NetworkRequestEvent {
     pub body: Option<String>,
     #[serde(rename = "deviceId")]
     pub device_id: Option<String>,
+    #[serde(rename = "projectId")]
+    pub project_id: Option<String>,
 }
 
 /// Network response event
@@ -66,6 +85,8 @@ pub struct NetworkResponseEvent {
     pub body: Option<String>,
     #[serde(rename = "deviceId")]
     pub device_id: Option<String>,
+    #[serde(rename = "projectId")]
+    pub project_id: Option<String>,
 }
 
 

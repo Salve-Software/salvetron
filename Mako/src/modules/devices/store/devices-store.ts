@@ -5,6 +5,7 @@ interface DevicesState {
   devices: Device[];
   addDevice: (device: Device) => void;
   removeDevice: (deviceId: string) => void;
+  getDevicesByProject: (projectId: string) => Device[];
 }
 
 export const useDevicesStore = create<DevicesState>((set, get) => ({
@@ -22,5 +23,8 @@ export const useDevicesStore = create<DevicesState>((set, get) => ({
     set((state) => ({
       devices: state.devices.filter((device) => device.deviceId !== deviceId),
     }));
+  },
+  getDevicesByProject: (projectId: string) => {
+    return get().devices.filter((device) => device.projectId === projectId);
   },
 }));

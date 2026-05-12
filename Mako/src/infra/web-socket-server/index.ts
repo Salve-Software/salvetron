@@ -1,10 +1,12 @@
 import { invoke } from '@tauri-apps/api/core';
 import { listen, UnlistenFn } from '@tauri-apps/api/event';
 import { Device } from '../../modules/devices/domain/types';
+import { Project } from '../../modules/projects/domain/types';
 
 import {
   IncomingLogEvent,
   IncomingNetworkEvent,
+  IncomingProjectEvent,
   WebSocketServerCallbacks,
   WebSocketServerOptions,
 } from './types';
@@ -29,6 +31,7 @@ export class WebSocketServer {
   public onNetworkReceived?: WebSocketServerCallbacks['onNetworkReceived'];
   public onDeviceConnected?: WebSocketServerCallbacks['onDeviceConnected'];
   public onDeviceDisconnected?: WebSocketServerCallbacks['onDeviceDisconnected'];
+  public onProjectConnected?: WebSocketServerCallbacks['onProjectConnected'];
   public onError?: WebSocketServerCallbacks['onError'];
 
   constructor(options: WebSocketServerOptions = {}) {
@@ -93,6 +96,17 @@ export class WebSocketServer {
   }
 
   private async setupListeners(): Promise<void> {
+    const projectConnected = await listen<Project>(
+      'mako:project_connected',
+      (event) => {
+        this.onProjectConnected?.(event.payload);
+        console.log(
+          `[Mako] Project connected: ${event.payload.appName} (${event.payload.projectId})`
+        );
+      }
+    );
+    this.unlisteners.push(projectConnected);
+
     const deviceConnected = await listen<Device>(
       'mako:device_connected',
       (event) => {

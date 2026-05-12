@@ -8,4 +8,5 @@ export interface NetworkLog {
   timestamp: number;
   type: string;
   url: string;
+  projectId?: string;
 }

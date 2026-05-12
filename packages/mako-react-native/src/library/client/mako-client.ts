@@ -12,6 +12,7 @@ import type {
   NativeLogEvent,
   LogLevel,
   NativeLogSource,
+  ProjectInfoEvent,
 } from '../types'
 import type { NitroMako as NitroMakoSpec } from '../../specs/mako.nitro'
 
@@ -22,6 +23,7 @@ import {
 } from './constants'
 import { NetworkHandler } from '../network-handler'
 import { deviceHandler } from '../device'
+import { projectHandler } from '../project'
 import { xhrInterceptor } from '../interceptors'
 
 /**
@@ -109,6 +111,7 @@ export class MakoClient {
       message,
       timestamp: Date.now(),
       metadata,
+      projectId: projectHandler.getProjectId(),
     }
     this.send(event)
   }
@@ -186,6 +189,7 @@ export class MakoClient {
       message: log.message,
       timestamp: log.timestamp,
       metadata: log.tag ? { tag: log.tag } : undefined,
+      projectId: projectHandler.getProjectId(),
     }
 
     this.send(event)
@@ -206,6 +210,7 @@ export class MakoClient {
         console.log(`[Mako] Connected to ${url}`)
         this.config.onConnect()
 
+        this.sendProjectInfo()
         this.sendDeviceInfo()
         this.flushQueue()
 
@@ -306,12 +311,30 @@ export class MakoClient {
     }
   }
 
+  private sendProjectInfo(): void {
+    try {
+      const projectInfo = projectHandler.getProjectInfo()
+      const event: ProjectInfoEvent = {
+        type: 'project_info',
+        ...projectInfo,
+      }
+      this.send(event)
+      console.log(
+        `[Mako] Project registered: ${projectInfo.appName} (${projectInfo.projectId})`
+      )
+    } catch (error) {
+      console.warn('[Mako] Failed to send project info:', error)
+    }
+  }
+
   private async sendDeviceInfo(): Promise<void> {
     try {
       const deviceInfo = deviceHandler.getDeviceInfo()
+      const projectId = projectHandler.getProjectId()
       const event: DeviceInfoEvent = {
         type: 'device_info',
         ...deviceInfo,
+        projectId,
       }
       this.send(event)
       console.log(

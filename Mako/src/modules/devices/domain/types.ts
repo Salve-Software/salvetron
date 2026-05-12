@@ -5,4 +5,5 @@ export interface Device {
   platform: string;
   appName?: string;
   bundleId?: string;
+  projectId?: string;
 }
