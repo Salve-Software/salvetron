@@ -4,7 +4,7 @@ import { Input } from "../../../../shared/ui/input";
 
 export function WorkspaceFilters() {
   return (
-    <div className="flex flex-row gap-3 w-full  items-center  pr-4">
+    <div className="flex px-3 flex-row gap-3 w-full  items-center  pr-4">
       <div className="flex gap-2 h-full">
         <DropdownMenu
           label="Level"

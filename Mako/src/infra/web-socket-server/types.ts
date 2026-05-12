@@ -1,4 +1,6 @@
 import { Device } from "../../modules/devices/domain/types";
+import { JSLog } from "../../modules/js-logs/domain/types";
+import { NetworkLog } from "../../modules/network/domain/types";
 
 type EventType = "log" | "network" | "native";
 
@@ -30,8 +32,8 @@ export interface WebSocketServerOptions {
 }
 
 export interface WebSocketServerCallbacks {
-  onLogReceived?: (event: IncomingLogEvent) => void;
-  onNetworkReceived?: (event: IncomingNetworkEvent) => void;
+  onLogReceived?: (event: JSLog) => void;
+  onNetworkReceived?: (event: NetworkLog) => void;
   onDeviceConnected?: (device: Device) => void;
   onDeviceDisconnected?: (deviceId: string) => void;
   onError?: (error: Error) => void;
