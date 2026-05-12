@@ -1,0 +1,69 @@
+name: Build iOS
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/ios-build.yml'
+      - 'packages/mako-react-native/**'
+  pull_request:
+    paths:
+      - '.github/workflows/ios-build.yml'
+      - 'packages/mako-react-native/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build iOS Example App
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+          working-directory: packages/mako-react-native/example
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: packages/mako-react-native/example/ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('packages/mako-react-native/example/ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install Pods
+        working-directory: packages/mako-react-native/example
+        run: bundle exec pod install --project-directory=ios
+
+      - name: Build iOS app
+        working-directory: packages/mako-react-native/example/ios
+        run: |
+          WORKSPACE=$(find . -name "*.xcworkspace" -maxdepth 1 | head -1)
+          SCHEME=$(basename "$WORKSPACE" .xcworkspace)
+          xcodebuild \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build

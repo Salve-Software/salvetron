@@ -1,0 +1,9 @@
+'lib: mako-react-native':
+  - changed-files:
+    - any-glob-to-any-file: 'packages/mako-react-native/**'
+
+'lib: mako':
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**'
+      - '!packages/mako-react-native/**'
