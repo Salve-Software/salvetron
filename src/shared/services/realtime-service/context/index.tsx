@@ -41,7 +41,7 @@ export function RealtimeServiceProvider({ children }: React.PropsWithChildren) {
     return () => {
       ws.stop();
     };
-  }, []);
+  }, [addDevice, addJSLog, addNetworkLog, addProject]);
 
   return (
     <RealtimeServiceContext.Provider value={null}>
