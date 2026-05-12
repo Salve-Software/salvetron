@@ -89,8 +89,6 @@ pub struct NetworkResponseEvent {
     pub project_id: Option<String>,
 }
 
-
-
 /// Server status response
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServerStatus {

@@ -11,10 +11,8 @@ use tokio_tungstenite::tungstenite::Message;
 
 use types::{DeviceInfo, LogEvent, NetworkRequestEvent, NetworkResponseEvent, ProjectInfo, ServerStatus};
 
-type WsSink = futures_util::stream::SplitSink<
-    tokio_tungstenite::WebSocketStream<TcpStream>,
-    Message,
->;
+type WsSink =
+    futures_util::stream::SplitSink<tokio_tungstenite::WebSocketStream<TcpStream>, Message>;
 
 /// Connection info stored per client
 struct ConnectionInfo {
@@ -45,7 +43,12 @@ impl WsServer {
         }
     }
 
-    pub async fn start(&self, app_handle: AppHandle, port: u16, host: String) -> Result<(), String> {
+    pub async fn start(
+        &self,
+        app_handle: AppHandle,
+        port: u16,
+        host: String,
+    ) -> Result<(), String> {
         // Check if already running
         {
             let running = self.is_running.read().await;
@@ -152,7 +155,12 @@ impl WsServer {
         let mut sent = 0;
 
         for (_, info) in conns.iter_mut() {
-            if info.sink.send(Message::Text(message.to_string())).await.is_ok() {
+            if info
+                .sink
+                .send(Message::Text(message.to_string()))
+                .await
+                .is_ok()
+            {
                 sent += 1;
             }
         }
@@ -337,7 +345,10 @@ async fn process_message(
     Ok(())
 }
 
-async fn emit_client_count(app: &AppHandle, connections: &Arc<RwLock<HashMap<u64, ConnectionInfo>>>) {
+async fn emit_client_count(
+    app: &AppHandle,
+    connections: &Arc<RwLock<HashMap<u64, ConnectionInfo>>>,
+) {
     let count = connections.read().await.len();
     let _ = app.emit("mako:client_count", count);
 }
