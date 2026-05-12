@@ -10,9 +10,10 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "clean": "git clean -dfX",
-    "build": "npm run typecheck && bob build",
-    "codegen": "nitrogen --logLevel=\"debug\" && npm run build && node post-script.js",
-    "test": "jest"
+    "build": "yarn typecheck && bob build",
+    "codegen": "nitrogen --logLevel=\"debug\" && yarn build && node post-script.js",
+    "test": "jest",
+    "example": "yarn workspace react-native-nitro-trace-example"
   },
   "keywords": [
     "react-native",
@@ -39,6 +40,7 @@
     "*.podspec",
     "README.md"
   ],
+  "packageManager": "yarn@4.9.1",
   "workspaces": [
     "example"
   ],
