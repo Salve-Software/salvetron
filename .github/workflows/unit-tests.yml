@@ -1,0 +1,33 @@
+name: Unit Tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/unit-tests.yml'
+      - '!packages/mako-react-native/**'
+      - '**'
+  pull_request:
+    paths:
+      - '.github/workflows/unit-tests.yml'
+      - '!packages/mako-react-native/**'
+      - '**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/setup
+
+      - name: Run tests
+        run: yarn test
