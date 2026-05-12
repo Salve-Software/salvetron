@@ -102,5 +102,5 @@ android/keystores/debug.keystore
 lib/
 tsconfig.tsbuildinfo
 
-# claude
-.claude
+# AIWorkers generated symlinks
+.claude/*/aiworkers/
