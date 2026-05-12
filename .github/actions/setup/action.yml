@@ -10,6 +10,10 @@ runs:
         node-version: 22
         cache: 'yarn'
 
+    - name: Enable Corepack
+      shell: bash
+      run: corepack enable
+
     - name: Install dependencies
       shell: bash
       run: yarn install --immutable
