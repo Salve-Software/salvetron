@@ -22,9 +22,10 @@ import {
   DEFAULT_CONFIG,
 } from './constants'
 import { NetworkHandler } from '../network-handler'
+import { ComponentHandler } from '../component-handler'
 import { deviceHandler } from '../device'
 import { projectHandler } from '../project'
-import { xhrInterceptor } from '../interceptors'
+import { xhrInterceptor, reactDevToolsInterceptor } from '../interceptors'
 
 /**
  * Mako WebSocket Client
@@ -44,6 +45,10 @@ export class MakoClient {
 
   // Network handler
   private networkHandler: NetworkHandler | null = null
+
+  // Component handler
+  private componentHandler: ComponentHandler | null = null
+  private componentInspectorEnabled = false
 
   constructor() {
     this.config = {
@@ -165,6 +170,54 @@ export class MakoClient {
     return this.nativeLogCaptureEnabled
   }
 
+  /**
+   * Start component inspector
+   */
+  startComponentInspector(): boolean {
+    if (this.componentInspectorEnabled) {
+      console.warn('[Mako] Component inspector already enabled')
+      return false
+    }
+
+    this.componentHandler = new ComponentHandler({
+      onEvent: (event) => this.send(event),
+    })
+
+    const success = reactDevToolsInterceptor.enable(this.componentHandler.getCallbacks())
+    if (success) {
+      this.componentInspectorEnabled = true
+      this.componentHandler.startTreeSnapshots()
+      console.log('[Mako] Component inspector enabled')
+    }
+    return success
+  }
+
+  /**
+   * Stop component inspector
+   */
+  stopComponentInspector(): void {
+    if (!this.componentInspectorEnabled) return
+
+    try {
+      reactDevToolsInterceptor.disable()
+      if (this.componentHandler) {
+        this.componentHandler.clear()
+        this.componentHandler = null
+      }
+      this.componentInspectorEnabled = false
+      console.log('[Mako] Component inspector disabled')
+    } catch (error) {
+      console.error('[Mako] Failed to stop component inspector:', error)
+    }
+  }
+
+  /**
+   * Check if component inspector is active
+   */
+  isComponentInspectorEnabled(): boolean {
+    return this.componentInspectorEnabled
+  }
+
   private getNitroMako(): NitroMakoSpec {
     if (!this.nitroMako) {
       this.nitroMako =
@@ -277,6 +330,7 @@ export class MakoClient {
     }
 
     this.stopNativeLogCapture()
+    this.stopComponentInspector()
     xhrInterceptor.disable()
 
     if (this.networkHandler) {
