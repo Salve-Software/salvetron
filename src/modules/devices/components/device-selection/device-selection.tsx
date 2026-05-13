@@ -1,12 +1,18 @@
 import { useEffect } from "react";
-import { DropdownMenu } from "../../../../shared/ui/dropdown-menu";
-import { Icon } from "../../../../shared/ui/icon";
 import { DropdownOption } from "../../../../shared/ui/dropdown-menu/types";
-import { useDevices } from "../../../devices/store";
-import { useSetWorkspaceDevice, useWorkspaceDevice } from "../../store";
+import {
+  useCurrentProject,
+  useSetWorkspaceDevice,
+  useWorkspaceDevice,
+} from "../../../workspace/store";
+import { useGetDevicesByProject } from "../../store";
+import { Icon } from "../../../../shared/ui/icon";
+import { DropdownMenu } from "../../../../shared/ui/dropdown-menu";
 
-export function WorkspaceDeviceSelection() {
-  const devices = useDevices();
+export function DeviceSelection() {
+  const currentProject = useCurrentProject();
+  const devices = useGetDevicesByProject(currentProject?.projectId ?? "");
+
   const workspaceDevice = useWorkspaceDevice();
   const setWorkspaceDevice = useSetWorkspaceDevice();
 
@@ -51,14 +57,12 @@ export function WorkspaceDeviceSelection() {
     );
   }
 
-  console.log("WORKSPACE DEVICE", workspaceDevice)
   return (
     <div
       data-tauri-drag-region="true"
       className="flex w-auto items-center cursor-pointer rounded-xl transition-all duration-150 hover:opacity-90 "
     >
       <DropdownMenu
-        containerWidth
         variant="outline"
         leftElement={
           <div className="w-9 h-9 shadow rounded-lg flex items-center justify-center">

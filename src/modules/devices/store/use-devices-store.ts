@@ -12,6 +12,8 @@ export function useRemoveDevice() {
   return useDevicesStore((state) => state.removeDevice);
 }
 
-export function useGetDevicesByProject() {
-  return useDevicesStore((state) => state.getDevicesByProject);
+export function useGetDevicesByProject(projectId: string) {
+  const devices = useDevicesStore((state) => state.devices);
+
+  return devices.filter((device) => device.projectId === projectId);
 }

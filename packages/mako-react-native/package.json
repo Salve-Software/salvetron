@@ -122,6 +122,7 @@
     ]
   },
   "dependencies": {
+    "@mako/types": "../mako-types",
     "jest": "^30.4.2"
   }
 }

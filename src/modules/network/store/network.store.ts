@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { NetworkLog } from "../domain/types";
+import type { NetworkLog } from "@mako/types";
 
 export interface NetworkStoreState {
   logs: NetworkLog[];

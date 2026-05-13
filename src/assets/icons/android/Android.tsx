@@ -1,5 +1,5 @@
-import type { IconProps } from "../../../shared/ui/icon";
-export const Android = ({ size, className }: IconProps) => (
+import type { IconComponentProps } from "../../../shared/ui/icon";
+export const Android = ({ size, className }: IconComponentProps) => (
   <svg
     width={size}
     height={size}

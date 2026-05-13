@@ -21,7 +21,12 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "baseUrl": ".",
+    "paths": {
+      "@mako/types": ["../mako-types/dist"],
+      "@mako/types/*": ["../mako-types/dist/*"]
+    }
   },
   "exclude": [
     "**/node_modules",

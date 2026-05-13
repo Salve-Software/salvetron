@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { DeviceItem } from '../device-item'
-import { Device } from '../../../domain/types'
+import type { Device } from '@mako/types'
 
 const androidDevice: Device = {
   type: 'device',

@@ -1,7 +1,6 @@
 import { invoke } from '@tauri-apps/api/core';
 import { listen, UnlistenFn } from '@tauri-apps/api/event';
-import { Device } from '../../modules/devices/domain/types';
-import { Project } from '../../modules/projects/domain/types';
+import type { Device, Project } from '@mako/types';
 
 import {
   IncomingLogEvent,

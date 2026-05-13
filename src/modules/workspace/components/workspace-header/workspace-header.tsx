@@ -1,12 +1,12 @@
 import { Header } from "../../../../shared/layout/header";
-import { WorkspaceDeviceSelection } from "../workspace-device-selection";
-import { WorkspaceProjectSelection } from "../workspace-project-selection";
+import { DeviceSelection } from "../../../devices/components/device-selection";
+import { ProjectsSelection } from "../../../projects/components/projects-selection";
 
 export function WorkspaceHeader() {
   return (
     <Header>
-      <WorkspaceProjectSelection />
-      <WorkspaceDeviceSelection />
+      <ProjectsSelection />
+      <DeviceSelection />
     </Header>
   );
 }

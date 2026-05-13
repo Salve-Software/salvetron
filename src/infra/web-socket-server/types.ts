@@ -1,41 +1,30 @@
-import { Device } from "../../modules/devices/domain/types";
-import { JSLog } from "../../modules/js-logs/domain/types";
-import { NetworkLog } from "../../modules/network/domain/types";
-import { Project } from "../../modules/projects/domain/types";
+import type {
+  Device,
+  Project,
+  LogEvent,
+  NativeLogEvent,
+  NetworkEvent,
+  DeviceInfoEvent,
+  ProjectInfoEvent,
+} from "@mako/types";
 
-type EventType = "log" | "network" | "native" | "project_info";
+// Re-export for convenience
+export type { LogEvent, NativeLogEvent, NetworkEvent, DeviceInfoEvent, ProjectInfoEvent };
 
-interface BaseEvent {
-  type: EventType;
-}
+// Incoming log event can be either JS or native log
+export type IncomingLogEvent = LogEvent | NativeLogEvent;
 
-export interface IncomingLogEvent extends BaseEvent {
-  type: "log" | "native";
-  message: string;
-  deviceId?: string;
-  projectId?: string;
-  [key: string]: unknown;
-}
+// Incoming network event
+export type IncomingNetworkEvent = NetworkEvent;
 
-export interface IncomingNetworkEvent extends BaseEvent {
-  type: "network";
-  deviceId?: string;
-  projectId?: string;
-  [key: string]: unknown;
-}
-
-export interface IncomingProjectEvent extends BaseEvent {
-  type: "project_info";
-  projectId: string;
-  appName: string;
-  bundleId: string;
-}
+// Incoming project event
+export type IncomingProjectEvent = ProjectInfoEvent;
 
 export type IncomingEvent =
   | IncomingLogEvent
   | IncomingNetworkEvent
   | IncomingProjectEvent
-  | Device;
+  | DeviceInfoEvent;
 
 export interface WebSocketServerOptions {
   port?: number;
@@ -43,8 +32,8 @@ export interface WebSocketServerOptions {
 }
 
 export interface WebSocketServerCallbacks {
-  onLogReceived?: (event: JSLog) => void;
-  onNetworkReceived?: (event: NetworkLog) => void;
+  onLogReceived?: (event: IncomingLogEvent) => void;
+  onNetworkReceived?: (event: IncomingNetworkEvent) => void;
   onDeviceConnected?: (device: Device) => void;
   onDeviceDisconnected?: (deviceId: string) => void;
   onProjectConnected?: (project: Project) => void;

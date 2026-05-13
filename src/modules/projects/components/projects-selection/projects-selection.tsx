@@ -3,21 +3,22 @@ import { DropdownOption } from "../../../../shared/ui/dropdown-menu/types";
 import {
   useCurrentProject,
   useSetCurrentProject,
-  useWorkspaceProjects,
-} from "../../store";
+} from "../../../workspace/store";
+import { useProjects } from "../../store";
 
-export function WorkspaceProjectSelection() {
-  const wokspaceProjects = useWorkspaceProjects();
+export function ProjectsSelection() {
+  const projects = useProjects();
   const currentProject = useCurrentProject();
   const setCurrentProject = useSetCurrentProject();
 
-  const formatedWorkspaceProjects: DropdownOption[] = wokspaceProjects?.map((project) => ({
-    label: project.appName,
-    value: project.projectId,
-  })) ?? [];
+  const formatedProjects: DropdownOption[] =
+    projects?.map((project) => ({
+      label: project.appName,
+      value: project.projectId,
+    })) ?? [];
 
   function handleSet(option: DropdownOption) {
-    const project = wokspaceProjects?.find((p) => p.projectId === option.value);
+    const project = projects?.find((p) => p.projectId === option.value);
     if (project) {
       setCurrentProject(project);
     }
@@ -45,7 +46,6 @@ export function WorkspaceProjectSelection() {
       className="flex w-auto gap-1 items-center cursor-pointer rounded-xl transition-all duration-150 hover:opacity-90"
     >
       <DropdownMenu
-        containerWidth
         variant="outline"
         renderItem={renderItem}
         leftElement={
@@ -54,7 +54,7 @@ export function WorkspaceProjectSelection() {
           </div>
         }
         label={currentProject?.appName || ""}
-        options={formatedWorkspaceProjects}
+        options={formatedProjects}
       />
     </div>
   );

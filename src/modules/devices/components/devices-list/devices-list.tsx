@@ -1,5 +1,5 @@
 import { useSetWorkspaceDevice } from "../../../workspace/store";
-import { Device } from "../../domain/types";
+import type { Device } from "@mako/types";
 import { useDevices } from "../../store";
 import { DeviceItem } from "../device-item";
 

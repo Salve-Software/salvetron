@@ -2,8 +2,25 @@
  * Mako SDK Types
  */
 
+// Re-export shared event types from @mako/types
+export type {
+  LogLevel,
+  LogSource,
+  NativeLogSource,
+  LogEvent,
+  NativeLogEvent,
+  NetworkStage,
+  NetworkRequestEvent,
+  NetworkResponseEvent,
+  NetworkEvent,
+  DeviceInfoEvent,
+  ProjectInfoEvent,
+  EventType,
+  MakoEvent,
+} from '@mako/types';
+
 // ============================================
-// Configuration
+// SDK Configuration (SDK-specific)
 // ============================================
 
 export interface MakoConfig {
@@ -24,89 +41,7 @@ export interface MakoConfig {
 }
 
 // ============================================
-// Events sent to Mako macOS
-// ============================================
-
-export type EventType = 'log' | 'network' | 'native';
-export type NetworkStage = 'request' | 'response';
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
-export type LogSource = 'js' | 'ios' | 'android';
-export type NativeLogSource = 'ios' | 'android';
-
-export interface BaseEvent {
-  type: EventType;
-  timestamp: number; // Unix timestamp in milliseconds
-}
-
-export interface NetworkRequestEvent extends BaseEvent {
-  type: 'network';
-  stage: 'request';
-  requestId: string;
-  method: string;
-  url: string;
-  headers?: Record<string, string>;
-  body?: string;
-  projectId?: string;
-}
-
-export interface NetworkResponseEvent extends BaseEvent {
-  type: 'network';
-  stage: 'response';
-  requestId: string;
-  method: string;
-  url: string;
-  statusCode: number;
-  duration: number; // milliseconds
-  headers?: Record<string, string>;
-  body?: string;
-  projectId?: string;
-}
-
-export type NetworkEvent = NetworkRequestEvent | NetworkResponseEvent;
-
-export interface LogEvent extends BaseEvent {
-  type: 'log';
-  source: LogSource;
-  level: LogLevel;
-  message: string;
-  metadata?: Record<string, unknown>;
-  projectId?: string;
-}
-
-/**
- * Native log event from iOS/Android
- * Sent with type: 'native' to differentiate from JS logs
- */
-export interface NativeLogEvent extends BaseEvent {
-  type: 'native';
-  source: NativeLogSource;
-  level: LogLevel;
-  message: string;
-  metadata?: Record<string, unknown>;
-  projectId?: string;
-}
-
-export interface DeviceInfoEvent {
-  type: 'device_info';
-  deviceId: string;
-  deviceName: string;
-  platform: 'ios' | 'android';
-  appName?: string;
-  bundleId: string;
-  projectId: string;
-}
-
-export interface ProjectInfoEvent {
-  type: 'project_info';
-  projectId: string;
-  appName: string;
-  bundleId: string;
-}
-
-export type MakoEvent = NetworkEvent | LogEvent | NativeLogEvent | DeviceInfoEvent | ProjectInfoEvent;
-
-// ============================================
-// Internal Types
+// Internal Types (SDK-specific)
 // ============================================
 
 export interface PendingRequest {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DevicesList } from '../devices-list'
-import { Device } from '../../../domain/types'
+import type { Device } from '@mako/types'
 
 jest.mock('../../../store', () => ({
   useDevices: jest.fn(),

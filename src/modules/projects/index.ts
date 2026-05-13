@@ -1,2 +1,2 @@
-export * from "./domain/types";
+export type { Project } from "@mako/types";
 export * from "./store";

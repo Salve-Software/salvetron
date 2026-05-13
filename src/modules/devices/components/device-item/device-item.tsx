@@ -1,5 +1,5 @@
 import { Icon } from "../../../../shared/ui/icon";
-import { Device } from "../../domain/types";
+import type { Device } from "@mako/types";
 
 export interface DeviceItemProps {
   device: Device;
