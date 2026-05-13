@@ -89,6 +89,62 @@ pub struct NetworkResponseEvent {
     pub project_id: Option<String>,
 }
 
+/// Component tree node
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ComponentTreeNode {
+    pub id: String,
+    pub name: String,
+    #[serde(rename = "parentId")]
+    pub parent_id: Option<String>,
+    pub children: Vec<String>,
+    pub depth: u32,
+}
+
+/// Component render event
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ComponentRenderEvent {
+    #[serde(rename = "type")]
+    pub event_type: String,
+    #[serde(rename = "componentId")]
+    pub component_id: String,
+    #[serde(rename = "componentName")]
+    pub component_name: String,
+    #[serde(rename = "renderCount")]
+    pub render_count: u32,
+    #[serde(rename = "renderDuration")]
+    pub render_duration: f64,
+    pub timestamp: u64,
+    #[serde(rename = "parentId")]
+    pub parent_id: Option<String>,
+    #[serde(rename = "propsChanged")]
+    pub props_changed: bool,
+    #[serde(rename = "stateChanged")]
+    pub state_changed: bool,
+    #[serde(rename = "contextChanged")]
+    pub context_changed: bool,
+    #[serde(rename = "isMemoized")]
+    pub is_memoized: bool,
+    #[serde(rename = "memoType")]
+    pub memo_type: String,
+    #[serde(rename = "deviceId")]
+    pub device_id: Option<String>,
+    #[serde(rename = "projectId")]
+    pub project_id: Option<String>,
+}
+
+/// Component tree event
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ComponentTreeEvent {
+    #[serde(rename = "type")]
+    pub event_type: String,
+    pub tree: Vec<ComponentTreeNode>,
+    pub timestamp: u64,
+    #[serde(rename = "deviceId")]
+    pub device_id: Option<String>,
+    #[serde(rename = "projectId")]
+    pub project_id: Option<String>,
+}
+
 /// Server status response
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServerStatus {
