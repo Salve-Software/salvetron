@@ -5,7 +5,7 @@ export interface JSLogsStoreProps {
   logs: JSLog[];
   addLog: (log: JSLog) => void;
 }
-export const useJSLogsStore = create<JSLogsStoreProps>((set, get) => ({
+export const useJSLogsStore = create<JSLogsStoreProps>((set) => ({
   logs: [],
   addLog: (log: JSLog) => set((state) => ({ logs: [...state.logs, log] })),
 }));

@@ -6,7 +6,7 @@ export interface NetworkStoreState {
   addNetworkLog: (log: NetworkLog) => void;
 }
 
-export const useNetworkStore = create<NetworkStoreState>((set, get) => ({
+export const useNetworkStore = create<NetworkStoreState>((set) => ({
   logs: [],
   addNetworkLog: (log: NetworkLog) =>
     set((state) => ({ logs: [...state.logs, log] })),

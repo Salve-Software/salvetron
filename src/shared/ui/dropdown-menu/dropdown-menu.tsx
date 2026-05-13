@@ -86,7 +86,7 @@ export function DropdownMenu({
         }`}
       >
         {options.map((option) =>
-          !!renderItem ? (
+          renderItem ? (
             renderItem(option)
           ) : (
             <button

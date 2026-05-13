@@ -6,7 +6,6 @@ import { Project } from '../../modules/projects/domain/types';
 import {
   IncomingLogEvent,
   IncomingNetworkEvent,
-  IncomingProjectEvent,
   WebSocketServerCallbacks,
   WebSocketServerOptions,
 } from './types';
