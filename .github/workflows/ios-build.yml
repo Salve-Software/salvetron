@@ -54,7 +54,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'
+          ruby-version: '3.1'
           bundler: 'latest'
           bundler-cache: true
           working-directory: packages/mako-react-native/example
