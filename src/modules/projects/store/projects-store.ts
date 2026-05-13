@@ -13,7 +13,7 @@ const mockProjects: Project[] = [
   { appName: "Mako2", bundleId: "1234", projectId: "1234" },
 ];
 export const useProjectsStore = create<ProjectsState>((set, get) => ({
-  projects: mockProjects,
+  projects: [],
 
   addProject: (project) => {
     const existingProjects = get().projects;

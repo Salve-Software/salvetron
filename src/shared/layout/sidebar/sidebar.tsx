@@ -1,5 +1,5 @@
 import { IconPress } from "../../ui/icon";
-
+import logo from '../../../../assets/launch_icon_transparent.png'
 import { useSideBarIsOpen, useSideBarToggle } from "./store";
 
 export function Sidebar({ children }: React.PropsWithChildren) {
@@ -10,7 +10,11 @@ export function Sidebar({ children }: React.PropsWithChildren) {
       className={`flex flex-col border-r border-r-olive-700 shadow h-full items-center transition-all duration-150 ease-in ${isOpen ? "w-50" : "w-18"}`}
     >
       <div className="flex flex-col flex-1 w-full p-4">
-        <div className="w-full h-6 flex  items-start justify-end px-2 pb-12 mb-10 border-b border-b-olive-600">
+
+        <div className="w-full h-6 flex  items-start justify-between px-2 pb-12 mb-10 border-b border-b-olive-600">
+          <div className="relative -top-6 -left-5">
+          {/*<img src={logo} alt="logo" width={80} />*/}
+        </div>
           <IconPress
             name={isOpen ? "panelRightOpen" : "panelRight"}
             size={24}

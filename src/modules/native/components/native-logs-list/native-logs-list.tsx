@@ -1,14 +1,14 @@
-import type { JSLog, LogLevel } from "@mako/types";
+import type { NativeLog, LogLevel } from "@mako/types";
 import { Table, TableColumn } from "../../../../shared/ui/table";
 import { Icon } from "../../../../shared/ui/icon";
 import { IconName } from "../../../../shared/ui/icon/types";
 import {
-  useSelectedJSLog,
-  useSetSelectedJSLog,
-} from "../../store/use-js-logs-store";
+  useSelectedNativeLog,
+  useSetSelectedNativeLog,
+} from "../../store/use-native-store";
 
-export interface JSLogsListProps {
-  logs: JSLog[];
+export interface NativeLogsListProps {
+  logs: NativeLog[];
   emptyState?: React.ReactNode;
 }
 
@@ -33,7 +33,7 @@ function formatTimestamp(timestamp: number): string {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-const columns: TableColumn<JSLog>[] = [
+const columns: TableColumn<NativeLog>[] = [
   {
     key: "level",
     header: "Log Level",
@@ -68,9 +68,9 @@ const columns: TableColumn<JSLog>[] = [
   },
 ];
 
-export function JSLogsList({ logs, emptyState }: JSLogsListProps) {
-  const selectedLog = useSelectedJSLog();
-  const setSelectedLog = useSetSelectedJSLog();
+export function NativeLogsList({ logs, emptyState }: NativeLogsListProps) {
+  const selectedLog = useSelectedNativeLog();
+  const setSelectedLog = useSetSelectedNativeLog();
 
   return (
     <Table

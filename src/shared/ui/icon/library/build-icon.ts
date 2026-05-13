@@ -13,6 +13,10 @@ import {
   CircleX,
   Bug,
   X,
+  CircleCheck,
+  Clock,
+  ArrowRight,
+  Loader,
 } from "lucide-react";
 import { Android } from "../../../../assets/icons/android";
 
@@ -32,6 +36,10 @@ export const mappedIcons = {
   error: CircleX,
   debug: Bug,
   close: X,
+  success: CircleCheck,
+  clock: Clock,
+  redirect: ArrowRight,
+  pending: Loader,
 };
 
 export function buildIcon(iconName: keyof typeof mappedIcons) {

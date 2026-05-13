@@ -9,6 +9,7 @@ import {
   useSelectedJSLog,
   useSetSelectedJSLog,
 } from "../../store/use-js-logs-store";
+import { Icon } from "../../../../shared/ui/icon";
 
 export function JSLogsView() {
   const workspaceDevice = useWorkspaceDevice();
@@ -18,8 +19,9 @@ export function JSLogsView() {
 
   return (
     <div className="flex flex-1 flex-col w-full h-full pt-4 relative">
-      <div className="flex mb-3 gap-2 items-center justify-start w-full px-4 py-2 border-b border-b-olive-700">
-        <p className="font-bold text-lg">JS Logs</p>
+      <div className="flex mb-3 gap-2 items-center justify-start w-full px-4 py-2 pb-4 border-b border-b-olive-700">
+        <Icon name="list" size={25} className="text-olive-300" />
+        {/*<p className="font-bold text-lg">JS Logs</p>*/}
       </div>
       <JSLogsFilters />
 

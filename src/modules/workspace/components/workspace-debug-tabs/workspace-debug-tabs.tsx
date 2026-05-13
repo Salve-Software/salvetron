@@ -12,28 +12,37 @@ export function WorkspaceDebugTabs() {
     navigate(`${tabName.toLowerCase()}`);
   }
   return (
-    <div className="w-full flex  flex-col gap-4 items-start ">
-      <DebugTabItem
-        iconName="list"
-        tabName="JS Logs"
-        isOpen={isOpen}
-        isFocused={location.pathname.includes("js-logs")}
-        onClick={() => handleTabClick("js-logs")}
-      />
-      <DebugTabItem
-        iconName="terminal"
-        tabName="Native"
-        isOpen={isOpen}
-        isFocused={location.pathname.includes("native")}
-        onClick={() => handleTabClick("native")}
-      />
-      <DebugTabItem
-        iconName="earth"
-        tabName="Network"
-        isOpen={isOpen}
-        isFocused={location.pathname.includes("network")}
-        onClick={() => handleTabClick("network")}
-      />
+    <div className="w-full flex  flex-col gap-6 items-start ">
+      <div className="w-full flex flex-col gap-4 items-start">
+        <p className="font-medium text-xs uppercase  text-olive-400">Main</p>
+        <DebugTabItem
+          iconName="list"
+          tabName="JS Logs"
+          isOpen={isOpen}
+          isFocused={location.pathname.includes("js-logs")}
+          onClick={() => handleTabClick("js-logs")}
+        />
+        <DebugTabItem
+          iconName="terminal"
+          tabName="Native"
+          isOpen={isOpen}
+          isFocused={location.pathname.includes("native")}
+          onClick={() => handleTabClick("native")}
+        />
+        <DebugTabItem
+          iconName="earth"
+          tabName="Network"
+          isOpen={isOpen}
+          isFocused={location.pathname.includes("network")}
+          onClick={() => handleTabClick("network")}
+        />
+      </div>
+
+      <div className="w-full flex flex-col gap-4 items-start">
+        <p className="font-medium text-xs uppercase  text-olive-400">
+          Performance
+        </p>
+      </div>
     </div>
   );
 }

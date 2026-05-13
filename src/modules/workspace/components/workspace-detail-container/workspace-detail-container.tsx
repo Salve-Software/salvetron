@@ -56,7 +56,7 @@ export function WorkspaceDetailContainer({
             <Icon name="close" size={16} className="text-olive-400" />
           </button>
         </div>
-        <div className="p-4">{children}</div>
+        <div className="p-4 max-h-[86vh] overflow-y-auto">{children}</div>
       </div>
     </div>
   );

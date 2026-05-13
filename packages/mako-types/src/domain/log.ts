@@ -17,3 +17,7 @@ export interface JSLog {
   type: string;
   projectId?: string;
 }
+
+export interface NativeLog extends JSLog {
+
+}

@@ -1012,7 +1012,7 @@ export interface JSLogsStoreProps {
 }
 
 export const useJSLogsStore = create<JSLogsStoreProps>((set) => ({
-  logs: mockLogs,
+  logs: [],
   selectedLog: null,
   filters: {
     searchQuery: "",

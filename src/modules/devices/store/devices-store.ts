@@ -6,27 +6,27 @@ interface DevicesState {
   addDevice: (device: Device) => void;
   removeDevice: (deviceId: string) => void;
 }
-
+// {
+//       deviceId: "1",
+//       deviceName: "Samsung SM-20",
+//       platform: "android",
+//       type: "mobile",
+//       appName: "Mako",
+//       bundleId: "123",
+//       projectId: "123",
+//     },
+//     {
+//       deviceId: "2",
+//       deviceName: "Iphone 16",
+//       platform: "ios",
+//       type: "mobile",
+//       appName: "Mako",
+//       bundleId: "123",
+//       projectId: "123",
+//     },
 export const useDevicesStore = create<DevicesState>((set, get) => ({
   devices: [
-    {
-      deviceId: "1",
-      deviceName: "Samsung SM-20",
-      platform: "android",
-      type: "mobile",
-      appName: "Mako",
-      bundleId: "123",
-      projectId: "123",
-    },
-    {
-      deviceId: "2",
-      deviceName: "Iphone 16",
-      platform: "ios",
-      type: "mobile",
-      appName: "Mako",
-      bundleId: "123",
-      projectId: "123",
-    },
+
   ],
   addDevice: (device) => {
     const devicesState = get().devices;
