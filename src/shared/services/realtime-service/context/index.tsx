@@ -6,6 +6,7 @@ import { useAddOrUpdateNetworkLog } from "../../../../modules/network/store/use-
 import { useAddProject } from "../../../../modules/projects/store";
 import { transformLogEvent } from "../utils";
 import { useAddNativeLog } from "../../../../modules/native/store";
+import { useHandleComponentRender, useHandleComponentTree } from "../../../../modules/component-inspector/store/use-component-store";
 
 const RealtimeServiceContext = React.createContext(null);
 
@@ -16,6 +17,8 @@ export function RealtimeServiceProvider({ children }: React.PropsWithChildren) {
   const addOrUpdateNetworkLog = useAddOrUpdateNetworkLog();
   const addNativeLog = useAddNativeLog();
   const addProject = useAddProject();
+  const handleComponentRender = useHandleComponentRender();
+  const handleComponentTree = useHandleComponentTree();
 
   useEffect(() => {
     const ws = new WebSocketServer();
@@ -45,12 +48,22 @@ export function RealtimeServiceProvider({ children }: React.PropsWithChildren) {
       console.log("LOG-RECEIVED", log);
     };
 
+    ws.onComponentRenderReceived = (event) => {
+      handleComponentRender(event);
+      console.log("COMPONENT-RENDER", event);
+    };
+
+    ws.onComponentTreeReceived = (event) => {
+      handleComponentTree(event);
+      console.log("COMPONENT-TREE", event);
+    };
+
     ws.start();
 
     return () => {
       ws.stop();
     };
-  }, [addDevice, addJSLog, addOrUpdateNetworkLog, addNativeLog, addProject]);
+  }, [addDevice, addJSLog, addOrUpdateNetworkLog, addNativeLog, addProject, handleComponentRender, handleComponentTree]);
 
   return (
     <RealtimeServiceContext.Provider value={null}>
