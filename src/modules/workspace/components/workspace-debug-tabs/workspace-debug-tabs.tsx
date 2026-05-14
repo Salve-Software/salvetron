@@ -14,7 +14,11 @@ export function WorkspaceDebugTabs() {
   return (
     <div className="w-full flex  flex-col gap-6 items-start ">
       <div className="w-full flex flex-col gap-4 items-start">
-        <p className="font-medium text-xs uppercase  text-olive-400">Main</p>
+          {isOpen && (
+          <p className="font-medium text-xs uppercase  text-olive-400">
+            main
+          </p>
+        )}
         <DebugTabItem
           iconName="list"
           tabName="JS Logs"
@@ -39,9 +43,11 @@ export function WorkspaceDebugTabs() {
       </div>
 
       <div className="w-full flex flex-col gap-4 items-start">
-        <p className="font-medium text-xs uppercase  text-olive-400">
-          Performance
-        </p>
+        {isOpen && (
+          <p className="font-medium text-xs uppercase  text-olive-400">
+            Performance
+          </p>
+        )}
         <DebugTabItem
           iconName="code"
           tabName="Components"

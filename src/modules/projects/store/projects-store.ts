@@ -8,10 +8,6 @@ interface ProjectsState {
   getProjectById: (projectId: string) => Project | undefined;
 }
 
-const mockProjects: Project[] = [
-  { appName: "Mako", bundleId: "123", projectId: "123" },
-  { appName: "Mako2", bundleId: "1234", projectId: "1234" },
-];
 export const useProjectsStore = create<ProjectsState>((set, get) => ({
   projects: [],
 

@@ -1,5 +1,4 @@
 import { IconPress } from "../../ui/icon";
-import logo from '../../../../assets/launch_icon_transparent.png'
 import { useSideBarIsOpen, useSideBarToggle } from "./store";
 
 export function Sidebar({ children }: React.PropsWithChildren) {
