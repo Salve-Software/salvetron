@@ -1,5 +1,6 @@
 import type { ComponentMetrics } from "@mako/types";
 import { Icon } from "../../../../shared/ui/icon";
+import type { IconName } from "../../../../shared/ui/icon/types";
 
 export interface SmartDetectionsProps {
   unnecessaryRenders: ComponentMetrics[];
@@ -7,7 +8,7 @@ export interface SmartDetectionsProps {
 }
 
 interface DetectionCardProps {
-  icon: string;
+  icon: IconName;
   title: string;
   count: number;
   severity: "warning" | "critical";
