@@ -15,6 +15,8 @@ export type {
   NetworkEvent,
   DeviceInfoEvent,
   ProjectInfoEvent,
+  ComponentRenderEvent,
+  ComponentTreeEvent,
   EventType,
   MakoEvent,
 } from '@mako/types';

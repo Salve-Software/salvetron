@@ -154,4 +154,6 @@ export type {
   LogLevel,
   LogSource,
   NativeLogSource,
+  ComponentRenderEvent,
+  ComponentTreeEvent,
 } from './types'
