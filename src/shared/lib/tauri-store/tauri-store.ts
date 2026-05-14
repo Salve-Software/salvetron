@@ -1,13 +1,13 @@
 import { Store } from "@tauri-apps/plugin-store";
 import type { StateStorage } from "zustand/middleware";
 
-let store: Store | null = null;
+let storePromise: Promise<Store> | null = null;
 
 async function getStore(): Promise<Store> {
-  if (!store) {
-    store = await Store.load("mako-store.json", { autoSave: true });
+  if (!storePromise) {
+    storePromise = Store.load("mako-store.json", { autoSave: true });
   }
-  return store;
+  return storePromise;
 }
 
 export const tauriStorage: StateStorage = {
