@@ -5,6 +5,7 @@ import {
   useSetCurrentProject,
 } from "../../../workspace/store";
 import { useProjects } from "../../store";
+import { getFirstLetter } from "../../library/project-colors";
 
 export function ProjectsSelection() {
   const projects = useProjects();
@@ -25,6 +26,8 @@ export function ProjectsSelection() {
   }
 
   function renderItem(option: DropdownOption) {
+    const project = projects?.find((p) => p.projectId === option.value);
+
     return (
       <button
         key={option.value}
@@ -32,8 +35,11 @@ export function ProjectsSelection() {
         className="flex gap-2 items-center truncate px-3 py-2 text-left transition-colors hover:opacity-85"
         onClick={() => handleSet(option)}
       >
-        <div className="w-9 h-9 shadow rounded-lg bg-blue-900 flex items-center justify-center">
-          <p className="font-bold text-md">V</p>
+        <div
+          className="w-9 h-9 shadow rounded-lg flex items-center justify-center"
+          style={{ backgroundColor: project?.color }}
+        >
+          <p className="font-bold text-md">{getFirstLetter(option.label)}</p>
         </div>
         <span className="flex-1 truncate ">{option.label}</span>
       </button>
@@ -49,8 +55,13 @@ export function ProjectsSelection() {
         variant="outline"
         renderItem={renderItem}
         leftElement={
-          <div className="w-9 h-9 shadow rounded-lg bg-blue-900 flex items-center justify-center">
-            <p className="font-bold text-md">V</p>
+          <div
+            className="w-9 h-9 shadow rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: currentProject?.color }}
+          >
+            <p className="font-bold text-md">
+              {getFirstLetter(currentProject?.appName ?? "")}
+            </p>
           </div>
         }
         label={currentProject?.appName || ""}
