@@ -17,6 +17,10 @@ import {
   Clock,
   ArrowRight,
   Loader,
+  Boxes,
+  Code2,
+  Check,
+  Flame,
 } from "lucide-react";
 import { Android } from "../../../../assets/icons/android";
 
@@ -40,6 +44,10 @@ export const mappedIcons = {
   clock: Clock,
   redirect: ArrowRight,
   pending: Loader,
+  component: Boxes,
+  code: Code2,
+  checkmark: Check,
+  flame: Flame,
 };
 
 export function buildIcon(iconName: keyof typeof mappedIcons) {
