@@ -1,50 +1,38 @@
-/**
- * Tauri Store utilities
- * Provides a singleton store instance and helper functions for persisting data
- */
+import { Store } from "@tauri-apps/plugin-store";
+import type { StateStorage } from "zustand/middleware";
 
-import { Store } from '@tauri-apps/plugin-store';
+let store: Store | null = null;
 
-let storeInstance: Store | null = null;
-
-/**
- * Returns the singleton Store instance
- * Creates the store if it doesn't exist yet
- */
-export function getStore(): Store {
-  if (!storeInstance) {
-    storeInstance = new Store('mako-store.json');
+async function getStore(): Promise<Store> {
+  if (!store) {
+    store = await Store.load("mako-store.json", { autoSave: true });
   }
-  return storeInstance;
+  return store;
 }
 
-/**
- * Sets a value in the store and saves it
- * @param key - The key to store the value under
- * @param value - The value to store
- */
-export async function setStoreValue<T>(key: string, value: T): Promise<void> {
-  const store = getStore();
-  await store.set(key, value);
-  await store.save();
-}
-
-/**
- * Gets a value from the store
- * @param key - The key to retrieve the value for
- * @returns The stored value or null if not found
- */
-export async function getStoreValue<T>(key: string): Promise<T | null> {
-  const store = getStore();
-  return await store.get<T>(key);
-}
-
-/**
- * Deletes a value from the store
- * @param key - The key to delete
- */
-export async function deleteStoreValue(key: string): Promise<void> {
-  const store = getStore();
-  await store.delete(key);
-  await store.save();
-}
+export const tauriStorage: StateStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    try {
+      const s = await getStore();
+      return (await s.get<string>(name)) ?? null;
+    } catch {
+      return null;
+    }
+  },
+  setItem: async (name: string, value: string): Promise<void> => {
+    try {
+      const s = await getStore();
+      await s.set(name, value);
+    } catch {
+      // Silently fail in browser dev mode
+    }
+  },
+  removeItem: async (name: string): Promise<void> => {
+    try {
+      const s = await getStore();
+      await s.delete(name);
+    } catch {
+      // Silently fail in browser dev mode
+    }
+  },
+};
