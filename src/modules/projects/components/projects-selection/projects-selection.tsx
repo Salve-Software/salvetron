@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { DropdownMenu } from "../../../../shared/ui/dropdown-menu";
 import { DropdownOption } from "../../../../shared/ui/dropdown-menu/types";
 import {
@@ -12,6 +13,14 @@ export function ProjectsSelection() {
   const currentProject = useCurrentProject();
   const setCurrentProject = useSetCurrentProject();
 
+  const projectsMap = useMemo(() => {
+    const map = new Map();
+    projects?.forEach((project) => {
+      map.set(project.projectId, project);
+    });
+    return map;
+  }, [projects]);
+
   const formatedProjects: DropdownOption[] =
     projects?.map((project) => ({
       label: project.appName,
@@ -19,14 +28,14 @@ export function ProjectsSelection() {
     })) ?? [];
 
   function handleSet(option: DropdownOption) {
-    const project = projects?.find((p) => p.projectId === option.value);
+    const project = projectsMap.get(option.value);
     if (project) {
       setCurrentProject(project);
     }
   }
 
   function renderItem(option: DropdownOption) {
-    const project = projects?.find((p) => p.projectId === option.value);
+    const project = projectsMap.get(option.value);
 
     return (
       <button
