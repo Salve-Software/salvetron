@@ -4,7 +4,7 @@ import { styles } from "./styles";
 import { STREAMING_PLATFORM } from "./constants";
 
 mako.connect({
-  
+  enableComponentInspector: true,
 });
 
 export const Playground: React.FC = () => {
