@@ -1,5 +1,8 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 import type { Project } from "@mako/types";
+import { tauriStorage } from "../../../shared/lib/tauri-store";
+import { getRandomProjectColor } from "../library/project-colors";
 
 interface ProjectsState {
   projects: Project[];
@@ -8,31 +11,53 @@ interface ProjectsState {
   getProjectById: (projectId: string) => Project | undefined;
 }
 
-export const useProjectsStore = create<ProjectsState>((set, get) => ({
-  projects: [],
+export const useProjectsStore = create<ProjectsState>()(
+  persist(
+    (set, get) => ({
+      projects: [],
 
-  addProject: (project) => {
-    const existingProjects = get().projects;
-    if (
-      existingProjects.find(({ projectId }) => projectId === project.projectId)
-    ) {
-      return;
-    }
+      addProject: (project) => {
+        const existingProjects = get().projects;
+        if (
+          existingProjects.find(({ projectId }) => projectId === project.projectId)
+        ) {
+          return;
+        }
 
-    set((state) => ({
-      projects: [...state.projects, project],
-    }));
-  },
+        const projectWithColor = {
+          ...project,
+          color: project.color || getRandomProjectColor(),
+        };
 
-  removeProject: (projectId: string) => {
-    set((state) => ({
-      projects: state.projects.filter(
-        (project) => project.projectId !== projectId,
-      ),
-    }));
-  },
+        set((state) => ({
+          projects: [...state.projects, projectWithColor],
+        }));
+      },
 
-  getProjectById: (projectId: string) => {
-    return get().projects.find((project) => project.projectId === projectId);
-  },
-}));
+      removeProject: (projectId: string) => {
+        set((state) => ({
+          projects: state.projects.filter(
+            (project) => project.projectId !== projectId,
+          ),
+        }));
+      },
+
+      getProjectById: (projectId: string) => {
+        return get().projects.find((project) => project.projectId === projectId);
+      },
+    }),
+    {
+      name: "projects-storage",
+      storage: createJSONStorage(() => tauriStorage),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          const migratedProjects = state.projects.map((project) => ({
+            ...project,
+            color: project.color || getRandomProjectColor(),
+          }));
+          state.projects = migratedProjects;
+        }
+      },
+    },
+  ),
+);
