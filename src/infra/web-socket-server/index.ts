@@ -5,6 +5,8 @@ import type { Device, Project } from '@mako/types';
 import {
   IncomingLogEvent,
   IncomingNetworkEvent,
+  IncomingComponentRenderEvent,
+  IncomingComponentTreeEvent,
   WebSocketServerCallbacks,
   WebSocketServerOptions,
 } from './types';
@@ -30,6 +32,8 @@ export class WebSocketServer {
   public onDeviceConnected?: WebSocketServerCallbacks['onDeviceConnected'];
   public onDeviceDisconnected?: WebSocketServerCallbacks['onDeviceDisconnected'];
   public onProjectConnected?: WebSocketServerCallbacks['onProjectConnected'];
+  public onComponentRenderReceived?: WebSocketServerCallbacks['onComponentRenderReceived'];
+  public onComponentTreeReceived?: WebSocketServerCallbacks['onComponentTreeReceived'];
   public onError?: WebSocketServerCallbacks['onError'];
 
   constructor(options: WebSocketServerOptions = {}) {
@@ -151,6 +155,22 @@ export class WebSocketServer {
       this.connectedClients = event.payload;
     });
     this.unlisteners.push(clientCount);
+
+    const componentRender = await listen<IncomingComponentRenderEvent>(
+      'mako:component_render',
+      (event) => {
+        this.onComponentRenderReceived?.(event.payload);
+      }
+    );
+    this.unlisteners.push(componentRender);
+
+    const componentTree = await listen<IncomingComponentTreeEvent>(
+      'mako:component_tree',
+      (event) => {
+        this.onComponentTreeReceived?.(event.payload);
+      }
+    );
+    this.unlisteners.push(componentTree);
   }
 
   private handleError(error: unknown): void {

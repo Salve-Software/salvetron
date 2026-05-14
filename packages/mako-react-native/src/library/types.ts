@@ -15,6 +15,8 @@ export type {
   NetworkEvent,
   DeviceInfoEvent,
   ProjectInfoEvent,
+  ComponentRenderEvent,
+  ComponentTreeEvent,
   EventType,
   MakoEvent,
 } from '@mako/types';
@@ -30,6 +32,8 @@ export interface MakoConfig {
   port?: number;
   /** Enable network request/response capture (default: true) */
   enableNetworkCapture?: boolean;
+  /** Enable component inspector for React render tracking (default: false) */
+  enableComponentInspector?: boolean;
   /** URL patterns to ignore (default includes Metro bundler URLs) */
   ignoredUrls?: RegExp[];
   /** Callback when connected to Mako */
