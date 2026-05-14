@@ -15,7 +15,8 @@ export const tauriStorage: StateStorage = {
     try {
       const s = await getStore();
       return (await s.get<string>(name)) ?? null;
-    } catch {
+    } catch (error) {
+      console.warn("Tauri store unavailable:", error);
       return null;
     }
   },
@@ -23,16 +24,16 @@ export const tauriStorage: StateStorage = {
     try {
       const s = await getStore();
       await s.set(name, value);
-    } catch {
-      // Silently fail in browser dev mode
+    } catch (error) {
+      console.warn("Tauri store unavailable:", error);
     }
   },
   removeItem: async (name: string): Promise<void> => {
     try {
       const s = await getStore();
       await s.delete(name);
-    } catch {
-      // Silently fail in browser dev mode
+    } catch (error) {
+      console.warn("Tauri store unavailable:", error);
     }
   },
 };
