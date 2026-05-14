@@ -42,6 +42,13 @@ export function WorkspaceDebugTabs() {
         <p className="font-medium text-xs uppercase  text-olive-400">
           Performance
         </p>
+        <DebugTabItem
+          iconName="code"
+          tabName="Components"
+          isOpen={isOpen}
+          isFocused={location.pathname.includes("components")}
+          onClick={() => handleTabClick("components")}
+        />
       </div>
     </div>
   );
