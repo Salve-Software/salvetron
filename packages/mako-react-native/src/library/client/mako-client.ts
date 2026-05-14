@@ -55,6 +55,7 @@ export class MakoClient {
       host: DEFAULT_CONFIG.host,
       port: DEFAULT_CONFIG.port,
       enableNetworkCapture: DEFAULT_CONFIG.enableNetworkCapture,
+      enableComponentInspector: DEFAULT_CONFIG.enableComponentInspector,
       ignoredUrls: [],
       onConnect: () => {},
       onDisconnect: () => {},
@@ -76,6 +77,8 @@ export class MakoClient {
       port: userConfig.port ?? DEFAULT_CONFIG.port,
       enableNetworkCapture:
         userConfig.enableNetworkCapture ?? DEFAULT_CONFIG.enableNetworkCapture,
+      enableComponentInspector:
+        userConfig.enableComponentInspector ?? DEFAULT_CONFIG.enableComponentInspector,
       ignoredUrls: [...DEFAULT_IGNORED_URLS, ...(userConfig.ignoredUrls ?? [])],
       onConnect: userConfig.onConnect ?? (() => {}),
       onDisconnect: userConfig.onDisconnect ?? (() => {}),
@@ -269,6 +272,10 @@ export class MakoClient {
 
         if (this.config.enableNetworkCapture) {
           this.setupNetworkInterception()
+        }
+
+        if (this.config.enableComponentInspector) {
+          this.startComponentInspector()
         }
 
         this.startNativeLogCapture()
