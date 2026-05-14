@@ -1,1 +1,1 @@
-export { PROJECT_COLORS, getRandomProjectColor, getFirstLetter } from './project-colors';
+export { getRandomProjectColor, getFirstLetter } from './project-colors';
