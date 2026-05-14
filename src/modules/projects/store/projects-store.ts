@@ -49,6 +49,15 @@ export const useProjectsStore = create<ProjectsState>()(
     {
       name: "projects-storage",
       storage: createJSONStorage(() => tauriStorage),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          const migratedProjects = state.projects.map((project) => ({
+            ...project,
+            color: project.color || getRandomProjectColor(),
+          }));
+          state.projects = migratedProjects;
+        }
+      },
     },
   ),
 );
