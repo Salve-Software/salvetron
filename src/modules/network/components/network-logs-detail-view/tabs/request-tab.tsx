@@ -1,3 +1,4 @@
+import { SyntaxHighlighter } from "../../../../../shared/ui/syntax-highlighter";
 import type { NetworkLog } from "@mako/types";
 
 interface RequestTabProps {
@@ -30,38 +31,43 @@ export function RequestTab({ log }: RequestTabProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Content Type indicator */}
-      {contentType && (
+      {contentType
+        ?
         <div className="flex flex-col gap-1">
           <p className="text-xs text-olive-500 uppercase">Content-Type</p>
           <p className="text-sm text-olive-300 font-mono">{contentType}</p>
         </div>
-      )}
+        : null
+      }
 
       {/* Request Body */}
       <div className="flex flex-col gap-1">
         <p className="text-xs text-olive-500 uppercase">Request Body</p>
-        {hasBody ? (
-          <pre
-            className={`text-xs rounded-lg p-3 overflow-x-auto max-h-96 overflow-y-auto ${
-              isJson ? "bg-olive-950" : "bg-olive-900"
-            }`}
-          >
-            <code className="text-olive-200">{bodyFormatted}</code>
-          </pre>
-        ) : (
+        {hasBody
+          ?
+          isJson
+            ?
+            <SyntaxHighlighter code={bodyFormatted} language="json" />
+            :
+            <pre className="text-xs rounded-lg p-3 overflow-x-auto max-h-96 overflow-y-auto bg-olive-900">
+              <code className="text-olive-200">{bodyFormatted}</code>
+            </pre>
+          :
           <p className="text-sm text-olive-500 italic">No request body</p>
-        )}
+        }
       </div>
 
       {/* Body Size */}
-      {hasBody && (
+      {hasBody
+        ?
         <div className="flex flex-col gap-1">
           <p className="text-xs text-olive-500 uppercase">Size</p>
           <p className="text-sm text-olive-400">
             {log.requestBody!.length.toLocaleString()} bytes
           </p>
         </div>
-      )}
+        : null
+      }
     </div>
   );
 }
