@@ -20,12 +20,12 @@ export function WorkspaceDetailContainer({
         ?
         <motion.div
           initial={{ opacity: 0, height: 0, y: 20 }}
-          animate={{ opacity: 1, height: "auto", y: 0 }}
+          animate={{ opacity: 1, height: "40vh", y: 0 }}
           exit={{ opacity: 0, height: 0, y: 20 }}
           transition={{ damping: 25, stiffness: 300, type: "spring" }}
-          className="mx-4 mt-4 bg-olive-900 border border-olive-700 rounded-xl shadow-lg overflow-hidden"
+          className="flex-shrink-0 mx-4 mt-4 bg-olive-900 border border-olive-700 rounded-xl shadow-lg overflow-hidden flex flex-col"
         >
-          <div className="flex items-center justify-between px-4 py-3 border-b border-olive-700">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-olive-700 flex-shrink-0">
             {title ? <p className="font-medium text-sm">{title}</p> : null}
             <button
               onClick={onClose}
@@ -34,7 +34,7 @@ export function WorkspaceDetailContainer({
               <Icon name="close" size={16} className="text-olive-400" />
             </button>
           </div>
-          <div className="p-4 max-h-[50vh] overflow-y-auto">{children}</div>
+          <div className="p-4 overflow-y-auto flex-1 min-h-0">{children}</div>
         </motion.div>
         : null
       }

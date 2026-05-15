@@ -25,16 +25,18 @@ export function NetworkLogsView() {
       </div>
       <NetworkLogsFilters />
 
-      <WorkspaceContent>
-        <NetworkLogsList logs={logs} emptyState={<NetworkLogsEmptyState />} />
-      </WorkspaceContent>
-      <WorkspaceDetailContainer
-        isOpen={selectedLog !== null}
-        onClose={() => setSelectedLog(null)}
-        title="Request Details"
-      >
-        {selectedLog ? <NetworkLogsDetailView log={selectedLog} /> : null}
-      </WorkspaceDetailContainer>
+      <div className="flex flex-1 flex-col min-h-0">
+        <WorkspaceContent>
+          <NetworkLogsList logs={logs} emptyState={<NetworkLogsEmptyState />} />
+        </WorkspaceContent>
+        <WorkspaceDetailContainer
+          isOpen={selectedLog !== null}
+          onClose={() => setSelectedLog(null)}
+          title="Request Details"
+        >
+          {selectedLog ? <NetworkLogsDetailView log={selectedLog} /> : null}
+        </WorkspaceDetailContainer>
+      </div>
     </div>
   );
 }

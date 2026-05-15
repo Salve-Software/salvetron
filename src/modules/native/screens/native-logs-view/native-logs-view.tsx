@@ -26,16 +26,18 @@ export function NativeLogsView() {
       </div>
       <NativeLogsFilters />
 
-      <WorkspaceContent>
-        <NativeLogsList logs={logs} emptyState={<NativeLogsEmptyState />} />
-      </WorkspaceContent>
-      <WorkspaceDetailContainer
-        isOpen={selectedLog !== null}
-        onClose={() => setSelectedLog(null)}
-        title="Log Details"
-      >
-        {selectedLog ? <NativeLogsDetailView log={selectedLog} /> : null}
-      </WorkspaceDetailContainer>
+      <div className="flex flex-1 flex-col min-h-0">
+        <WorkspaceContent>
+          <NativeLogsList logs={logs} emptyState={<NativeLogsEmptyState />} />
+        </WorkspaceContent>
+        <WorkspaceDetailContainer
+          isOpen={selectedLog !== null}
+          onClose={() => setSelectedLog(null)}
+          title="Log Details"
+        >
+          {selectedLog ? <NativeLogsDetailView log={selectedLog} /> : null}
+        </WorkspaceDetailContainer>
+      </div>
     </div>
   );
 }
