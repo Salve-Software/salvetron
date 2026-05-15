@@ -28,13 +28,12 @@ export function NetworkLogsView() {
       <WorkspaceContent>
         <NetworkLogsList logs={logs} emptyState={<NetworkLogsEmptyState />} />
       </WorkspaceContent>
-
       <WorkspaceDetailContainer
         isOpen={selectedLog !== null}
         onClose={() => setSelectedLog(null)}
         title="Request Details"
       >
-        {selectedLog && <NetworkLogsDetailView log={selectedLog} />}
+        {selectedLog ? <NetworkLogsDetailView log={selectedLog} /> : null}
       </WorkspaceDetailContainer>
     </div>
   );

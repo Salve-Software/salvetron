@@ -29,13 +29,12 @@ export function NativeLogsView() {
       <WorkspaceContent>
         <NativeLogsList logs={logs} emptyState={<NativeLogsEmptyState />} />
       </WorkspaceContent>
-
       <WorkspaceDetailContainer
         isOpen={selectedLog !== null}
         onClose={() => setSelectedLog(null)}
         title="Log Details"
       >
-        {selectedLog && <NativeLogsDetailView log={selectedLog} />}
+        {selectedLog ? <NativeLogsDetailView log={selectedLog} /> : null}
       </WorkspaceDetailContainer>
     </div>
   );

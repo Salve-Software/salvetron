@@ -31,7 +31,7 @@ export function ComponentInspectorView() {
         <Icon name="code" size={30} className="text-olive-300" />
         <div className="flex flex-col">
           <h2 className="text-base font-semibold text-olive-100">Component Inspector</h2>
-          <p className="text-xs text-olive-500">React rendering analysis</p>
+
         </div>
       </div>
 
@@ -45,12 +45,13 @@ export function ComponentInspectorView() {
               emptyState={<ComponentInspectorEmptyState />}
             />
           </div>
-          <div className="w-80 border-l border-olive-800 overflow-auto">
+          {/*Migrar Smart detections para modal externo*/}
+          {/*<div className="w-80 border-l border-olive-800 overflow-auto">
             <SmartDetections
               unnecessaryRenders={unnecessaryRenders}
               hotComponents={hotComponents}
             />
-          </div>
+          </div>*/}
         </div>
       </WorkspaceContent>
 
@@ -59,7 +60,7 @@ export function ComponentInspectorView() {
         onClose={() => setSelectedComponent(null)}
         title="Component Metrics"
       >
-        <ComponentMetricsPanel component={selectedComponent} />
+        {selectedComponent ? <ComponentMetricsPanel component={selectedComponent} /> : null}
       </WorkspaceDetailContainer>
     </div>
   );
