@@ -25,18 +25,32 @@ export function JSLogsView() {
       </div>
       <JSLogsFilters />
 
+      <div className="flex flex-1 flex-col min-h-0">
+        <WorkspaceContent>
+          <JSLogsList logs={logs} />
+          <JSLogsList logs={logs} />
+          <JSLogsList logs={logs} />
+          <JSLogsList logs={logs} />
+          <JSLogsList logs={logs} />
+          <JSLogsList logs={logs} />
+          <JSLogsList logs={logs} />
 
-      <WorkspaceContent>
-        <JSLogsList logs={logs} />
-      </WorkspaceContent>
+          <JSLogsList logs={logs} />
 
-      <WorkspaceDetailContainer
-        isOpen={selectedLog !== null}
-        onClose={() => setSelectedLog(null)}
-        title="Log Details"
-      >
-        {selectedLog && <JSLogsDetailView log={selectedLog} />}
-      </WorkspaceDetailContainer>
+          <JSLogsList logs={logs} />
+          <JSLogsList logs={logs} />
+
+        </WorkspaceContent>
+
+          <WorkspaceDetailContainer
+            isOpen={selectedLog !== null}
+            onClose={() => setSelectedLog(null)}
+            title="Log Details"
+          >
+            {selectedLog ? <JSLogsDetailView log={selectedLog} /> : null}
+          </WorkspaceDetailContainer>
+
+      </div>
     </div>
   );
 }

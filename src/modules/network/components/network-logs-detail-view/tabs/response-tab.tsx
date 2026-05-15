@@ -1,5 +1,6 @@
 import type { NetworkLog } from "@mako/types";
 import { Icon } from "../../../../../shared/ui/icon";
+import { SyntaxHighlighter } from "../../../../../shared/ui/syntax-highlighter";
 
 interface ResponseTabProps {
   log: NetworkLog;
@@ -67,31 +68,35 @@ export function ResponseTab({ log }: ResponseTabProps) {
       </div>
 
       {/* Content Type indicator */}
-      {contentType && (
+      {contentType
+        ?
         <div className="flex flex-col gap-1">
           <p className="text-xs text-olive-500 uppercase">Content-Type</p>
           <p className="text-sm text-olive-300 font-mono">{contentType}</p>
         </div>
-      )}
+        : null
+      }
 
       {/* Response Body */}
       <div className="flex flex-col gap-1">
         <p className="text-xs text-olive-500 uppercase">Response Body</p>
-        {hasBody ? (
-          <pre
-            className={`text-xs rounded-lg p-3 overflow-x-auto max-h-96 overflow-y-auto ${
-              isJson ? "bg-olive-950" : "bg-olive-900"
-            }`}
-          >
-            <code className="text-olive-200">{bodyFormatted}</code>
-          </pre>
-        ) : (
+        {hasBody
+          ?
+          isJson
+            ?
+            <SyntaxHighlighter code={bodyFormatted} language="json" />
+            :
+            <pre className="text-xs rounded-lg p-3 overflow-x-auto max-h-96 overflow-y-auto bg-olive-900">
+              <code className="text-olive-200">{bodyFormatted}</code>
+            </pre>
+          :
           <p className="text-sm text-olive-500 italic">No response body</p>
-        )}
+        }
       </div>
 
       {/* Body Size */}
-      {(hasBody || contentLength) && (
+      {(hasBody || contentLength)
+        ?
         <div className="flex flex-col gap-1">
           <p className="text-xs text-olive-500 uppercase">Size</p>
           <p className="text-sm text-olive-400">
@@ -100,7 +105,8 @@ export function ResponseTab({ log }: ResponseTabProps) {
               : `${log.responseBody!.length.toLocaleString()} bytes`}
           </p>
         </div>
-      )}
+        : null
+      }
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { Icon } from "../../../../shared/ui/icon";
 import { IconName } from "../../../../shared/ui/icon/types";
+import { SyntaxHighlighter } from "../../../../shared/ui/syntax-highlighter";
 import type { NativeLog, LogLevel } from "@mako/types";
 
 interface NativeLogsDetailViewProps {
@@ -47,14 +48,17 @@ export function NativeLogsDetailView({ log }: NativeLogsDetailViewProps) {
         <p className="text-sm break-words">{log.source}</p>
       </div>
 
-      {hasMetadata && (
+      {hasMetadata
+        ?
         <div className="flex flex-col gap-1">
           <p className="text-xs text-olive-500 uppercase">Metadata</p>
-          <pre className="text-xs bg-olive-950 rounded-lg p-3 overflow-x-auto">
-            {JSON.stringify(log.metadata, null, 2)}
-          </pre>
+          <SyntaxHighlighter
+            code={JSON.stringify(log.metadata, null, 2)}
+            language="json"
+          />
         </div>
-      )}
+        : null
+      }
     </div>
   );
 }

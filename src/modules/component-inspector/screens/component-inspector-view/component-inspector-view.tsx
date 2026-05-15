@@ -7,14 +7,11 @@ import {
   ComponentInspectorFilters,
   ComponentInspectorEmptyState,
   ComponentMetricsPanel,
-  SmartDetections,
 } from "../../components";
 import {
   useFilteredComponents,
   useSelectedComponent,
   useSetSelectedComponent,
-  useUnnecessaryRenders,
-  useHotComponents,
 } from "../../store/use-component-store";
 
 export function ComponentInspectorView() {
@@ -22,8 +19,8 @@ export function ComponentInspectorView() {
   const components = useFilteredComponents(workspaceDevice?.deviceId ?? null);
   const selectedComponent = useSelectedComponent();
   const setSelectedComponent = useSetSelectedComponent();
-  const unnecessaryRenders = useUnnecessaryRenders();
-  const hotComponents = useHotComponents();
+  // const unnecessaryRenders = useUnnecessaryRenders();
+  // const hotComponents = useHotComponents();
 
   return (
     <div className="flex flex-1 flex-col w-full h-full pt-4 relative">
@@ -31,36 +28,39 @@ export function ComponentInspectorView() {
         <Icon name="code" size={30} className="text-olive-300" />
         <div className="flex flex-col">
           <h2 className="text-base font-semibold text-olive-100">Component Inspector</h2>
-          <p className="text-xs text-olive-500">React rendering analysis</p>
+
         </div>
       </div>
 
       <ComponentInspectorFilters />
 
-      <WorkspaceContent>
-        <div className="flex flex-1 gap-4 overflow-hidden">
-          <div className="flex-1 overflow-hidden">
-            <ComponentTree
-              components={components}
-              emptyState={<ComponentInspectorEmptyState />}
-            />
-          </div>
-          <div className="w-80 border-l border-olive-800 overflow-auto">
+      <div className="flex flex-1 shrink-0 flex-col min-h-0 max-h-[85vh] ">
+        <WorkspaceContent>
+          <div className="flex flex-1 gap-4 overflow-hidden">
+            <div className="flex-1 overflow-hidden">
+              <ComponentTree
+                components={components}
+                emptyState={<ComponentInspectorEmptyState />}
+              />
+            </div>
+            {/*Migrar Smart detections para modal externo*/}
+            {/*<div className="w-80 border-l border-olive-800 overflow-auto">
             <SmartDetections
               unnecessaryRenders={unnecessaryRenders}
               hotComponents={hotComponents}
             />
+          </div>*/}
           </div>
-        </div>
-      </WorkspaceContent>
+        </WorkspaceContent>
 
-      <WorkspaceDetailContainer
-        isOpen={selectedComponent !== null}
-        onClose={() => setSelectedComponent(null)}
-        title="Component Metrics"
-      >
-        <ComponentMetricsPanel component={selectedComponent} />
-      </WorkspaceDetailContainer>
+        <WorkspaceDetailContainer
+          isOpen={selectedComponent !== null}
+          onClose={() => setSelectedComponent(null)}
+          title="Component Metrics"
+        >
+          {selectedComponent ? <ComponentMetricsPanel component={selectedComponent} /> : null}
+        </WorkspaceDetailContainer>
+      </div>
     </div>
   );
 }
