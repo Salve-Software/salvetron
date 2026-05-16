@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import ReactFlow, {
   Controls,
   MiniMap,
@@ -66,9 +66,9 @@ export function ComponentGraph({ components, onNodeSelect }: ComponentGraphProps
   }, []);
 
   // Update internal nodes when graph nodes change
-  useState(() => {
+  useEffect(() => {
     setInternalNodes(nodes);
-  });
+  }, [nodes]);
 
   return (
     <div className="w-full h-full relative">
