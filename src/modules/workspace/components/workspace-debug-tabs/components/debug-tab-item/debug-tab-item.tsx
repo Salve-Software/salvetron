@@ -29,7 +29,7 @@ export function DebugTabItem({
         />
       </div>
       <div className="flex flex-1 items-center">
-        {isOpen && <p className="text-md">{tabName}</p>}
+        {isOpen && <p className="text-sm font-semibold text-olive-200">{tabName}</p>}
       </div>
     </div>
   );

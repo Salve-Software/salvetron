@@ -66,7 +66,7 @@ export function DropdownMenu({
         {leftElement && (
           <div className="flex gap-2 items-center">{leftElement}</div>
         )}
-        <p className="truncate">{label}</p>
+        <p className="truncate text-olive-200">{label}</p>
 
         <Icon
           name="chevronDown"
@@ -102,7 +102,7 @@ export function DropdownMenu({
                   className="text-olive-500"
                 />
               )}
-              <span className="flex-1 truncate ml-3">{option.label}</span>
+              <span className="flex-1 truncate ml-3 text-olive-200">{option.label}</span>
             </button>
           ),
         )}
