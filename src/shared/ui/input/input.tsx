@@ -8,7 +8,7 @@ export function Input({ leftIcon, ...inputProps }: InputProps) {
   return (
     <div className="flex flex-row w-full shadow gap-2 items-center pl-2 p-1 bg-olive-800 rounded-lg">
       {leftIcon && <Icon {...leftIcon} size={18} className="text-olive-500" />}
-      <input type="text" {...inputProps} className=" w-full" />
+      <input type="text" {...inputProps} className=" w-full text-olive-200" />
     </div>
   );
 }

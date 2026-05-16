@@ -18,6 +18,7 @@ import {
   ArrowRight,
   Loader,
   Boxes,
+  Box,
   Code2,
   Check,
   Flame,
@@ -50,6 +51,7 @@ export const mappedIcons = {
   checkmark: Check,
   flame: Flame,
   copy: Copy,
+  box: Box,
 };
 
 export function buildIcon(iconName: keyof typeof mappedIcons) {
