@@ -42,7 +42,11 @@ export function transformToGraph(
 
   const componentMap = new Map(components.map((c) => [c.id, c]));
 
-  // Build children lookup from actual data (not relying on children array)
+  // Track visited nodes to prevent infinite recursion on cycles
+  const visited = new Set<string>();
+
+  // Build children lookup from parentId relationships (more reliable than children array
+  // which may be stale if tree updates arrive out of order)
   const childrenMap = new Map<string, string[]>();
   components.forEach((c) => {
     if (c.parentId && componentMap.has(c.parentId)) {
@@ -96,6 +100,10 @@ export function transformToGraph(
     y: number,
     depth: number,
   ): void {
+    // Prevent infinite recursion on cycles or duplicates
+    if (visited.has(nodeId)) return;
+    visited.add(nodeId);
+
     const component = componentMap.get(nodeId);
     if (!component) return;
 

@@ -4,11 +4,9 @@ import {
   Background,
   BackgroundVariant,
   NodeTypes,
-  OnNodesChange,
-  applyNodeChanges,
 } from '@xyflow/react';
 import { ComponentNode as ComponentNodeType } from '@mako/types/domain/component';
-import { ComponentGraphProps, ComponentGraphNode } from './types';
+import { ComponentGraphProps } from './types';
 import { useComponentGraph } from './hooks/use-component-graph';
 import { ComponentNode } from './component-node';
 import { ComponentInfoCard } from './component-info-card';
@@ -47,7 +45,9 @@ export function ComponentGraph({ components, searchQuery, onNodeSelect }: Compon
   });
   const handleNodeClick = useCallback(
     (_event: React.MouseEvent, node: any) => {
-      const component = node.data.component as ComponentNodeType;
+      const component = node.data?.component as ComponentNodeType | undefined;
+      if (!component) return;
+
       setSelectedNode(component);
       onNodeSelect?.(component);
       handleExpand(component.id);
@@ -65,27 +65,14 @@ export function ComponentGraph({ components, searchQuery, onNodeSelect }: Compon
     onNodeSelect?.(null);
   }, [onNodeSelect]);
 
-  const [internalNodes, setInternalNodes] = useState(nodes);
-
-  const onNodesChange: OnNodesChange = useCallback((changes) => {
-    setInternalNodes((nds) => applyNodeChanges(changes, nds) as ComponentGraphNode[]);
-  }, []);
-
-  // Update internal nodes when graph nodes change
-  useEffect(() => {
-    setInternalNodes(nodes);
-  }, [nodes]);
-
   return (
     <div className="w-full h-full relative">
       <ReactFlow
-        nodes={internalNodes}
+        nodes={nodes}
         edges={edges}
-
         nodeTypes={nodeTypes}
         onNodeClick={handleNodeClick}
         onPaneClick={handlePaneClick}
-        onNodesChange={onNodesChange}
         fitView
         fitViewOptions={{ padding: 0.2 }}
         minZoom={0.1}

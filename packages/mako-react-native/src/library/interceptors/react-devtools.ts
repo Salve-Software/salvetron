@@ -148,10 +148,12 @@ export class ReactDevToolsInterceptor {
     const parentId = this.getParentFiberId(fiber);
     const renderDuration = fiber.actualDuration ?? 0;
 
-    // Detect changes
+    // Detect changes (reference equality - may be overly sensitive but acceptable for heatmap)
     const alternate = fiber.alternate;
     const propsChanged = alternate ? fiber.memoizedProps !== alternate.memoizedProps : true;
     const stateChanged = alternate ? fiber.memoizedState !== alternate.memoizedState : true;
+    // Note: contextChanged uses reference equality on dependencies object, which changes
+    // on every render even if context values are identical. Known limitation.
     const contextChanged = alternate ? fiber.dependencies !== alternate.dependencies : false;
 
     // Detect memoization
