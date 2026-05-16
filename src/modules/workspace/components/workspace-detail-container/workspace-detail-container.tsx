@@ -11,7 +11,6 @@ interface WorkspaceDetailContainerProps {
 export function WorkspaceDetailContainer({
   isOpen,
   onClose,
-  title,
   children,
 }: WorkspaceDetailContainerProps) {
   return (
