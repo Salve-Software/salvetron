@@ -6,7 +6,7 @@ import {
   useSetCurrentProject,
 } from "../../../workspace/store";
 import { useProjects } from "../../store";
-import { getFirstLetter } from "../../library/project-colors";
+import { getFirstProjectLetter } from "../../library/get-first-project-letter";
 
 export function ProjectsSelection() {
   const projects = useProjects();
@@ -48,9 +48,11 @@ export function ProjectsSelection() {
           className="w-9 h-9 shadow rounded-lg flex items-center justify-center"
           style={{ backgroundColor: project?.color }}
         >
-          <p className="font-bold text-md">{getFirstLetter(option.label)}</p>
+          <p className="font-bold text-md">
+            {getFirstProjectLetter(option.label)}
+          </p>
         </div>
-        <span className="flex-1 truncate ">{option.label}</span>
+        <span className="flex-1 truncate  text-olive-200">{option.label}</span>
       </button>
     );
   }
@@ -69,7 +71,7 @@ export function ProjectsSelection() {
             style={{ backgroundColor: currentProject?.color }}
           >
             <p className="font-bold text-md">
-              {getFirstLetter(currentProject?.appName ?? "")}
+              {getFirstProjectLetter(currentProject?.appName ?? "")}
             </p>
           </div>
         }

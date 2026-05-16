@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
 
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
@@ -8,7 +9,7 @@
   filter: drop-shadow(0 0 2em #61dafb);
 }
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Source Sans Pro', Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
@@ -60,8 +61,13 @@ a:hover {
   color: #535bf2;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Source Sans Pro', sans-serif;
   text-align: center;
+}
+
+p, span, label, input, textarea, button {
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 button {

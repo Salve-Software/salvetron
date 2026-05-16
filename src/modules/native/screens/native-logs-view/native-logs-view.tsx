@@ -26,7 +26,7 @@ export function NativeLogsView() {
       </div>
       <NativeLogsFilters />
 
-      <div className="flex flex-1 flex-col min-h-0">
+      <div className="flex flex-1 shrink-0 flex-col min-h-0 max-h-[85vh] ">
         <WorkspaceContent>
           <NativeLogsList logs={logs} emptyState={<NativeLogsEmptyState />} />
         </WorkspaceContent>

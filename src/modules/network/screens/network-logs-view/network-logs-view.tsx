@@ -25,7 +25,7 @@ export function NetworkLogsView() {
       </div>
       <NetworkLogsFilters />
 
-      <div className="flex flex-1 flex-col min-h-0">
+      <div className="flex flex-1 shrink-0 flex-col min-h-0 max-h-[85vh] ">
         <WorkspaceContent>
           <NetworkLogsList logs={logs} emptyState={<NetworkLogsEmptyState />} />
         </WorkspaceContent>

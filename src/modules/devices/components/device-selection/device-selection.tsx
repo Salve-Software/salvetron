@@ -52,7 +52,7 @@ export function DeviceSelection() {
             }
           />
         )}
-        <span className="flex-1 truncate ml-3">{option.label}</span>
+        <span className="flex-1 truncate ml-3 text-olive-200">{option.label}</span>
       </button>
     );
   }
