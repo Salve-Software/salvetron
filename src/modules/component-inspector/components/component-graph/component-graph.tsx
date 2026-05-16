@@ -1,8 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import {
   ReactFlow,
-  Controls,
-  MiniMap,
   Background,
   BackgroundVariant,
   NodeTypes,
@@ -19,9 +17,15 @@ const nodeTypes: NodeTypes = {
   component: ComponentNode,
 };
 
-export function ComponentGraph({ components, onNodeSelect }: ComponentGraphProps) {
+export function ComponentGraph({ components, searchQuery, onNodeSelect }: ComponentGraphProps) {
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [selectedNode, setSelectedNode] = useState<ComponentNodeType | null>(null);
+
+  // Reset expanded nodes when search query changes
+  useEffect(() => {
+    setExpandedNodes(new Set());
+    setSelectedNode(null);
+  }, [searchQuery]);
 
   const handleExpand = useCallback((nodeId: string) => {
     setExpandedNodes((prev) => {
@@ -39,15 +43,16 @@ export function ComponentGraph({ components, onNodeSelect }: ComponentGraphProps
     components,
     expandedNodes,
     onExpand: handleExpand,
+    searchQuery,
   });
-
   const handleNodeClick = useCallback(
     (_event: React.MouseEvent, node: any) => {
       const component = node.data.component as ComponentNodeType;
       setSelectedNode(component);
       onNodeSelect?.(component);
+      handleExpand(component.id);
     },
-    [onNodeSelect]
+    [onNodeSelect, handleExpand]
   );
 
   const handlePaneClick = useCallback(() => {
@@ -76,6 +81,7 @@ export function ComponentGraph({ components, onNodeSelect }: ComponentGraphProps
       <ReactFlow
         nodes={internalNodes}
         edges={edges}
+
         nodeTypes={nodeTypes}
         onNodeClick={handleNodeClick}
         onPaneClick={handlePaneClick}
@@ -85,25 +91,7 @@ export function ComponentGraph({ components, onNodeSelect }: ComponentGraphProps
         minZoom={0.1}
         maxZoom={2}
       >
-        <Controls className="bg-olive-900 border-olive-700" />
-        <MiniMap
-          className="bg-olive-900 border-olive-700"
-          nodeColor={(node) => {
-            const component = (node.data as any).component as ComponentNodeType;
-            switch (component.metrics.heatLevel) {
-              case 'critical':
-                return '#f87171';
-              case 'hot':
-                return '#fb923c';
-              case 'warm':
-                return '#fbbf24';
-              case 'cold':
-              default:
-                return '#a3e635';
-            }
-          }}
-        />
-        <Background variant={BackgroundVariant.Dots} gap={12} size={1} color="#44403c" />
+        <Background variant={BackgroundVariant.Dots} gap={12} size={1} color="#78716c" />
       </ReactFlow>
 
       <ComponentInfoCard component={selectedNode} onClose={handleCloseInfoCard} />

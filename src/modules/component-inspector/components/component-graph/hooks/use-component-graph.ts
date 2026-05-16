@@ -7,6 +7,7 @@ interface UseComponentGraphOptions {
   components: ComponentNode[];
   expandedNodes: Set<string>;
   onExpand: (nodeId: string) => void;
+  searchQuery?: string;
 }
 
 interface UseComponentGraphResult {
@@ -14,17 +15,14 @@ interface UseComponentGraphResult {
   edges: ComponentGraphEdge[];
 }
 
-/**
- * Hook that transforms components to react-flow nodes/edges
- * Memoized for performance
- */
 export function useComponentGraph({
   components,
   expandedNodes,
   onExpand,
+  searchQuery,
 }: UseComponentGraphOptions): UseComponentGraphResult {
   return useMemo(
-    () => transformToGraph(components, { expandedNodes, onExpand }),
-    [components, expandedNodes, onExpand]
+    () => transformToGraph(components, { expandedNodes, onExpand, searchQuery }),
+    [components, expandedNodes, onExpand, searchQuery]
   );
 }

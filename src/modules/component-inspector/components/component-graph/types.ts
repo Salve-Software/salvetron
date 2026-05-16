@@ -12,5 +12,6 @@ export type ComponentGraphEdge = Edge;
 
 export interface ComponentGraphProps {
   components: ComponentNode[];
+  searchQuery?: string;
   onNodeSelect?: (node: ComponentNode | null) => void;
 }

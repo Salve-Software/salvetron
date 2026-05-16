@@ -7,12 +7,14 @@ import {
   ComponentInspectorEmptyState,
 } from "../../components";
 import {
-  useFilteredComponents,
+  useComponentTree,
+  useComponentInspectorFilters,
 } from "../../store/use-component-store";
 
 export function ComponentInspectorView() {
   const workspaceDevice = useWorkspaceDevice();
-  const components = useFilteredComponents(workspaceDevice?.deviceId ?? null);
+  const components = useComponentTree();
+  const filters = useComponentInspectorFilters();
 
   return (
     <div className="flex flex-1 flex-col w-full h-full pt-4 relative">
@@ -31,7 +33,10 @@ export function ComponentInspectorView() {
           {components.length > 0
             ?
             <div className="flex-1 h-full">
-              <ComponentGraph components={components} />
+              <ComponentGraph
+                components={components}
+                searchQuery={filters.searchQuery}
+              />
             </div>
             :
             <ComponentInspectorEmptyState />
