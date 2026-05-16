@@ -192,19 +192,35 @@ export class ReactDevToolsInterceptor {
   }
 
   private getFiberId(fiber: Fiber): string {
+    // Check if this fiber already has an ID
     let id = this.fiberIdMap.get(fiber);
-    if (!id) {
-      id = `fiber-${this.fiberIdCounter++}`;
-      this.fiberIdMap.set(fiber, id);
+    if (id) return id;
+
+    // Check if the alternate fiber has an ID (reuse for re-renders)
+    if (fiber.alternate) {
+      id = this.fiberIdMap.get(fiber.alternate);
+      if (id) {
+        this.fiberIdMap.set(fiber, id);
+        return id;
+      }
     }
+
+    // Create new ID for new component
+    id = `fiber-${this.fiberIdCounter++}`;
+    this.fiberIdMap.set(fiber, id);
     return id;
   }
 
   private getParentFiberId(fiber: Fiber): string | null {
     let parent = fiber.return;
     while (parent) {
+      // Check if this parent would be captured (is component + has valid name)
       if (this.isComponentFiber(parent)) {
-        return this.getFiberId(parent);
+        const parentName = this.getComponentName(parent);
+        if (parentName && parentName !== 'Anonymous') {
+          return this.getFiberId(parent);
+        }
+        // Parent is component but filtered - continue searching ancestors
       }
       parent = parent.return;
     }
