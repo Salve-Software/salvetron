@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import ReactFlow, {
+import {
+  ReactFlow,
   Controls,
   MiniMap,
   Background,
@@ -9,7 +10,7 @@ import ReactFlow, {
   applyNodeChanges,
 } from '@xyflow/react';
 import { ComponentNode as ComponentNodeType } from '@mako/types/domain/component';
-import { ComponentGraphProps } from './types';
+import { ComponentGraphProps, ComponentGraphNode } from './types';
 import { useComponentGraph } from './hooks/use-component-graph';
 import { ComponentNode } from './component-node';
 import { ComponentInfoCard } from './component-info-card';
@@ -62,7 +63,7 @@ export function ComponentGraph({ components, onNodeSelect }: ComponentGraphProps
   const [internalNodes, setInternalNodes] = useState(nodes);
 
   const onNodesChange: OnNodesChange = useCallback((changes) => {
-    setInternalNodes((nds) => applyNodeChanges(changes, nds));
+    setInternalNodes((nds) => applyNodeChanges(changes, nds) as ComponentGraphNode[]);
   }, []);
 
   // Update internal nodes when graph nodes change

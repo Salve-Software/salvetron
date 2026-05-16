@@ -1,7 +1,7 @@
 import { Node, Edge } from '@xyflow/react';
 import { ComponentNode } from '@mako/types/domain/component';
 
-export interface ComponentNodeData {
+export interface ComponentNodeData extends Record<string, unknown> {
   component: ComponentNode;
   onExpand: (nodeId: string) => void;
   isExpanded: boolean;
