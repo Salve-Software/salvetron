@@ -10,7 +10,7 @@ interface ComponentNodeProps {
 }
 
 export const ComponentNode = memo(({ data, selected }: ComponentNodeProps) => {
-  const { component, onExpand, isExpanded } = data;
+  const { component, isExpanded } = data;
   const hasChildren = component.children.length > 0;
   const heatColor = getHeatColor(component.metrics.heatLevel);
   const bgHeatColor = heatColor.replace("text-", "bg-");

@@ -1,5 +1,4 @@
 import { WorkspaceContent } from "../../../workspace/components/workspace-content";
-import { useWorkspaceDevice } from "../../../workspace/store/use-workspace-store";
 import { Icon } from "../../../../shared/ui/icon";
 import {
   ComponentGraph,
@@ -12,7 +11,6 @@ import {
 } from "../../store/use-component-store";
 
 export function ComponentInspectorView() {
-  const workspaceDevice = useWorkspaceDevice();
   const components = useComponentTree();
   const filters = useComponentInspectorFilters();
 

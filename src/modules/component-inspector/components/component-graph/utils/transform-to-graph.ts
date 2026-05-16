@@ -122,7 +122,7 @@ export function transformToGraph(
       const childX = x + NODE_WIDTH + HORIZONTAL_GAP;
       let childY = y;
 
-      children.forEach((childId, index) => {
+      children.forEach((childId) => {
         // Create edge
         edges.push({
           id: `${nodeId}-${childId}`,
@@ -144,7 +144,7 @@ export function transformToGraph(
 
   // Position all root nodes
   let currentY = 0;
-  rootNodes.forEach((root, index) => {
+  rootNodes.forEach((root) => {
     positionNode(root.id, 0, currentY, 0);
     const rootHeight = getSubtreeHeight(root.id, 0);
     currentY += rootHeight + VERTICAL_GAP * 2;
