@@ -43,6 +43,7 @@ export function ComponentGraph({ components, searchQuery, onNodeSelect }: Compon
     onExpand: handleExpand,
     searchQuery,
   });
+
   const handleNodeClick = useCallback(
     (_event: React.MouseEvent, node: any) => {
       const component = node.data?.component as ComponentNodeType | undefined;
