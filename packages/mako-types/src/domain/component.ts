@@ -28,6 +28,8 @@ export interface ComponentNode {
   children: string[];
   depth: number;
   metrics: ComponentMetrics;
+  deviceId: string;
+  projectId?: string;
 }
 
 /**
