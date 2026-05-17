@@ -45,6 +45,9 @@ export function transformToGraph(
   // Track visited nodes to prevent infinite recursion on cycles
   const visited = new Set<string>();
 
+  // Cache for memoizing subtree heights - prevents O(n²) recalculation
+  const heightCache = new Map<string, number>();
+
   // Build children lookup from parentId relationships (more reliable than children array
   // which may be stale if tree updates arrive out of order)
   const childrenMap = new Map<string, string[]>();
@@ -70,15 +73,25 @@ export function transformToGraph(
     );
   }
 
-  // Calculate subtree height recursively
+  // Calculate subtree height recursively (memoized)
   function getSubtreeHeight(nodeId: string, depth: number): number {
+    const cacheKey = `${nodeId}-${depth}`;
+    const cached = heightCache.get(cacheKey);
+    if (cached !== undefined) {
+      return cached;
+    }
+
     const component = componentMap.get(nodeId);
-    if (!component) return NODE_HEIGHT;
+    if (!component) {
+      heightCache.set(cacheKey, NODE_HEIGHT);
+      return NODE_HEIGHT;
+    }
 
     const isExpanded = expandedNodes.has(nodeId);
     const children = childrenMap.get(nodeId) || [];
 
     if (!isExpanded || children.length === 0) {
+      heightCache.set(cacheKey, NODE_HEIGHT);
       return NODE_HEIGHT;
     }
 
@@ -90,7 +103,9 @@ export function transformToGraph(
       }
     });
 
-    return Math.max(NODE_HEIGHT, totalHeight);
+    const result = Math.max(NODE_HEIGHT, totalHeight);
+    heightCache.set(cacheKey, result);
+    return result;
   }
 
   // Position nodes recursively

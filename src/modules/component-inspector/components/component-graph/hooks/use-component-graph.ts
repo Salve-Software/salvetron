@@ -23,6 +23,6 @@ export function useComponentGraph({
 }: UseComponentGraphOptions): UseComponentGraphResult {
   return useMemo(
     () => transformToGraph(components, { expandedNodes, onExpand, searchQuery }),
-    [components, expandedNodes, searchQuery]
+    [components, expandedNodes, onExpand, searchQuery]
   );
 }
