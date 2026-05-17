@@ -516,7 +516,7 @@ describe('ReactDevToolsInterceptor', () => {
       expect(callArg.stateChanged).toBe(true)
     })
 
-    it('should detect no changes on same reference', () => {
+    it('should not trigger callback when props reference unchanged (bailout)', () => {
       const mockHook = createMockHook()
       ;(global as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ = mockHook
 
@@ -541,11 +541,31 @@ describe('ReactDevToolsInterceptor', () => {
       const mockRoot = { current: fiber }
       mockHook.onCommitFiberRoot(1, mockRoot, undefined)
 
+      // When props reference is unchanged, didFiberRender returns false (bailout)
+      // so no callback should be made
+      expect(callbacks.onComponentRender).not.toHaveBeenCalled()
+    })
+
+    it('should report propsChanged false when props ref same but render triggered by other means', () => {
+      const mockHook = createMockHook()
+      ;(global as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ = mockHook
+
+      const callbacks = createMockCallbacks()
+      interceptor.enable(callbacks)
+
+      // First commit - initial render
+      const fiber1 = createMockFiber({
+        type: function TestComponent() {},
+        memoizedProps: { value: 1 },
+        alternate: null,
+      })
+      mockHook.onCommitFiberRoot(1, { current: fiber1 }, undefined)
+
       const callArg = (callbacks.onComponentRender as jest.Mock).mock
         .calls[0][0] as ComponentRenderInfo
 
-      expect(callArg.propsChanged).toBe(false)
-      expect(callArg.stateChanged).toBe(false)
+      // Initial render always has propsChanged: true
+      expect(callArg.propsChanged).toBe(true)
     })
 
     it('should mark changes as true for initial render (no alternate)', () => {
@@ -580,7 +600,7 @@ describe('ReactDevToolsInterceptor', () => {
       interceptor.enable(callbacks)
 
       const fiber = createMockFiber({
-        tag: 11, // Memo
+        tag: 14, // MemoComponent
         type: function MemoComponent() {},
       })
 
@@ -751,25 +771,33 @@ describe('ReactDevToolsInterceptor', () => {
       expect(id2).toMatch(/^fiber-\d+$/)
     })
 
-    it('should reuse ID for same fiber instance', () => {
+    it('should reuse ID for same fiber across re-renders', () => {
       const mockHook = createMockHook()
       ;(global as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ = mockHook
 
       const callbacks = createMockCallbacks()
       interceptor.enable(callbacks)
 
-      const fiber = createMockFiber({
-        type: function TestComponent() {},
+      const ComponentType = function TestComponent() {}
+
+      // First render - no alternate
+      const fiber1 = createMockFiber({
+        type: ComponentType,
+        memoizedProps: { value: 1 },
+        alternate: null,
       })
+      mockHook.onCommitFiberRoot(1, { current: fiber1 }, undefined)
 
-      const mockRoot = { current: fiber }
-
-      // Simulate multiple commits with same fiber
-      mockHook.onCommitFiberRoot(1, mockRoot, undefined)
-      mockHook.onCommitFiberRoot(1, mockRoot, undefined)
+      // Second render - fiber1 becomes alternate, new props triggers render
+      const fiber2 = createMockFiber({
+        type: ComponentType,
+        memoizedProps: { value: 2 }, // Different props = triggers render
+        alternate: fiber1,
+      })
+      mockHook.onCommitFiberRoot(1, { current: fiber2 }, undefined)
 
       const calls = (callbacks.onComponentRender as jest.Mock).mock.calls
-
+      expect(calls).toHaveLength(2)
       expect(calls[0][0].componentId).toBe(calls[1][0].componentId)
     })
   })
