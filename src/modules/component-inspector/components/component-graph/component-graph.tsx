@@ -4,6 +4,7 @@ import {
   Background,
   BackgroundVariant,
   NodeTypes,
+  type Node,
 } from '@xyflow/react';
 import { ComponentNode as ComponentNodeType } from '@mako/types/domain/component';
 import { ComponentGraphProps } from './types';
@@ -45,7 +46,7 @@ export function ComponentGraph({ components, searchQuery, onNodeSelect }: Compon
   });
 
   const handleNodeClick = useCallback(
-    (_event: React.MouseEvent, node: any) => {
+    (_event: React.MouseEvent, node: Node) => {
       const component = node.data?.component as ComponentNodeType | undefined;
       if (!component) return;
 
