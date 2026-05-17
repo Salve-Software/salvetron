@@ -1,6 +1,7 @@
 import mako from 'mako-react-native';
 import { Button, Text, View } from "react-native";
 import { styles } from "./styles";
+import { Content } from './components/Content';
 
 mako.connect({
   enableComponentInspector: true,
@@ -18,6 +19,8 @@ export const Playground: React.FC = () => {
             .then(json => mako.log('RESPONSE-API', json))
         }}
       />
+
+      <Content />
     </View>
   )
 }

@@ -73,7 +73,12 @@ export function useClearComponentMetrics(): () => void {
 }
 
 // Derived selectors
-export function useFilteredComponents(
+
+/**
+ * Get components filtered by deviceId and current filters.
+ * Similar to useGetJSLogsByDevice pattern.
+ */
+export function useGetComponentsByDevice(
   deviceId: string | null
 ): ComponentNode[] {
   const tree = useComponentStore((state) => state.tree);
@@ -81,6 +86,9 @@ export function useFilteredComponents(
 
   return filterComponents(tree, deviceId, filters);
 }
+
+// Alias for backwards compatibility
+export const useFilteredComponents = useGetComponentsByDevice;
 
 export function useTopComponentsByRenderCount(
   limit: number = 10

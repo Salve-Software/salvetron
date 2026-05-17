@@ -48,7 +48,7 @@ export function WorkspaceDebugTabs() {
         </p>
 
         <DebugTabItem
-          iconName="code"
+          iconName="component"
           tabName="Components"
           isOpen={isOpen}
           isFocused={location.pathname.includes("components")}

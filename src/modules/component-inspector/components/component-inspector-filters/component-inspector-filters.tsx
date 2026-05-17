@@ -82,6 +82,7 @@ export function ComponentInspectorFilters() {
       <div className="flex flex-1">
         <Input
           leftIcon={{ name: "search" }}
+
           placeholder="Search component name..."
           value={filters.searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

@@ -130,7 +130,6 @@ export class WebSocketServer {
     this.unlisteners.push(deviceDisconnected);
 
     const logReceived = await listen<IncomingLogEvent>('mako:log', (event) => {
-      console.log("LOG-RECEIVED",event)
       this.onLogReceived?.(event.payload);
     });
     this.unlisteners.push(logReceived);
