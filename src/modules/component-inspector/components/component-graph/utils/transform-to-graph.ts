@@ -47,6 +47,7 @@ export function transformToGraph(
 
   // Cache for memoizing subtree heights - prevents O(n²) recalculation
   const heightCache = new Map<string, number>();
+  const heightVisited = new Set<string>();
 
   // Build children lookup from parentId relationships (more reliable than children array
   // which may be stale if tree updates arrive out of order)
@@ -73,17 +74,24 @@ export function transformToGraph(
     );
   }
 
-  // Calculate subtree height recursively (memoized)
-  function getSubtreeHeight(nodeId: string, depth: number): number {
-    const cacheKey = `${nodeId}-${depth}`;
-    const cached = heightCache.get(cacheKey);
+  // Calculate subtree height recursively (memoized with cycle detection)
+  function getSubtreeHeight(nodeId: string): number {
+    // Cycle detection - return default height if already visiting
+    if (heightVisited.has(nodeId)) {
+      return NODE_HEIGHT;
+    }
+
+    const cached = heightCache.get(nodeId);
     if (cached !== undefined) {
       return cached;
     }
 
+    heightVisited.add(nodeId);
+
     const component = componentMap.get(nodeId);
     if (!component) {
-      heightCache.set(cacheKey, NODE_HEIGHT);
+      heightVisited.delete(nodeId);
+      heightCache.set(nodeId, NODE_HEIGHT);
       return NODE_HEIGHT;
     }
 
@@ -91,20 +99,22 @@ export function transformToGraph(
     const children = childrenMap.get(nodeId) || [];
 
     if (!isExpanded || children.length === 0) {
-      heightCache.set(cacheKey, NODE_HEIGHT);
+      heightVisited.delete(nodeId);
+      heightCache.set(nodeId, NODE_HEIGHT);
       return NODE_HEIGHT;
     }
 
     let totalHeight = 0;
     children.forEach((childId, index) => {
-      totalHeight += getSubtreeHeight(childId, depth + 1);
+      totalHeight += getSubtreeHeight(childId);
       if (index < children.length - 1) {
         totalHeight += VERTICAL_GAP;
       }
     });
 
     const result = Math.max(NODE_HEIGHT, totalHeight);
-    heightCache.set(cacheKey, result);
+    heightCache.set(nodeId, result);
+    heightVisited.delete(nodeId);
     return result;
   }
 
@@ -159,7 +169,7 @@ export function transformToGraph(
         positionNode(childId, childX, childY, depth + 1);
 
         // Move Y for next sibling
-        const childHeight = getSubtreeHeight(childId, depth + 1);
+        const childHeight = getSubtreeHeight(childId);
         childY += childHeight + VERTICAL_GAP;
       });
     }
@@ -169,7 +179,7 @@ export function transformToGraph(
   let currentY = 0;
   rootNodes.forEach((root) => {
     positionNode(root.id, 0, currentY, 0);
-    const rootHeight = getSubtreeHeight(root.id, 0);
+    const rootHeight = getSubtreeHeight(root.id);
     currentY += rootHeight + VERTICAL_GAP * 2;
   });
 
