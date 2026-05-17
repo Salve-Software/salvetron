@@ -8,6 +8,10 @@ import type {
 } from "@mako/types";
 import { calculateHeatLevel } from "@mako/types";
 
+// Helper to generate unique key for metrics (device-scoped)
+const getMetricKey = (deviceId: string, componentId: string): string =>
+  `${deviceId}:${componentId}`;
+
 export interface ComponentInspectorFilters {
   searchQuery: string;
   heatFilter: RenderHeatLevel | null;
@@ -46,7 +50,9 @@ export const useComponentStore = create<ComponentStoreState>((set) => ({
   handleComponentRender: (event: ComponentRenderEvent) =>
     set((state) => {
       const newMetrics = new Map(state.metrics);
-      const existing = newMetrics.get(event.componentId);
+      const deviceId = event.deviceId ?? '';
+      const key = getMetricKey(deviceId, event.componentId);
+      const existing = newMetrics.get(key);
 
       if (existing) {
         // Update existing metrics
@@ -72,7 +78,7 @@ export const useComponentStore = create<ComponentStoreState>((set) => ({
             (existing.totalRenderTime + event.renderDuration) / event.renderCount
           ),
         };
-        newMetrics.set(event.componentId, updatedMetrics);
+        newMetrics.set(key, updatedMetrics);
       } else {
         // Create new metrics entry
         const avgDuration = event.renderDuration;
@@ -91,7 +97,7 @@ export const useComponentStore = create<ComponentStoreState>((set) => ({
           memoType: event.memoType,
           heatLevel: calculateHeatLevel(event.renderCount, avgDuration),
         };
-        newMetrics.set(event.componentId, newEntry);
+        newMetrics.set(key, newEntry);
       }
 
       return { metrics: newMetrics };
@@ -99,11 +105,17 @@ export const useComponentStore = create<ComponentStoreState>((set) => ({
 
   handleComponentTree: (event: ComponentTreeEvent) =>
     set((state) => {
-      // Merge tree with metrics
+      const deviceId = event.deviceId ?? '';
+      const projectId = event.projectId;
+
+      // Merge tree with metrics, adding device context
       const tree: ComponentNode[] = event.tree.map((node) => {
-        const metrics = state.metrics.get(node.id);
+        const key = getMetricKey(deviceId, node.id);
+        const metrics = state.metrics.get(key);
         return {
           ...node,
+          deviceId,
+          projectId,
           metrics: metrics ?? {
             componentId: node.id,
             componentName: node.name,
@@ -177,6 +189,9 @@ export function filterComponents(
   if (!deviceId) return [];
 
   return components.filter((component) => {
+    // Device filter (primary)
+    if (component.deviceId !== deviceId) return false;
+
     // Heat filter
     if (filters.heatFilter && component.metrics.heatLevel !== filters.heatFilter) {
       return false;
