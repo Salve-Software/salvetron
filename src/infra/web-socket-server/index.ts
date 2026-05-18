@@ -7,6 +7,7 @@ import {
   IncomingNetworkEvent,
   IncomingComponentRenderEvent,
   IncomingComponentTreeEvent,
+  IncomingPerformanceMetricsEvent,
   WebSocketServerCallbacks,
   WebSocketServerOptions,
 } from './types';
@@ -34,6 +35,7 @@ export class WebSocketServer {
   public onProjectConnected?: WebSocketServerCallbacks['onProjectConnected'];
   public onComponentRenderReceived?: WebSocketServerCallbacks['onComponentRenderReceived'];
   public onComponentTreeReceived?: WebSocketServerCallbacks['onComponentTreeReceived'];
+  public onPerformanceMetricsReceived?: WebSocketServerCallbacks['onPerformanceMetricsReceived'];
   public onError?: WebSocketServerCallbacks['onError'];
 
   constructor(options: WebSocketServerOptions = {}) {
@@ -170,6 +172,14 @@ export class WebSocketServer {
       }
     );
     this.unlisteners.push(componentTree);
+
+    const performanceMetrics = await listen<IncomingPerformanceMetricsEvent>(
+      'mako:performance_metrics',
+      (event) => {
+        this.onPerformanceMetricsReceived?.(event.payload);
+      }
+    );
+    this.unlisteners.push(performanceMetrics);
   }
 
   private handleError(error: unknown): void {
