@@ -23,6 +23,7 @@ import {
 } from './constants'
 import { NetworkHandler } from '../network-handler'
 import { ComponentHandler } from '../component-handler'
+import { PerformanceHandler } from '../performance-handler'
 import { deviceHandler } from '../device'
 import { projectHandler } from '../project'
 import { xhrInterceptor, reactDevToolsInterceptor } from '../interceptors'
@@ -50,12 +51,17 @@ export class MakoClient {
   private componentHandler: ComponentHandler | null = null
   private componentInspectorEnabled = false
 
+  // Performance handler
+  private performanceHandler: PerformanceHandler | null = null
+  private performanceMonitoringEnabled = false
+
   constructor() {
     this.config = {
       host: DEFAULT_CONFIG.host,
       port: DEFAULT_CONFIG.port,
       enableNetworkCapture: DEFAULT_CONFIG.enableNetworkCapture,
       enableComponentInspector: DEFAULT_CONFIG.enableComponentInspector,
+      enablePerformanceMonitoring: DEFAULT_CONFIG.enablePerformanceMonitoring,
       ignoredUrls: [],
       onConnect: () => {},
       onDisconnect: () => {},
@@ -79,6 +85,8 @@ export class MakoClient {
         userConfig.enableNetworkCapture ?? DEFAULT_CONFIG.enableNetworkCapture,
       enableComponentInspector:
         userConfig.enableComponentInspector ?? DEFAULT_CONFIG.enableComponentInspector,
+      enablePerformanceMonitoring:
+        userConfig.enablePerformanceMonitoring ?? DEFAULT_CONFIG.enablePerformanceMonitoring,
       ignoredUrls: [...DEFAULT_IGNORED_URLS, ...(userConfig.ignoredUrls ?? [])],
       onConnect: userConfig.onConnect ?? (() => {}),
       onDisconnect: userConfig.onDisconnect ?? (() => {}),
@@ -221,6 +229,52 @@ export class MakoClient {
     return this.componentInspectorEnabled
   }
 
+  /**
+   * Start performance monitoring
+   */
+  startPerformanceMonitoring(): boolean {
+    if (this.performanceMonitoringEnabled) {
+      console.warn('[Mako] Performance monitoring already enabled')
+      return false
+    }
+
+    this.performanceHandler = new PerformanceHandler({
+      onEvent: (event) => this.send(event),
+    })
+
+    const success = this.performanceHandler.start()
+    if (success) {
+      this.performanceMonitoringEnabled = true
+      console.log('[Mako] Performance monitoring enabled')
+    }
+    return success
+  }
+
+  /**
+   * Stop performance monitoring
+   */
+  stopPerformanceMonitoring(): void {
+    if (!this.performanceMonitoringEnabled) return
+
+    try {
+      if (this.performanceHandler) {
+        this.performanceHandler.stop()
+        this.performanceHandler = null
+      }
+      this.performanceMonitoringEnabled = false
+      console.log('[Mako] Performance monitoring disabled')
+    } catch (error) {
+      console.error('[Mako] Failed to stop performance monitoring:', error)
+    }
+  }
+
+  /**
+   * Check if performance monitoring is active
+   */
+  isPerformanceMonitoringEnabled(): boolean {
+    return this.performanceMonitoringEnabled
+  }
+
   private getNitroMako(): NitroMakoSpec {
     if (!this.nitroMako) {
       this.nitroMako =
@@ -276,6 +330,10 @@ export class MakoClient {
 
         if (this.config.enableComponentInspector) {
           this.startComponentInspector()
+        }
+
+        if (this.config.enablePerformanceMonitoring) {
+          this.startPerformanceMonitoring()
         }
 
         this.startNativeLogCapture()
@@ -338,6 +396,7 @@ export class MakoClient {
 
     this.stopNativeLogCapture()
     this.stopComponentInspector()
+    this.stopPerformanceMonitoring()
     xhrInterceptor.disable()
 
     if (this.networkHandler) {

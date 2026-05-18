@@ -141,6 +141,29 @@ export default {
   isComponentInspectorEnabled(): boolean {
     return client.isComponentInspectorEnabled()
   },
+
+  /**
+   * Start performance monitoring to track FPS, memory, and CPU
+   * @returns true if successfully enabled
+   */
+  startPerformanceMonitoring(): boolean {
+    return client.startPerformanceMonitoring()
+  },
+
+  /**
+   * Stop performance monitoring
+   */
+  stopPerformanceMonitoring(): void {
+    client.stopPerformanceMonitoring()
+  },
+
+  /**
+   * Check if performance monitoring is currently active
+   * @returns true if performance monitoring is enabled
+   */
+  isPerformanceMonitoringEnabled(): boolean {
+    return client.isPerformanceMonitoringEnabled()
+  },
 }
 
 // Export types for consumers
@@ -156,4 +179,5 @@ export type {
   NativeLogSource,
   ComponentRenderEvent,
   ComponentTreeEvent,
+  PerformanceMetricsEvent,
 } from './types'
