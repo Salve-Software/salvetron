@@ -28,6 +28,9 @@ class HybridMako : HybridNitroMakoSpec() {
     private val context: Context?
         get() = NitroModules.applicationContext
 
+    // Performance monitoring
+    private val performanceMonitor = PerformanceMonitor()
+
     // MARK: - Existing Methods
 
     override fun sum(num1: Double, num2: Double): Double {
@@ -187,7 +190,46 @@ class HybridMako : HybridNitroMakoSpec() {
         }
     }
 
+    // MARK: - Performance Monitoring Methods
+
+    override fun startPerformanceMonitoring(onMetrics: (metrics: PerformanceMetrics) -> Unit, intervalMs: Double?): Boolean {
+        val interval = intervalMs?.toInt() ?: 1000
+
+        return performanceMonitor.start({ data ->
+            val metrics = PerformanceMetrics(
+                uiFps = data.uiFps,
+                jsFps = data.jsFps,
+                memoryUsageMB = data.memoryUsageMB,
+                cpuUsagePercent = data.cpuUsagePercent
+            )
+            onMetrics(metrics)
+        }, interval)
+    }
+
+    override fun stopPerformanceMonitoring() {
+        performanceMonitor.stop()
+    }
+
+    override fun isPerformanceMonitoring(): Boolean {
+        return performanceMonitor.isRunning()
+    }
+
+    override fun getPerformanceSnapshot(): PerformanceMetrics {
+        val data = performanceMonitor.getSnapshot()
+        return PerformanceMetrics(
+            uiFps = data.uiFps,
+            jsFps = data.jsFps,
+            memoryUsageMB = data.memoryUsageMB,
+            cpuUsagePercent = data.cpuUsagePercent
+        )
+    }
+
+    override fun recordJsFrame() {
+        performanceMonitor.recordJsFrame()
+    }
+
     protected fun finalize() {
         stopLogCapture()
+        performanceMonitor.stop()
     }
 }
