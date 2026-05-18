@@ -145,6 +145,26 @@ pub struct ComponentTreeEvent {
     pub project_id: Option<String>,
 }
 
+/// Performance metrics event
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PerformanceMetricsEvent {
+    #[serde(rename = "type")]
+    pub event_type: String,
+    pub timestamp: u64,
+    #[serde(rename = "uiFps")]
+    pub ui_fps: f64,
+    #[serde(rename = "jsFps")]
+    pub js_fps: f64,
+    #[serde(rename = "memoryUsage")]
+    pub memory_usage: f64,
+    #[serde(rename = "cpuUsage")]
+    pub cpu_usage: f64,
+    #[serde(rename = "deviceId")]
+    pub device_id: Option<String>,
+    #[serde(rename = "projectId")]
+    pub project_id: Option<String>,
+}
+
 /// Server status response
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServerStatus {

@@ -9,7 +9,7 @@ use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::{mpsc, Mutex, RwLock};
 use tokio_tungstenite::tungstenite::Message;
 
-use types::{ComponentRenderEvent, ComponentTreeEvent, DeviceInfo, LogEvent, NetworkRequestEvent, NetworkResponseEvent, ProjectInfo, ServerStatus};
+use types::{ComponentRenderEvent, ComponentTreeEvent, DeviceInfo, LogEvent, NetworkRequestEvent, NetworkResponseEvent, PerformanceMetricsEvent, ProjectInfo, ServerStatus};
 
 type WsSink =
     futures_util::stream::SplitSink<tokio_tungstenite::WebSocketStream<TcpStream>, Message>;
@@ -372,6 +372,24 @@ async fn process_message(
             }
 
             app.emit("mako:component_tree", &event)?;
+        }
+        "performance_metrics" => {
+            let mut event: PerformanceMetricsEvent = serde_json::from_value(value)?;
+
+            // Attach device_id and project_id if not present
+            {
+                let conns = connections.read().await;
+                if let Some(info) = conns.get(&conn_id) {
+                    if event.device_id.is_none() {
+                        event.device_id = info.device_id.clone();
+                    }
+                    if event.project_id.is_none() {
+                        event.project_id = info.project_id.clone();
+                    }
+                }
+            }
+
+            app.emit("mako:performance_metrics", &event)?;
         }
         _ => {
             println!("[Mako] Unknown event type: {}", event_type);
