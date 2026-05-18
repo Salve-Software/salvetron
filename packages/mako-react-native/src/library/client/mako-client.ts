@@ -239,6 +239,7 @@ export class MakoClient {
     }
 
     this.performanceHandler = new PerformanceHandler({
+      nitroMako: this.getNitroMako(),
       onEvent: (event) => this.send(event),
     })
 

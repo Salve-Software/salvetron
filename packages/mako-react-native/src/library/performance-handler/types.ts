@@ -2,7 +2,10 @@
  * Performance handler types
  */
 
+import type { NitroMako as NitroMakoSpec } from '../../specs/mako.nitro'
+
 export interface PerformanceHandlerConfig {
+  nitroMako: NitroMakoSpec
   onEvent: (event: PerformanceMetricsEvent) => void
   intervalMs?: number
 }

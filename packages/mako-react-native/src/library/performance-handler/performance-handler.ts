@@ -3,18 +3,18 @@
  * Tracks JS thread responsiveness and forwards native performance metrics
  */
 
-import { NitroModules } from 'react-native-nitro-modules'
 import type { NitroMako as NitroMakoSpec } from '../../specs/mako.nitro'
 import type { PerformanceHandlerConfig, PerformanceMetricsEvent } from './types'
 
 export class PerformanceHandler {
-  private nitroMako: NitroMakoSpec | null = null
+  private nitroMako: NitroMakoSpec
   private onEvent: (event: PerformanceMetricsEvent) => void
   private intervalMs: number
   private isMonitoring = false
   private jsFrameInterval: ReturnType<typeof setInterval> | null = null
 
   constructor(config: PerformanceHandlerConfig) {
+    this.nitroMako = config.nitroMako
     this.onEvent = config.onEvent
     this.intervalMs = config.intervalMs ?? 1000
   }
@@ -29,10 +29,8 @@ export class PerformanceHandler {
     }
 
     try {
-      const nitro = this.getNitroMako()
-
       // Start native performance monitoring
-      const success = nitro.startPerformanceMonitoring((metrics) => {
+      const success = this.nitroMako.startPerformanceMonitoring((metrics) => {
         this.handleMetrics(metrics)
       }, this.intervalMs)
 
@@ -42,7 +40,7 @@ export class PerformanceHandler {
         // Start JS frame tracking - call recordJsFrame every 16ms (~60fps)
         this.jsFrameInterval = setInterval(() => {
           try {
-            nitro.recordJsFrame()
+            this.nitroMako.recordJsFrame()
           } catch (error) {
             console.error('[Mako] Failed to record JS frame:', error)
           }
@@ -71,8 +69,7 @@ export class PerformanceHandler {
       }
 
       // Stop native monitoring
-      const nitro = this.getNitroMako()
-      nitro.stopPerformanceMonitoring()
+      this.nitroMako.stopPerformanceMonitoring()
       this.isMonitoring = false
       console.log('[Mako] Performance monitoring disabled')
     } catch (error) {
@@ -85,13 +82,6 @@ export class PerformanceHandler {
    */
   isActive(): boolean {
     return this.isMonitoring
-  }
-
-  private getNitroMako(): NitroMakoSpec {
-    if (!this.nitroMako) {
-      this.nitroMako = NitroModules.createHybridObject<NitroMakoSpec>('NitroMako')
-    }
-    return this.nitroMako
   }
 
   private handleMetrics(metrics: {
