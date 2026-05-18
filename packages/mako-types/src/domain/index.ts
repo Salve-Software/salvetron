@@ -7,3 +7,4 @@ export * from './project';
 export * from './log';
 export * from './network';
 export * from './component';
+export * from './performance';
