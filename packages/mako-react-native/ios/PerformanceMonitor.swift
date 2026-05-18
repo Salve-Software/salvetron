@@ -206,7 +206,7 @@ public class PerformanceMonitor {
                 }
 
                 if infoResult == KERN_SUCCESS {
-                    let cpuUsage = threadInfo.cpu_usage / Double(TH_USAGE_SCALE)
+                    let cpuUsage = Double(threadInfo.cpu_usage) / Double(TH_USAGE_SCALE)
                     totalUsage += cpuUsage * 100.0
                 }
             }
