@@ -54,6 +54,13 @@ export function WorkspaceDebugTabs() {
           isFocused={location.pathname.includes("components")}
           onClick={() => handleTabClick("components")}
         />
+        <DebugTabItem
+          iconName="speed"
+          tabName="Performance"
+          isOpen={isOpen}
+          isFocused={location.pathname.includes("performance")}
+          onClick={() => handleTabClick("performance")}
+        />
       </div>
     </div>
   );
