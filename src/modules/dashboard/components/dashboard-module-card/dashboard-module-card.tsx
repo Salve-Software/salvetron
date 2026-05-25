@@ -7,6 +7,7 @@ export interface DashboardModuleCardProps {
   title: string;
   route: string;
   children: React.ReactNode;
+  className?: string;
 }
 
 export function DashboardModuleCard({
@@ -14,11 +15,12 @@ export function DashboardModuleCard({
   title,
   route,
   children,
+  className = "",
 }: DashboardModuleCardProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-olive-950/30 rounded-xl p-4 flex flex-col h-[280px]">
+    <div className={`bg-olive-950/30 rounded-xl p-4 flex flex-col ${className}`}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Icon name={icon} size={20} className="text-olive-300" />

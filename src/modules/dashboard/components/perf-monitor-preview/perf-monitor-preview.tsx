@@ -29,44 +29,52 @@ export function PerfMonitorPreview() {
   const snapshot = useLatestPerformanceSnapshot(device?.id ?? null);
 
   return (
-    <div className="h-full flex flex-col gap-4 justify-center">
+    <div className="flex items-center gap-6">
       {snapshot
         ?
         <>
-          <GaugeBar
-            label="UI FPS"
-            value={snapshot.uiFps}
-            maxValue={60}
-            thresholds={fpsThresholds}
-            invertThresholds={true}
-          />
-          <GaugeBar
-            label="JS FPS"
-            value={snapshot.jsFps}
-            maxValue={60}
-            thresholds={fpsThresholds}
-            invertThresholds={true}
-          />
-          <GaugeBar
-            label="Memory"
-            value={snapshot.memoryUsage}
-            maxValue={2048}
-            unit=" MB"
-            thresholds={memoryThresholds}
-          />
-          <GaugeBar
-            label="CPU"
-            value={snapshot.cpuUsage}
-            maxValue={100}
-            unit="%"
-            thresholds={cpuThresholds}
-          />
+          <div className="flex-1 min-w-0">
+            <GaugeBar
+              label="UI FPS"
+              value={snapshot.uiFps}
+              maxValue={60}
+              thresholds={fpsThresholds}
+              invertThresholds={true}
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <GaugeBar
+              label="JS FPS"
+              value={snapshot.jsFps}
+              maxValue={60}
+              thresholds={fpsThresholds}
+              invertThresholds={true}
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <GaugeBar
+              label="Memory"
+              value={snapshot.memoryUsage}
+              maxValue={2048}
+              unit=" MB"
+              thresholds={memoryThresholds}
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <GaugeBar
+              label="CPU"
+              value={snapshot.cpuUsage}
+              maxValue={100}
+              unit="%"
+              thresholds={cpuThresholds}
+            />
+          </div>
         </>
         : null
       }
       {!snapshot
         ?
-        <div className="flex items-center justify-center h-full text-olive-500 text-sm">
+        <div className="flex items-center justify-center flex-1 text-olive-500 text-sm">
           No performance data
         </div>
         : null
