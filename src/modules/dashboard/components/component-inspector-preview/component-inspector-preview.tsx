@@ -1,30 +1,19 @@
-import { useTopComponentsByRenderCount } from "../../../component-inspector/store/use-component-store";
+import { useGetComponentsByDevice } from "../../../component-inspector/store/use-component-store";
+import { ComponentGraph } from "../../../component-inspector/components";
+import { useWorkspaceDevice } from "../../../workspace/store/use-workspace-store";
 
 export function ComponentInspectorPreview() {
-  const topComponents = useTopComponentsByRenderCount(5);
+  const workspaceDevice = useWorkspaceDevice();
+  const components = useGetComponentsByDevice(workspaceDevice?.deviceId ?? null);
 
   return (
-    <div className="h-full overflow-auto">
-      {topComponents.length > 0
+    <div className="h-full">
+      {components.length > 0
         ?
-        <div className="space-y-2">
-          {topComponents.map((component) => (
-            <div
-              key={component.id}
-              className="flex items-center justify-between p-2 bg-olive-900/30 rounded"
-            >
-              <span className="text-sm text-olive-200 truncate">
-                {component.name}
-              </span>
-              <span className="text-sm font-medium text-olive-400">
-                {component.renderCount}
-              </span>
-            </div>
-          ))}
-        </div>
+        <ComponentGraph components={components} searchQuery="" />
         : null
       }
-      {topComponents.length === 0
+      {components.length === 0
         ?
         <div className="flex items-center justify-center h-full text-olive-500 text-sm">
           No components tracked
