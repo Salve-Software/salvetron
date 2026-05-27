@@ -32,9 +32,9 @@ export function SparklineGauge({
 
   return (
     <div className="flex items-center gap-3 h-8">
-      <span className="text-sm text-olive-300 w-20 shrink-0">{label}</span>
+      <span className="text-sm text-olive-300 w-16 shrink-0">{label}</span>
 
-      <div className="flex-1 flex items-end gap-[2px] h-5">
+      <div className="flex items-end gap-[2px] h-5">
         {paddedValues.map((value, index) => {
           const height = maxValue > 0 ? Math.min((value / maxValue) * 100, 100) : 0;
           return (
@@ -47,7 +47,7 @@ export function SparklineGauge({
         })}
       </div>
 
-      <span className="text-sm text-olive-100 font-mono w-20 text-right shrink-0">
+      <span className="text-sm text-olive-100 font-mono w-20 shrink-0">
         {formatValue(currentValue)}{unit}
       </span>
     </div>
