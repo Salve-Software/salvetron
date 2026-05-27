@@ -14,6 +14,7 @@ pub fn run() {
         .plugin(tauri_plugin_store::Builder::new().build())
         .manage(WsServerState(ws_server))
         .invoke_handler(tauri::generate_handler![
+            commands::show_main_window,
             commands::start_server,
             commands::stop_server,
             commands::get_server_status,
