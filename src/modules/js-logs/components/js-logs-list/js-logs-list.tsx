@@ -64,7 +64,7 @@ const columns: TableColumn<JSLog>[] = [
     key: "message",
     header: "Log Message",
     width: "1fr",
-    render: (log) => <p className="text-sm truncate">{log.message}</p>,
+    render: (log) => <p className="text-sm truncate text-olive-400">{log.message}</p>,
   },
 ];
 

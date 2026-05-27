@@ -24,7 +24,7 @@ export function DashboardView() {
           icon="component"
           title="Components"
           route="/components"
-          className="flex-[2] min-w-0 max-[950px]:flex-none max-[950px]:h-64"
+          className="flex-[2] min-w-0 max-[950px]:flex-none max-[950px]:min-h-96"
         >
           <ComponentInspectorPreview />
         </DashboardModuleCard>

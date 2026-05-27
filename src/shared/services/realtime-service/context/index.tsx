@@ -62,19 +62,20 @@ export function RealtimeServiceProvider({ children }: React.PropsWithChildren) {
     };
 
     ws.onPerformanceMetricsReceived = (event) => {
-      if (event.device_id) {
+      console.log("ON-PERFORMANCE-METRIC-EVENT",event)
+      if (event.deviceId) {
         const snapshot = {
           timestamp: event.timestamp,
-          deviceId: event.device_id,
-          uiFps: event.ui_fps,
-          jsFps: event.js_fps,
-          memoryUsage: event.memory_usage,
-          cpuUsage: event.cpu_usage,
+          deviceId: event.deviceId,
+          uiFps: event.uiFps,
+          jsFps: event.jsFps,
+          memoryUsage: event.memoryUsage,
+          cpuUsage: event.cpuUsage,
           healthLevel: calculateHealthLevel(
-            event.ui_fps,
-            event.js_fps,
-            event.memory_usage,
-            event.cpu_usage
+            event.uiFps,
+            event.jsFps,
+            event.memoryUsage,
+            event.cpuUsage
           ),
         };
         addPerformanceSnapshot(snapshot);

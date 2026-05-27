@@ -12,6 +12,8 @@ export function JSLogsPreview() {
   const device = useWorkspaceDevice();
   const logs = useGetJSLogsByDevice(device?.deviceId ?? null);
   const lastFive = logs.slice(-5);
+
+  console.log("LAST-FIVE-5",lastFive);
   const selectedLog = useSelectedJSLog();
   const setSelectedLog = useSetSelectedJSLog();
 

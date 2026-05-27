@@ -36,7 +36,7 @@ export function PerfMonitorPreview() {
           <SparklineGauge
             label="Memory"
             values={memoryValues}
-            maxValue={2048}
+            maxValue={1024}
             currentValue={latest.memoryUsage}
             unit=" MB"
           />

@@ -176,6 +176,7 @@ export class WebSocketServer {
     const performanceMetrics = await listen<IncomingPerformanceMetricsEvent>(
       'mako:performance_metrics',
       (event) => {
+        console.log("ON-PERFORMANCE-METRIC-EVENT-2",event)
         this.onPerformanceMetricsReceived?.(event.payload);
       }
     );

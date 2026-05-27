@@ -13,7 +13,7 @@ export function PerfMonitorView() {
   return (
     <div className="flex flex-1 flex-col w-full h-full pt-4 relative">
       <div className="flex mb-3 gap-2 items-center justify-start w-full px-4 py-2 pb-4 border-b border-b-olive-700">
-        <Icon name="speed" size={30} className="text-olive-300" />
+        <Icon name="debug" size={30} className="text-olive-300" />
         <h2 className="text-olive-200 text-lg font-semibold">
           Performance Monitor
         </h2>
