@@ -22,6 +22,7 @@ import {
   Code2,
   Check,
   Flame,
+  Home,
   Copy,
 } from "lucide-react";
 import { Android } from "../../../../assets/icons/android";
@@ -50,6 +51,7 @@ export const mappedIcons = {
   code: Code2,
   checkmark: Check,
   flame: Flame,
+  home: Home,
   copy: Copy,
   box: Box,
 };

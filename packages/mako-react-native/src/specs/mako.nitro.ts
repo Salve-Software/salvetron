@@ -31,6 +31,21 @@ export interface DeviceInfoResult {
   bundleId: string
 }
 
+/**
+ * Performance metrics snapshot from native APIs
+ */
+export interface PerformanceMetrics {
+  uiFps: number
+  jsFps: number
+  memoryUsageMB: number
+  cpuUsagePercent: number
+}
+
+/**
+ * Callback type for receiving performance metrics
+ */
+export type PerformanceMetricsCallback = (metrics: PerformanceMetrics) => void
+
 export interface NitroMako extends HybridObject<{ ios: 'swift', android: 'kotlin' }> {
   sum(num1: number, num2: number): number
 
@@ -68,4 +83,32 @@ export interface NitroMako extends HybridObject<{ ios: 'swift', android: 'kotlin
    * @param deviceId The device ID to store
    */
   storeDeviceId(deviceId: string): void
+
+  /**
+   * Start monitoring performance metrics (FPS, memory, CPU)
+   * @param onMetrics Callback invoked with performance snapshot
+   * @param intervalMs How often to report metrics (in milliseconds, default 1000)
+   * @returns true if monitoring started successfully
+   */
+  startPerformanceMonitoring(onMetrics: PerformanceMetricsCallback, intervalMs?: number): boolean
+
+  /**
+   * Stop monitoring performance metrics
+   */
+  stopPerformanceMonitoring(): void
+
+  /**
+   * Check if performance monitoring is currently active
+   */
+  isPerformanceMonitoring(): boolean
+
+  /**
+   * Get current performance metrics snapshot (without starting monitoring)
+   */
+  getPerformanceSnapshot(): PerformanceMetrics
+
+  /**
+   * Record a JS frame tick (called from JS to track JS thread responsiveness)
+   */
+  recordJsFrame(): void
 }

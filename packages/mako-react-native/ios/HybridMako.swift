@@ -21,6 +21,9 @@ class HybridMako: HybridNitroMakoSpec {
     // Storage key for device ID
     private let deviceIdStorageKey = "mako_device_id"
 
+    // Performance monitoring
+    private let performanceMonitor = PerformanceMonitor()
+
     // MARK: - Existing Methods
 
     func sum(num1: Double, num2: Double) throws -> Double {
@@ -197,7 +200,46 @@ class HybridMako: HybridNitroMakoSpec {
         return "native"
     }
 
+    // MARK: - Performance Monitoring Methods
+
+    func startPerformanceMonitoring(onMetrics: @escaping (_ metrics: PerformanceMetrics) -> Void, intervalMs: Double?) throws -> Bool {
+        let interval = intervalMs.map { Int($0) } ?? 1000
+
+        return performanceMonitor.start(callback: { data in
+            let metrics = PerformanceMetrics(
+                uiFps: data.uiFps,
+                jsFps: data.jsFps,
+                memoryUsageMB: data.memoryUsageMB,
+                cpuUsagePercent: data.cpuUsagePercent
+            )
+            onMetrics(metrics)
+        }, intervalMs: interval)
+    }
+
+    func stopPerformanceMonitoring() throws {
+        performanceMonitor.stop()
+    }
+
+    func isPerformanceMonitoring() throws -> Bool {
+        return performanceMonitor.isRunning()
+    }
+
+    func getPerformanceSnapshot() throws -> PerformanceMetrics {
+        let data = performanceMonitor.getSnapshot()
+        return PerformanceMetrics(
+            uiFps: data.uiFps,
+            jsFps: data.jsFps,
+            memoryUsageMB: data.memoryUsageMB,
+            cpuUsagePercent: data.cpuUsagePercent
+        )
+    }
+
+    func recordJsFrame() throws {
+        performanceMonitor.recordJsFrame()
+    }
+
     deinit {
         try? stopLogCapture()
+        performanceMonitor.stop()
     }
 }

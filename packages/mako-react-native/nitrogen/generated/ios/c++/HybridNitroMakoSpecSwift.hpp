@@ -18,6 +18,8 @@ namespace margelo::nitro::mako { struct NativeLogEntry; }
 namespace margelo::nitro::mako { enum class NativeLogLevel; }
 // Forward declaration of `DeviceInfoResult` to properly resolve imports.
 namespace margelo::nitro::mako { struct DeviceInfoResult; }
+// Forward declaration of `PerformanceMetrics` to properly resolve imports.
+namespace margelo::nitro::mako { struct PerformanceMetrics; }
 
 #include "NativeLogEntry.hpp"
 #include <functional>
@@ -25,6 +27,7 @@ namespace margelo::nitro::mako { struct DeviceInfoResult; }
 #include <string>
 #include "DeviceInfoResult.hpp"
 #include <optional>
+#include "PerformanceMetrics.hpp"
 
 #include "NitroMako-Swift-Cxx-Umbrella.hpp"
 
@@ -124,6 +127,42 @@ namespace margelo::nitro::mako {
     }
     inline void storeDeviceId(const std::string& deviceId) override {
       auto __result = _swiftPart.storeDeviceId(deviceId);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline bool startPerformanceMonitoring(const std::function<void(const PerformanceMetrics& /* metrics */)>& onMetrics, std::optional<double> intervalMs) override {
+      auto __result = _swiftPart.startPerformanceMonitoring(onMetrics, intervalMs);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
+    inline void stopPerformanceMonitoring() override {
+      auto __result = _swiftPart.stopPerformanceMonitoring();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
+    inline bool isPerformanceMonitoring() override {
+      auto __result = _swiftPart.isPerformanceMonitoring();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
+    inline PerformanceMetrics getPerformanceSnapshot() override {
+      auto __result = _swiftPart.getPerformanceSnapshot();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
+    inline void recordJsFrame() override {
+      auto __result = _swiftPart.recordJsFrame();
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

@@ -9,6 +9,8 @@
 
 // Forward declaration of `DeviceInfoResult` to properly resolve imports.
 namespace margelo::nitro::mako { struct DeviceInfoResult; }
+// Forward declaration of `PerformanceMetrics` to properly resolve imports.
+namespace margelo::nitro::mako { struct PerformanceMetrics; }
 // Forward declaration of `NativeLogEntry` to properly resolve imports.
 namespace margelo::nitro::mako { struct NativeLogEntry; }
 // Forward declaration of `NativeLogLevel` to properly resolve imports.
@@ -18,6 +20,8 @@ namespace margelo::nitro::mako { enum class NativeLogLevel; }
 #include "JDeviceInfoResult.hpp"
 #include <string>
 #include <optional>
+#include "PerformanceMetrics.hpp"
+#include "JPerformanceMetrics.hpp"
 #include "NativeLogEntry.hpp"
 #include <functional>
 #include "JFunc_void_NativeLogEntry.hpp"
@@ -25,6 +29,7 @@ namespace margelo::nitro::mako { enum class NativeLogLevel; }
 #include "JNativeLogEntry.hpp"
 #include "NativeLogLevel.hpp"
 #include "JNativeLogLevel.hpp"
+#include "JFunc_void_PerformanceMetrics.hpp"
 
 namespace margelo::nitro::mako {
 
@@ -91,6 +96,29 @@ namespace margelo::nitro::mako {
   void JHybridNitroMakoSpec::storeDeviceId(const std::string& deviceId) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* deviceId */)>("storeDeviceId");
     method(_javaPart, jni::make_jstring(deviceId));
+  }
+  bool JHybridNitroMakoSpec::startPerformanceMonitoring(const std::function<void(const PerformanceMetrics& /* metrics */)>& onMetrics, std::optional<double> intervalMs) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean(jni::alias_ref<JFunc_void_PerformanceMetrics::javaobject> /* onMetrics */, jni::alias_ref<jni::JDouble> /* intervalMs */)>("startPerformanceMonitoring_cxx");
+    auto __result = method(_javaPart, JFunc_void_PerformanceMetrics_cxx::fromCpp(onMetrics), intervalMs.has_value() ? jni::JDouble::valueOf(intervalMs.value()) : nullptr);
+    return static_cast<bool>(__result);
+  }
+  void JHybridNitroMakoSpec::stopPerformanceMonitoring() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("stopPerformanceMonitoring");
+    method(_javaPart);
+  }
+  bool JHybridNitroMakoSpec::isPerformanceMonitoring() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jboolean()>("isPerformanceMonitoring");
+    auto __result = method(_javaPart);
+    return static_cast<bool>(__result);
+  }
+  PerformanceMetrics JHybridNitroMakoSpec::getPerformanceSnapshot() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JPerformanceMetrics>()>("getPerformanceSnapshot");
+    auto __result = method(_javaPart);
+    return __result->toCpp();
+  }
+  void JHybridNitroMakoSpec::recordJsFrame() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("recordJsFrame");
+    method(_javaPart);
   }
 
 } // namespace margelo::nitro::mako

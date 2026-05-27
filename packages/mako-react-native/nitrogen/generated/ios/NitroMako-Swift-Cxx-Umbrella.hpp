@@ -16,12 +16,15 @@ namespace margelo::nitro::mako { class HybridNitroMakoSpec; }
 namespace margelo::nitro::mako { struct NativeLogEntry; }
 // Forward declaration of `NativeLogLevel` to properly resolve imports.
 namespace margelo::nitro::mako { enum class NativeLogLevel; }
+// Forward declaration of `PerformanceMetrics` to properly resolve imports.
+namespace margelo::nitro::mako { struct PerformanceMetrics; }
 
 // Include C++ defined types
 #include "DeviceInfoResult.hpp"
 #include "HybridNitroMakoSpec.hpp"
 #include "NativeLogEntry.hpp"
 #include "NativeLogLevel.hpp"
+#include "PerformanceMetrics.hpp"
 #include <NitroModules/Result.hpp>
 #include <exception>
 #include <functional>

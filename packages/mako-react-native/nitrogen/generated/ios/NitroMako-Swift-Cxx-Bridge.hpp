@@ -16,6 +16,8 @@ namespace margelo::nitro::mako { class HybridNitroMakoSpec; }
 namespace margelo::nitro::mako { struct NativeLogEntry; }
 // Forward declaration of `NativeLogLevel` to properly resolve imports.
 namespace margelo::nitro::mako { enum class NativeLogLevel; }
+// Forward declaration of `PerformanceMetrics` to properly resolve imports.
+namespace margelo::nitro::mako { struct PerformanceMetrics; }
 
 // Forward declarations of Swift defined types
 // Forward declaration of `HybridNitroMakoSpec_cxx` to properly resolve imports.
@@ -26,6 +28,7 @@ namespace NitroMako { class HybridNitroMakoSpec_cxx; }
 #include "HybridNitroMakoSpec.hpp"
 #include "NativeLogEntry.hpp"
 #include "NativeLogLevel.hpp"
+#include "PerformanceMetrics.hpp"
 #include <NitroModules/Result.hpp>
 #include <exception>
 #include <functional>
@@ -73,6 +76,43 @@ namespace margelo::nitro::mako::bridge::swift {
     return optional.has_value();
   }
   inline std::string get_std__optional_std__string_(const std::optional<std::string>& optional) noexcept {
+    return optional.value();
+  }
+  
+  // pragma MARK: std::function<void(const PerformanceMetrics& /* metrics */)>
+  /**
+   * Specialized version of `std::function<void(const PerformanceMetrics&)>`.
+   */
+  using Func_void_PerformanceMetrics = std::function<void(const PerformanceMetrics& /* metrics */)>;
+  /**
+   * Wrapper class for a `std::function<void(const PerformanceMetrics& / * metrics * /)>`, this can be used from Swift.
+   */
+  class Func_void_PerformanceMetrics_Wrapper final {
+  public:
+    explicit Func_void_PerformanceMetrics_Wrapper(std::function<void(const PerformanceMetrics& /* metrics */)>&& func): _function(std::make_unique<std::function<void(const PerformanceMetrics& /* metrics */)>>(std::move(func))) {}
+    inline void call(PerformanceMetrics metrics) const noexcept {
+      _function->operator()(metrics);
+    }
+  private:
+    std::unique_ptr<std::function<void(const PerformanceMetrics& /* metrics */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_PerformanceMetrics create_Func_void_PerformanceMetrics(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_PerformanceMetrics_Wrapper wrap_Func_void_PerformanceMetrics(Func_void_PerformanceMetrics value) noexcept {
+    return Func_void_PerformanceMetrics_Wrapper(std::move(value));
+  }
+  
+  // pragma MARK: std::optional<double>
+  /**
+   * Specialized version of `std::optional<double>`.
+   */
+  using std__optional_double_ = std::optional<double>;
+  inline std::optional<double> create_std__optional_double_(const double& value) noexcept {
+    return std::optional<double>(value);
+  }
+  inline bool has_value_std__optional_double_(const std::optional<double>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline double get_std__optional_double_(const std::optional<double>& optional) noexcept {
     return optional.value();
   }
   
@@ -131,6 +171,15 @@ namespace margelo::nitro::mako::bridge::swift {
   }
   inline Result_std__optional_std__string__ create_Result_std__optional_std__string__(const std::exception_ptr& error) noexcept {
     return Result<std::optional<std::string>>::withError(error);
+  }
+  
+  // pragma MARK: Result<PerformanceMetrics>
+  using Result_PerformanceMetrics_ = Result<PerformanceMetrics>;
+  inline Result_PerformanceMetrics_ create_Result_PerformanceMetrics_(const PerformanceMetrics& value) noexcept {
+    return Result<PerformanceMetrics>::withValue(value);
+  }
+  inline Result_PerformanceMetrics_ create_Result_PerformanceMetrics_(const std::exception_ptr& error) noexcept {
+    return Result<PerformanceMetrics>::withError(error);
   }
 
 } // namespace margelo::nitro::mako::bridge::swift

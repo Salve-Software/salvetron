@@ -17,6 +17,7 @@ export type {
   ProjectInfoEvent,
   ComponentRenderEvent,
   ComponentTreeEvent,
+  PerformanceMetricsEvent,
   EventType,
   MakoEvent,
 } from '@mako/types';
@@ -34,6 +35,8 @@ export interface MakoConfig {
   enableNetworkCapture?: boolean;
   /** Enable component inspector for React render tracking (default: false) */
   enableComponentInspector?: boolean;
+  /** Enable performance monitoring for FPS, memory, and CPU tracking (default: false) */
+  enablePerformanceMonitoring?: boolean;
   /** URL patterns to ignore (default includes Metro bundler URLs) */
   ignoredUrls?: RegExp[];
   /** Callback when connected to Mako */

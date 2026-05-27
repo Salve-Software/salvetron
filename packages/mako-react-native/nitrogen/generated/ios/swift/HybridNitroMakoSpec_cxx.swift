@@ -216,4 +216,74 @@ open class HybridNitroMakoSpec_cxx {
       return bridge.create_Result_void_(__exceptionPtr)
     }
   }
+  
+  @inline(__always)
+  public final func startPerformanceMonitoring(onMetrics: bridge.Func_void_PerformanceMetrics, intervalMs: bridge.std__optional_double_) -> bridge.Result_bool_ {
+    do {
+      let __result = try self.__implementation.startPerformanceMonitoring(onMetrics: { () -> (PerformanceMetrics) -> Void in
+        let __wrappedFunction = bridge.wrap_Func_void_PerformanceMetrics(onMetrics)
+        return { (__metrics: PerformanceMetrics) -> Void in
+          __wrappedFunction.call(__metrics)
+        }
+      }(), intervalMs: { () -> Double? in
+        if bridge.has_value_std__optional_double_(intervalMs) {
+          let __unwrapped = bridge.get_std__optional_double_(intervalMs)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }())
+      let __resultCpp = __result
+      return bridge.create_Result_bool_(__resultCpp)
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_bool_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func stopPerformanceMonitoring() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.stopPerformanceMonitoring()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func isPerformanceMonitoring() -> bridge.Result_bool_ {
+    do {
+      let __result = try self.__implementation.isPerformanceMonitoring()
+      let __resultCpp = __result
+      return bridge.create_Result_bool_(__resultCpp)
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_bool_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func getPerformanceSnapshot() -> bridge.Result_PerformanceMetrics_ {
+    do {
+      let __result = try self.__implementation.getPerformanceSnapshot()
+      let __resultCpp = __result
+      return bridge.create_Result_PerformanceMetrics_(__resultCpp)
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_PerformanceMetrics_(__exceptionPtr)
+    }
+  }
+  
+  @inline(__always)
+  public final func recordJsFrame() -> bridge.Result_void_ {
+    do {
+      try self.__implementation.recordJsFrame()
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
 }

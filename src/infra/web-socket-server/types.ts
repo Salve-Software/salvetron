@@ -8,10 +8,11 @@ import type {
   ProjectInfoEvent,
   ComponentRenderEvent,
   ComponentTreeEvent,
+  PerformanceMetricsEvent,
 } from "@mako/types";
 
 // Re-export for convenience
-export type { LogEvent, NativeLogEvent, NetworkEvent, DeviceInfoEvent, ProjectInfoEvent, ComponentRenderEvent, ComponentTreeEvent };
+export type { LogEvent, NativeLogEvent, NetworkEvent, DeviceInfoEvent, ProjectInfoEvent, ComponentRenderEvent, ComponentTreeEvent, PerformanceMetricsEvent };
 
 // Incoming log event can be either JS or native log
 export type IncomingLogEvent = LogEvent | NativeLogEvent;
@@ -26,13 +27,17 @@ export type IncomingProjectEvent = ProjectInfoEvent;
 export type IncomingComponentRenderEvent = ComponentRenderEvent;
 export type IncomingComponentTreeEvent = ComponentTreeEvent;
 
+// Incoming performance event
+export type IncomingPerformanceMetricsEvent = PerformanceMetricsEvent;
+
 export type IncomingEvent =
   | IncomingLogEvent
   | IncomingNetworkEvent
   | IncomingProjectEvent
   | DeviceInfoEvent
   | IncomingComponentRenderEvent
-  | IncomingComponentTreeEvent;
+  | IncomingComponentTreeEvent
+  | IncomingPerformanceMetricsEvent;
 
 export interface WebSocketServerOptions {
   port?: number;
@@ -47,5 +52,6 @@ export interface WebSocketServerCallbacks {
   onProjectConnected?: (project: Project) => void;
   onComponentRenderReceived?: (event: IncomingComponentRenderEvent) => void;
   onComponentTreeReceived?: (event: IncomingComponentTreeEvent) => void;
+  onPerformanceMetricsReceived?: (event: IncomingPerformanceMetricsEvent) => void;
   onError?: (error: Error) => void;
 }

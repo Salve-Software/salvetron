@@ -1,10 +1,10 @@
 import mako from 'mako-react-native';
 import { Button, Text, View } from "react-native";
 import { styles } from "./styles";
-import { Content } from './components/Content';
 
 mako.connect({
   enableComponentInspector: true,
+  enablePerformanceMonitoring:true,
 });
 
 export const Playground: React.FC = () => {
@@ -20,7 +20,6 @@ export const Playground: React.FC = () => {
         }}
       />
 
-      <Content />
     </View>
   )
 }

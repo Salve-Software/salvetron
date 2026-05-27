@@ -7,6 +7,8 @@ import { useAddProject } from "../../../../modules/projects/store";
 import { transformLogEvent } from "../utils";
 import { useAddNativeLog } from "../../../../modules/native/store";
 import { useHandleComponentRender, useHandleComponentTree } from "../../../../modules/component-inspector/store/use-component-store";
+import { useAddPerformanceSnapshot } from "../../../../modules/perf-monitor/store";
+import { calculateHealthLevel } from "@mako/types";
 
 const RealtimeServiceContext = React.createContext(null);
 
@@ -19,6 +21,7 @@ export function RealtimeServiceProvider({ children }: React.PropsWithChildren) {
   const addProject = useAddProject();
   const handleComponentRender = useHandleComponentRender();
   const handleComponentTree = useHandleComponentTree();
+  const addPerformanceSnapshot = useAddPerformanceSnapshot();
 
   useEffect(() => {
     const ws = new WebSocketServer();
@@ -58,12 +61,34 @@ export function RealtimeServiceProvider({ children }: React.PropsWithChildren) {
       console.log("COMPONENT-TREE", event);
     };
 
+    ws.onPerformanceMetricsReceived = (event) => {
+      console.log("ON-PERFORMANCE-METRIC-EVENT",event)
+      if (event.deviceId) {
+        const snapshot = {
+          timestamp: event.timestamp,
+          deviceId: event.deviceId,
+          uiFps: event.uiFps,
+          jsFps: event.jsFps,
+          memoryUsage: event.memoryUsage,
+          cpuUsage: event.cpuUsage,
+          healthLevel: calculateHealthLevel(
+            event.uiFps,
+            event.jsFps,
+            event.memoryUsage,
+            event.cpuUsage
+          ),
+        };
+        addPerformanceSnapshot(snapshot);
+        console.log("PERFORMANCE-METRICS", snapshot);
+      }
+    };
+
     ws.start();
 
     return () => {
       ws.stop();
     };
-  }, [addDevice, addJSLog, addOrUpdateNetworkLog, addNativeLog, addProject, handleComponentRender, handleComponentTree]);
+  }, [addDevice, addJSLog, addOrUpdateNetworkLog, addNativeLog, addProject, handleComponentRender, handleComponentTree, addPerformanceSnapshot]);
 
   return (
     <RealtimeServiceContext.Provider value={null}>
