@@ -6,7 +6,9 @@ use crate::websocket::{types::ServerStatus, WsServer};
 #[tauri::command]
 pub async fn show_main_window(window: tauri::Window) {
     if let Some(main_window) = window.get_webview_window("main") {
-        let _ = main_window.show();
+        if let Err(e) = main_window.show() {
+            eprintln!("Failed to show main window: {}", e);
+        }
     }
 }
 

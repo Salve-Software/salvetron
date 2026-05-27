@@ -9,4 +9,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   </React.StrictMode>,
 );
 
-invoke("show_main_window");
+requestAnimationFrame(() => {
+  invoke("show_main_window").catch(console.error);
+});
