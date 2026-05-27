@@ -60,6 +60,31 @@ abstract class HybridNitroMakoSpec: HybridObject() {
   @DoNotStrip
   @Keep
   abstract fun storeDeviceId(deviceId: String): Unit
+  
+  abstract fun startPerformanceMonitoring(onMetrics: (metrics: PerformanceMetrics) -> Unit, intervalMs: Double?): Boolean
+  
+  @DoNotStrip
+  @Keep
+  private fun startPerformanceMonitoring_cxx(onMetrics: Func_void_PerformanceMetrics, intervalMs: Double?): Boolean {
+    val __result = startPerformanceMonitoring(onMetrics, intervalMs)
+    return __result
+  }
+  
+  @DoNotStrip
+  @Keep
+  abstract fun stopPerformanceMonitoring(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun isPerformanceMonitoring(): Boolean
+  
+  @DoNotStrip
+  @Keep
+  abstract fun getPerformanceSnapshot(): PerformanceMetrics
+  
+  @DoNotStrip
+  @Keep
+  abstract fun recordJsFrame(): Unit
 
   // Default implementation of `HybridObject.toString()`
   override fun toString(): String {

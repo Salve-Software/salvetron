@@ -31,6 +31,7 @@ export class PerformanceHandler {
     try {
       // Start native performance monitoring
       const success = this.nitroMako.startPerformanceMonitoring((metrics) => {
+        console.log("METRICS",metrics)
         this.handleMetrics(metrics)
       }, this.intervalMs)
 

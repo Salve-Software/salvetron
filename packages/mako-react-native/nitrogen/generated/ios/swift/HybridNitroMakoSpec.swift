@@ -20,6 +20,11 @@ public protocol HybridNitroMakoSpec_protocol: HybridObject {
   func getDeviceInfo() throws -> DeviceInfoResult
   func getStoredDeviceId() throws -> String?
   func storeDeviceId(deviceId: String) throws -> Void
+  func startPerformanceMonitoring(onMetrics: @escaping (_ metrics: PerformanceMetrics) -> Void, intervalMs: Double?) throws -> Bool
+  func stopPerformanceMonitoring() throws -> Void
+  func isPerformanceMonitoring() throws -> Bool
+  func getPerformanceSnapshot() throws -> PerformanceMetrics
+  func recordJsFrame() throws -> Void
 }
 
 public extension HybridNitroMakoSpec_protocol {

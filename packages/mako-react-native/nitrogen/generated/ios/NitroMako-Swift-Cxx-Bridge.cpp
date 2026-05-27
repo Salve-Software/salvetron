@@ -22,6 +22,14 @@ namespace margelo::nitro::mako::bridge::swift {
     };
   }
   
+  // pragma MARK: std::function<void(const PerformanceMetrics& /* metrics */)>
+  Func_void_PerformanceMetrics create_Func_void_PerformanceMetrics(void* NON_NULL swiftClosureWrapper) noexcept {
+    auto swiftClosure = NitroMako::Func_void_PerformanceMetrics::fromUnsafe(swiftClosureWrapper);
+    return [swiftClosure = std::move(swiftClosure)](const PerformanceMetrics& metrics) mutable -> void {
+      swiftClosure.call(metrics);
+    };
+  }
+  
   // pragma MARK: std::shared_ptr<HybridNitroMakoSpec>
   std::shared_ptr<HybridNitroMakoSpec> create_std__shared_ptr_HybridNitroMakoSpec_(void* NON_NULL swiftUnsafePointer) noexcept {
     NitroMako::HybridNitroMakoSpec_cxx swiftPart = NitroMako::HybridNitroMakoSpec_cxx::fromUnsafe(swiftUnsafePointer);

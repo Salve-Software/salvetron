@@ -9,22 +9,22 @@
 /* Begin PBXBuildFile section */
 		06D6E5EACFEBFF6D7B43E529 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		24DA118B94E12469918E866E /* libPods-NitroTraceExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 130CCAFB5ACFF5117D326000 /* libPods-NitroTraceExample.a */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		EA134F860E40EFB5DA727144 /* libPods-NitroTraceExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C2C990BE0DBE68E16E0B2A /* libPods-NitroTraceExample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		130CCAFB5ACFF5117D326000 /* libPods-NitroTraceExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NitroTraceExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* NitroTraceExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NitroTraceExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NitroTraceExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NitroTraceExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = NitroTraceExample/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		5C1CCED10CD01E94DECEBFA5 /* Pods-NitroTraceExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroTraceExample.debug.xcconfig"; path = "Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample.debug.xcconfig"; sourceTree = "<group>"; };
-		5F5369CE812FC6FC58D67C57 /* Pods-NitroTraceExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroTraceExample.release.xcconfig"; path = "Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample.release.xcconfig"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = NitroTraceExample/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NitroTraceExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E3A54193493EF0EF0EA123E9 /* Pods-NitroTraceExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroTraceExample.release.xcconfig"; path = "Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample.release.xcconfig"; sourceTree = "<group>"; };
+		EA1369C82C4AEC5F967AF2B3 /* Pods-NitroTraceExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NitroTraceExample.debug.xcconfig"; path = "Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F2C2C990BE0DBE68E16E0B2A /* libPods-NitroTraceExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NitroTraceExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,7 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA134F860E40EFB5DA727144 /* libPods-NitroTraceExample.a in Frameworks */,
+				24DA118B94E12469918E866E /* libPods-NitroTraceExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,7 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				F2C2C990BE0DBE68E16E0B2A /* libPods-NitroTraceExample.a */,
+				130CCAFB5ACFF5117D326000 /* libPods-NitroTraceExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -92,8 +92,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5C1CCED10CD01E94DECEBFA5 /* Pods-NitroTraceExample.debug.xcconfig */,
-				5F5369CE812FC6FC58D67C57 /* Pods-NitroTraceExample.release.xcconfig */,
+				EA1369C82C4AEC5F967AF2B3 /* Pods-NitroTraceExample.debug.xcconfig */,
+				E3A54193493EF0EF0EA123E9 /* Pods-NitroTraceExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -105,13 +105,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "NitroTraceExample" */;
 			buildPhases = (
-				1687B02A7297195CABE93FC2 /* [CP] Check Pods Manifest.lock */,
+				CACB903A36055E1F6EB7BD91 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				533931107D5660FA2E3C0C9F /* [CP] Embed Pods Frameworks */,
-				30682B937D4757AB3D8241FA /* [CP] Copy Pods Resources */,
+				6839E3F7E0A3EC7BC42A0A72 /* [CP] Embed Pods Frameworks */,
+				E0BC7093F853CD9787F2ECED /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -183,7 +183,24 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"\\\"$WITH_ENVIRONMENT\\\" \\\"$REACT_NATIVE_XCODE\\\"\"\n";
 		};
-		1687B02A7297195CABE93FC2 /* [CP] Check Pods Manifest.lock */ = {
+		6839E3F7E0A3EC7BC42A0A72 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CACB903A36055E1F6EB7BD91 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -205,7 +222,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		30682B937D4757AB3D8241FA /* [CP] Copy Pods Resources */ = {
+		E0BC7093F853CD9787F2ECED /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -220,23 +237,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		533931107D5660FA2E3C0C9F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NitroTraceExample/Pods-NitroTraceExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -255,7 +255,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5C1CCED10CD01E94DECEBFA5 /* Pods-NitroTraceExample.debug.xcconfig */;
+			baseConfigurationReference = EA1369C82C4AEC5F967AF2B3 /* Pods-NitroTraceExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -285,7 +285,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F5369CE812FC6FC58D67C57 /* Pods-NitroTraceExample.release.xcconfig */;
+			baseConfigurationReference = E3A54193493EF0EF0EA123E9 /* Pods-NitroTraceExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

@@ -61,6 +61,11 @@ namespace margelo::nitro::mako {
     DeviceInfoResult getDeviceInfo() override;
     std::optional<std::string> getStoredDeviceId() override;
     void storeDeviceId(const std::string& deviceId) override;
+    bool startPerformanceMonitoring(const std::function<void(const PerformanceMetrics& /* metrics */)>& onMetrics, std::optional<double> intervalMs) override;
+    void stopPerformanceMonitoring() override;
+    bool isPerformanceMonitoring() override;
+    PerformanceMetrics getPerformanceSnapshot() override;
+    void recordJsFrame() override;
 
   private:
     jni::global_ref<JHybridNitroMakoSpec::JavaPart> _javaPart;

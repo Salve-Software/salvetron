@@ -17,12 +17,15 @@
 namespace margelo::nitro::mako { struct NativeLogEntry; }
 // Forward declaration of `DeviceInfoResult` to properly resolve imports.
 namespace margelo::nitro::mako { struct DeviceInfoResult; }
+// Forward declaration of `PerformanceMetrics` to properly resolve imports.
+namespace margelo::nitro::mako { struct PerformanceMetrics; }
 
 #include "NativeLogEntry.hpp"
 #include <functional>
 #include "DeviceInfoResult.hpp"
 #include <string>
 #include <optional>
+#include "PerformanceMetrics.hpp"
 
 namespace margelo::nitro::mako {
 
@@ -62,6 +65,11 @@ namespace margelo::nitro::mako {
       virtual DeviceInfoResult getDeviceInfo() = 0;
       virtual std::optional<std::string> getStoredDeviceId() = 0;
       virtual void storeDeviceId(const std::string& deviceId) = 0;
+      virtual bool startPerformanceMonitoring(const std::function<void(const PerformanceMetrics& /* metrics */)>& onMetrics, std::optional<double> intervalMs) = 0;
+      virtual void stopPerformanceMonitoring() = 0;
+      virtual bool isPerformanceMonitoring() = 0;
+      virtual PerformanceMetrics getPerformanceSnapshot() = 0;
+      virtual void recordJsFrame() = 0;
 
     protected:
       // Hybrid Setup

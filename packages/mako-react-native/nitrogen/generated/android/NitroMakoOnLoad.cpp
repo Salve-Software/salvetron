@@ -17,6 +17,7 @@
 
 #include "JHybridNitroMakoSpec.hpp"
 #include "JFunc_void_NativeLogEntry.hpp"
+#include "JFunc_void_PerformanceMetrics.hpp"
 #include <NitroModules/DefaultConstructableObject.hpp>
 
 namespace margelo::nitro::mako {
@@ -43,6 +44,7 @@ void registerAllNatives() {
   // Register native JNI methods
   margelo::nitro::mako::JHybridNitroMakoSpec::CxxPart::registerNatives();
   margelo::nitro::mako::JFunc_void_NativeLogEntry_cxx::registerNatives();
+  margelo::nitro::mako::JFunc_void_PerformanceMetrics_cxx::registerNatives();
 
   // Register Nitro Hybrid Objects
   HybridObjectRegistry::registerHybridObjectConstructor(

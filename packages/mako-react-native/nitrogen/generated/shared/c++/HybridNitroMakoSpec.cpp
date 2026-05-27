@@ -21,6 +21,11 @@ namespace margelo::nitro::mako {
       prototype.registerHybridMethod("getDeviceInfo", &HybridNitroMakoSpec::getDeviceInfo);
       prototype.registerHybridMethod("getStoredDeviceId", &HybridNitroMakoSpec::getStoredDeviceId);
       prototype.registerHybridMethod("storeDeviceId", &HybridNitroMakoSpec::storeDeviceId);
+      prototype.registerHybridMethod("startPerformanceMonitoring", &HybridNitroMakoSpec::startPerformanceMonitoring);
+      prototype.registerHybridMethod("stopPerformanceMonitoring", &HybridNitroMakoSpec::stopPerformanceMonitoring);
+      prototype.registerHybridMethod("isPerformanceMonitoring", &HybridNitroMakoSpec::isPerformanceMonitoring);
+      prototype.registerHybridMethod("getPerformanceSnapshot", &HybridNitroMakoSpec::getPerformanceSnapshot);
+      prototype.registerHybridMethod("recordJsFrame", &HybridNitroMakoSpec::recordJsFrame);
     });
   }
 
