@@ -11,32 +11,31 @@ export function DashboardView() {
       {/* Top: Performance bar */}
       <DashboardModuleCard
         icon="flame"
-        title="Performance"
-        route="/performance"
+        title="Perf Monitor"
         className="h-auto"
       >
         <PerfMonitorPreview />
       </DashboardModuleCard>
 
       {/* Bottom: Component Inspector (left) + Logs stack (right) */}
-      <div className="flex flex-1 gap-4 min-h-0">
+      <div className="flex flex-1 gap-4 min-h-0 max-[950px]:flex-col">
         {/* Left: Component Inspector (large) */}
         <DashboardModuleCard
           icon="component"
           title="Components"
           route="/components"
-          className="flex-[2] min-w-0"
+          className="flex-[2] min-w-0 max-[950px]:flex-none"
         >
           <ComponentInspectorPreview />
         </DashboardModuleCard>
 
         {/* Right: Logs stacked */}
-        <div className="flex flex-col flex-1 gap-4 min-w-0">
+        <div className="flex flex-col flex-1 gap-4 min-w-0 max-[950px]:contents">
           <DashboardModuleCard
             icon="list"
             title="JS Logs"
             route="/js-logs"
-            className="flex-1 min-h-0"
+            className="flex-1 min-h-0 max-[950px]:flex-none max-[950px]:h-48"
           >
             <JSLogsPreview />
           </DashboardModuleCard>
@@ -45,7 +44,7 @@ export function DashboardView() {
             icon="terminal"
             title="Native Logs"
             route="/native"
-            className="flex-1 min-h-0"
+            className="flex-1 min-h-0 max-[950px]:flex-none max-[950px]:h-48"
           >
             <NativeLogsPreview />
           </DashboardModuleCard>
@@ -54,7 +53,7 @@ export function DashboardView() {
             icon="earth"
             title="Network"
             route="/network"
-            className="flex-1 min-h-0"
+            className="flex-1 min-h-0 max-[950px]:flex-none max-[950px]:h-48"
           >
             <NetworkLogsPreview />
           </DashboardModuleCard>
