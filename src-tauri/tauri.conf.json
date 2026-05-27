@@ -13,12 +13,13 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "mako",
         "width": 900,
         "height": 600,
         "minWidth": 850,
         "minHeight": 400,
-        "visible": false,
+        "visible": true,
         "backgroundColor": "#3b3a36",
         "titleBarStyle": "Overlay",
         "hiddenTitle": true,
@@ -35,7 +36,7 @@
         {
           "identifier": "draggable-window",
           "windows": ["*"],
-          "permissions": ["core:default", "core:window:allow-start-dragging"]
+          "permissions": ["core:default", "core:window:allow-start-dragging", "core:window:allow-show"]
         }
       ]
     }

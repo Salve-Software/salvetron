@@ -7,7 +7,7 @@ import { PerfMonitorPreview } from "../../components/perf-monitor-preview";
 
 export function DashboardView() {
   return (
-    <div className="flex flex-1 h-full flex-col bg-olive-950 overflow-auto p-4 gap-4">
+    <div className="flex flex-1 h-full flex-col overflow-auto p-4 gap-4">
       {/* Top: Performance bar */}
       <DashboardModuleCard
         icon="flame"
