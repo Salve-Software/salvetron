@@ -14,8 +14,11 @@
     "windows": [
       {
         "title": "mako",
-        "width": 800,
+        "width": 900,
         "height": 600,
+        "minWidth": 850,
+        "minHeight": 400,
+        "backgroundColor": "#3b3a36",
         "titleBarStyle": "Overlay",
         "hiddenTitle": true,
 
