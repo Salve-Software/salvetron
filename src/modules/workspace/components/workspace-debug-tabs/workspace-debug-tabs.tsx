@@ -14,9 +14,18 @@ export function WorkspaceDebugTabs() {
   return (
     <div className="w-full flex  flex-col gap-6 items-start ">
       <div className="w-full flex flex-col gap-4 items-start">
-        {isOpen && (
-          <p className="font-medium text-xs uppercase  text-olive-400">logs</p>
-        )}
+        <DebugTabItem
+          iconName="home"
+          tabName="Home"
+          isOpen={isOpen}
+          isFocused={location.pathname === "/"}
+          onClick={() => handleTabClick("/")}
+        />
+        <p
+          className={`font-medium text-xs uppercase  text-olive-400 w-full ${isOpen ? "" : "border-b border-b-olive-700"}`}
+        >
+          {isOpen && "logs"}
+        </p>
         <DebugTabItem
           iconName="list"
           tabName="JS Logs"
@@ -53,13 +62,6 @@ export function WorkspaceDebugTabs() {
           isOpen={isOpen}
           isFocused={location.pathname.includes("components")}
           onClick={() => handleTabClick("components")}
-        />
-        <DebugTabItem
-          iconName="speed"
-          tabName="Performance"
-          isOpen={isOpen}
-          isFocused={location.pathname.includes("performance")}
-          onClick={() => handleTabClick("performance")}
         />
       </div>
     </div>
