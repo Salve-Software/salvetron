@@ -94,9 +94,6 @@ export class MakoClient {
     }
 
     this.manualDisconnect = false
-    jsConsoleInterceptor.start({
-      onLog: (level, message, metadata) => this.sendLog(level, message, metadata),
-    })
     this.connectWebSocket()
   }
 
@@ -310,6 +307,10 @@ export class MakoClient {
   }
 
   private connectWebSocket(): void {
+    jsConsoleInterceptor.start({
+      onLog: (level, message, metadata) => this.sendLog(level, message, metadata),
+    })
+
     if (this.isConnecting || this.isConnected()) return
 
     this.isConnecting = true
