@@ -20,7 +20,7 @@ export type {
   PerformanceMetricsEvent,
   EventType,
   MakoEvent,
-} from '@mako/types';
+} from '@salve-software/mako-types';
 
 // ============================================
 // SDK Configuration (SDK-specific)

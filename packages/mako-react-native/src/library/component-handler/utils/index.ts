@@ -2,7 +2,7 @@
  * Component Handler Utilities
  */
 
-import type { MemoType } from '@mako/types';
+import type { MemoType } from '@salve-software/mako-types';
 
 /**
  * Generate a unique component instance ID
