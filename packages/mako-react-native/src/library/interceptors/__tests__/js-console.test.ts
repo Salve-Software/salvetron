@@ -177,5 +177,10 @@ describe('JSConsoleInterceptor', () => {
 
     expect(() => console.log('test')).not.toThrow()
     expect(originalSpy).toHaveBeenCalledWith('test')
+
+    // stop() restores console.log to originalSpy (not realLog), so explicitly
+    // put realLog back to avoid corrupting subsequent tests.
+    interceptor.stop()
+    console.log = realLog
   })
 })
