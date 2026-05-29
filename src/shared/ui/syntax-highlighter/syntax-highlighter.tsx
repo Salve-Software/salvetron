@@ -34,7 +34,7 @@ export function SyntaxHighlighter({
   };
 
   return (
-    <div className="relative group">
+    <div className="relative group w-full min-w-0">
       <button
         onClick={handleCopy}
         className="absolute top-2 right-2 p-1.5 rounded-md bg-olive-800/80 hover:bg-olive-700 transition-colors duration-150 opacity-0 group-hover:opacity-100"
@@ -49,7 +49,7 @@ export function SyntaxHighlighter({
       <Highlight theme={themes.nightOwl} code={code} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre
-            className={`text-xs bg-olive-950 rounded-lg p-3 overflow-x-auto max-h-96 overflow-y-auto ${className}`}
+            className={`text-xs bg-olive-950 rounded-lg p-3 overflow-x-auto max-w-full max-h-96 overflow-y-auto ${className}`}
             style={{ ...style, backgroundColor: "transparent" }}
           >
             {tokens.map((line, i) => (

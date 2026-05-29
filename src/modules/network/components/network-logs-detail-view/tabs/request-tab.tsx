@@ -29,7 +29,7 @@ export function RequestTab({ log }: RequestTabProps) {
   const hasBody = log.requestBody && log.requestBody.length > 0;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 min-w-0">
       {/* Content Type indicator */}
       {contentType
         ?
@@ -49,7 +49,7 @@ export function RequestTab({ log }: RequestTabProps) {
             ?
             <SyntaxHighlighter code={bodyFormatted} language="json" />
             :
-            <pre className="text-xs rounded-lg p-3 overflow-x-auto max-h-96 overflow-y-auto bg-olive-900">
+            <pre className="text-xs rounded-lg p-3 overflow-x-auto max-w-full max-h-96 overflow-y-auto bg-olive-900">
               <code className="text-olive-200">{bodyFormatted}</code>
             </pre>
           :

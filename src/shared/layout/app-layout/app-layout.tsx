@@ -7,7 +7,7 @@ export function AppLayout() {
   return (
     <div className="flex flex-col flex-1 h-screen bg-olive-900">
       <WorkspaceHeader />
-      <div className="flex flex-1 items-start h-full flex-row">
+      <div className="flex flex-1 items-start h-full flex-row overflow-x-hidden">
         <Sidebar>
           <WorkspaceDebugTabs />
         </Sidebar>

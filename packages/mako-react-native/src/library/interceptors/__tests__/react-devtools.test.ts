@@ -36,6 +36,7 @@ describe('ReactDevToolsInterceptor', () => {
 
   const createMockCallbacks = (): ComponentRenderCallbacks => ({
     onComponentRender: jest.fn(),
+    onComponentUnmount: jest.fn(),
   })
 
   beforeEach(() => {
@@ -130,6 +131,22 @@ describe('ReactDevToolsInterceptor', () => {
       expect(console.log).toHaveBeenCalledWith(
         '[Mako] Component inspector disabled'
       )
+    })
+
+    it('should restore original onCommitFiberUnmount', () => {
+      const originalUnmount = jest.fn()
+      const mockHook = createMockHook({
+        onCommitFiberUnmount: originalUnmount,
+      })
+      ;(global as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ = mockHook
+
+      interceptor.enable(createMockCallbacks())
+
+      expect(mockHook.onCommitFiberUnmount).not.toBe(originalUnmount)
+
+      interceptor.disable()
+
+      expect(mockHook.onCommitFiberUnmount).toBe(originalUnmount)
     })
 
     it('should restore original onCommitFiberRoot', () => {
@@ -291,6 +308,45 @@ describe('ReactDevToolsInterceptor', () => {
       mockHook.onCommitFiberRoot(1, mockRoot, undefined)
 
       expect(callbacks.onComponentRender).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('onCommitFiberUnmount interception', () => {
+    it('should report unmount for a tracked component fiber', () => {
+      const mockHook = createMockHook()
+      ;(global as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ = mockHook
+
+      const callbacks = createMockCallbacks()
+      interceptor.enable(callbacks)
+
+      const fiber = createMockFiber({ type: function MyComponent() {} })
+
+      // Commit first so the fiber gets a stable id assigned.
+      mockHook.onCommitFiberRoot(1, { current: fiber }, undefined)
+      const id = (callbacks.onComponentRender as jest.Mock).mock.calls[0][0]
+        .componentId
+
+      mockHook.onCommitFiberUnmount(1, fiber)
+
+      expect(callbacks.onComponentUnmount).toHaveBeenCalledWith(id)
+    })
+
+    it('should ignore unmount for untracked or non-component fibers', () => {
+      const mockHook = createMockHook()
+      ;(global as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ = mockHook
+
+      const callbacks = createMockCallbacks()
+      interceptor.enable(callbacks)
+
+      // Host component never assigned an id.
+      mockHook.onCommitFiberUnmount(1, createMockFiber({ tag: 5, type: 'div' }))
+      // Component fiber that was never committed.
+      mockHook.onCommitFiberUnmount(
+        1,
+        createMockFiber({ type: function Never() {} })
+      )
+
+      expect(callbacks.onComponentUnmount).not.toHaveBeenCalled()
     })
   })
 

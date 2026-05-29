@@ -15,7 +15,7 @@ export function Table<T>({
   }
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full overflow-x-auto">
       <div
         className="grid items-center py-2 px-4 border-b border-olive-700 shrink-0"
         style={{ gridTemplateColumns }}
@@ -23,7 +23,7 @@ export function Table<T>({
         {columns.map((col) => (
           <span
             key={col.key}
-            className="text-xs text-olive-500 uppercase font-medium"
+            className="text-xs text-olive-500 uppercase font-medium min-w-0 truncate"
           >
             {col.header}
           </span>
@@ -42,7 +42,7 @@ export function Table<T>({
               style={{ gridTemplateColumns }}
             >
               {columns.map((col) => (
-                <div key={col.key}>{col.render(item)}</div>
+                <div key={col.key} className="min-w-0 overflow-hidden">{col.render(item)}</div>
               ))}
             </div>
           );

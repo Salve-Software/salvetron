@@ -54,6 +54,7 @@ export interface ComponentRenderInfo {
 
 export interface ComponentRenderCallbacks {
   onComponentRender: (info: ComponentRenderInfo) => void;
+  onComponentUnmount?: (componentId: string) => void;
 }
 
 export class ReactDevToolsInterceptor {
@@ -63,6 +64,7 @@ export class ReactDevToolsInterceptor {
   private callbacks: ComponentRenderCallbacks | null = null;
   private hook: DevToolsHook | null = null;
   private originalOnCommitFiberRoot: DevToolsHook['onCommitFiberRoot'] | null = null;
+  private originalOnCommitFiberUnmount: DevToolsHook['onCommitFiberUnmount'] | null = null;
 
   // Fiber tracking
   private fiberIdCounter = 0;
@@ -96,6 +98,7 @@ export class ReactDevToolsInterceptor {
     this.hook = hook;
     this.callbacks = callbacks;
     this.originalOnCommitFiberRoot = hook.onCommitFiberRoot;
+    this.originalOnCommitFiberUnmount = hook.onCommitFiberUnmount ?? null;
 
     hook.onCommitFiberRoot = (rendererID, root, priorityLevel) => {
       this.originalOnCommitFiberRoot?.(rendererID, root, priorityLevel);
@@ -103,6 +106,14 @@ export class ReactDevToolsInterceptor {
       if (this.enabled && root?.current) {
         this.currentCommitFibers = new WeakSet();
         this.traverseFiber(root.current);
+      }
+    };
+
+    hook.onCommitFiberUnmount = (rendererID, fiber) => {
+      this.originalOnCommitFiberUnmount?.(rendererID, fiber);
+
+      if (this.enabled) {
+        this.handleFiberUnmount(fiber);
       }
     };
 
@@ -117,6 +128,7 @@ export class ReactDevToolsInterceptor {
     if (this.originalOnCommitFiberRoot) {
       this.hook.onCommitFiberRoot = this.originalOnCommitFiberRoot;
     }
+    this.hook.onCommitFiberUnmount = this.originalOnCommitFiberUnmount ?? undefined;
 
     this.callbacks = null;
     this.enabled = false;
@@ -143,6 +155,23 @@ export class ReactDevToolsInterceptor {
 
   private isComponentFiber(fiber: Fiber): boolean {
     return COMPONENT_TAGS.has(fiber.tag);
+  }
+
+  // --- Unmount handling ---
+
+  /**
+   * React fires onCommitFiberUnmount per unmounted fiber. We only care about
+   * component fibers we have already assigned an id to — releasing them keeps
+   * the handler registry and seenFiberIds from growing unbounded.
+   */
+  private handleFiberUnmount(fiber: Fiber): void {
+    if (!this.isComponentFiber(fiber)) return;
+
+    const id = this.fiberIdMap.get(fiber) ?? (fiber.alternate ? this.fiberIdMap.get(fiber.alternate) : undefined);
+    if (!id) return;
+
+    this.seenFiberIds.delete(id);
+    this.callbacks?.onComponentUnmount?.(id);
   }
 
   // --- Render Detection ---

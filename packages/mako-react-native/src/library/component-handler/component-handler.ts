@@ -14,6 +14,13 @@ export class ComponentHandler {
   private config: ComponentHandlerConfig;
   private treeSnapshotInterval: ReturnType<typeof setInterval> | null = null;
 
+  // Coalesce render events: many commits per frame collapse to one flush.
+  private renderBuffer = new Map<string, ComponentRenderEvent>();
+  private flushTimer: ReturnType<typeof setTimeout> | null = null;
+
+  // Tree structure only changes on mount/unmount/re-parent. Gate snapshots on it.
+  private treeDirty = true;
+
   constructor(config: ComponentHandlerConfig) {
     this.config = config;
   }
@@ -21,6 +28,7 @@ export class ComponentHandler {
   getCallbacks(): ComponentRenderCallbacks {
     return {
       onComponentRender: this.handleComponentRender.bind(this),
+      onComponentUnmount: this.handleComponentUnmount.bind(this),
     };
   }
 
@@ -45,6 +53,11 @@ export class ComponentHandler {
         memoType,
       };
       this.registry.set(componentId, entry);
+      this.treeDirty = true;
+    } else if (entry.parentId !== parentId) {
+      // Re-parented: structure changed.
+      entry.parentId = parentId;
+      this.treeDirty = true;
     }
 
     // Update metrics
@@ -57,7 +70,7 @@ export class ComponentHandler {
     if (stateChanged) entry.stateChangeCount++;
     if (contextChanged) entry.contextChangeCount++;
 
-    // Send render event
+    // Buffer render event (latest cumulative state per component wins).
     const event: ComponentRenderEvent = {
       type: 'component_render',
       componentId,
@@ -75,7 +88,32 @@ export class ComponentHandler {
       projectId: projectHandler.getProjectId(),
     };
 
-    this.config.onEvent(event);
+    this.renderBuffer.set(componentId, event);
+    this.scheduleFlush();
+  }
+
+  private handleComponentUnmount(componentId: string): void {
+    if (this.registry.delete(componentId)) {
+      this.treeDirty = true;
+    }
+    this.renderBuffer.delete(componentId);
+  }
+
+  private scheduleFlush(): void {
+    if (this.flushTimer) return;
+    this.flushTimer = setTimeout(() => this.flushRenders(), 0);
+  }
+
+  private flushRenders(): void {
+    this.flushTimer = null;
+    if (this.renderBuffer.size === 0) return;
+
+    const events = Array.from(this.renderBuffer.values());
+    this.renderBuffer.clear();
+
+    for (const event of events) {
+      this.config.onEvent(event);
+    }
   }
 
   startTreeSnapshots(intervalMs: number = 5000): void {
@@ -100,28 +138,10 @@ export class ComponentHandler {
   }
 
   private sendTreeSnapshot(): void {
-    const tree: ComponentTreeNode[] = [];
-    const depthMap = new Map<string, number>();
+    // Skip when structure is unchanged since the last snapshot.
+    if (!this.treeDirty) return;
 
-    // Calculate depth for each component
-    for (const entry of this.registry.values()) {
-      const depth = this.calculateDepth(entry.id, depthMap);
-      depthMap.set(entry.id, depth);
-    }
-
-    // Build tree nodes
-    for (const entry of this.registry.values()) {
-      const children = this.getChildrenIds(entry.id);
-      const depth = depthMap.get(entry.id) ?? 0;
-
-      tree.push({
-        id: entry.id,
-        name: entry.name,
-        parentId: entry.parentId,
-        children,
-        depth,
-      });
-    }
+    const tree = this.buildTree();
 
     const event: ComponentTreeEvent = {
       type: 'component_tree',
@@ -132,31 +152,73 @@ export class ComponentHandler {
     };
 
     this.config.onEvent(event);
+    this.treeDirty = false;
   }
 
-  private calculateDepth(componentId: string, depthMap: Map<string, number>): number {
-    const cached = depthMap.get(componentId);
-    if (cached !== undefined) return cached;
+  /**
+   * Build the component tree in a single O(n) pass.
+   *
+   * One loop builds a parent -> children adjacency map; depth is then assigned
+   * via an iterative BFS from the roots. Replaces the previous O(n^2) approach
+   * (per-node child scan + recursive depth).
+   */
+  private buildTree(): ComponentTreeNode[] {
+    const childrenMap = new Map<string, string[]>();
+    const roots: string[] = [];
 
-    const entry = this.registry.get(componentId);
-    if (!entry || !entry.parentId) return 0;
-
-    const parentDepth = this.calculateDepth(entry.parentId, depthMap);
-    return parentDepth + 1;
-  }
-
-  private getChildrenIds(parentId: string): string[] {
-    const children: string[] = [];
     for (const entry of this.registry.values()) {
-      if (entry.parentId === parentId) {
-        children.push(entry.id);
+      if (entry.parentId && this.registry.has(entry.parentId)) {
+        const siblings = childrenMap.get(entry.parentId);
+        if (siblings) {
+          siblings.push(entry.id);
+        } else {
+          childrenMap.set(entry.parentId, [entry.id]);
+        }
+      } else {
+        roots.push(entry.id);
       }
     }
-    return children;
+
+    const depthMap = new Map<string, number>();
+    const queue: string[] = roots.map((id) => {
+      depthMap.set(id, 0);
+      return id;
+    });
+
+    for (let i = 0; i < queue.length; i++) {
+      const id = queue[i];
+      if (id === undefined) continue;
+      const depth = depthMap.get(id) ?? 0;
+      const children = childrenMap.get(id);
+      if (!children) continue;
+      for (const childId of children) {
+        depthMap.set(childId, depth + 1);
+        queue.push(childId);
+      }
+    }
+
+    const tree: ComponentTreeNode[] = [];
+    for (const entry of this.registry.values()) {
+      tree.push({
+        id: entry.id,
+        name: entry.name,
+        parentId: entry.parentId,
+        children: childrenMap.get(entry.id) ?? [],
+        depth: depthMap.get(entry.id) ?? 0,
+      });
+    }
+
+    return tree;
   }
 
   clear(): void {
+    if (this.flushTimer) {
+      clearTimeout(this.flushTimer);
+      this.flushTimer = null;
+    }
+    this.renderBuffer.clear();
     this.registry.clear();
+    this.treeDirty = true;
     this.stopTreeSnapshots();
   }
 }

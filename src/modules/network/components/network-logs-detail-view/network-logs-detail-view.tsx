@@ -27,7 +27,7 @@ export function NetworkLogsDetailView({ log }: NetworkLogsDetailViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 min-w-0 overflow-x-auto">
       {/* Tab Navigation */}
       <div className="flex border-b border-olive-700">
         {tabs.map((tab) => (
@@ -46,7 +46,7 @@ export function NetworkLogsDetailView({ log }: NetworkLogsDetailViewProps) {
       </div>
 
       {/* Tab Content */}
-      <div className="min-h-0 overflow-y-auto">
+      <div className="min-h-0 overflow-y-auto overflow-x-auto min-w-0">
         {activeTab === "overview" && <OverviewTab log={log} />}
         {activeTab === "request" && <RequestTab log={log} />}
         {activeTab === "response" && <ResponseTab log={log} />}

@@ -60,7 +60,7 @@ export function ResponseTab({ log }: ResponseTabProps) {
   const hasBody = log.responseBody && log.responseBody.length > 0;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 ">
       {/* Status Code */}
       <div className="flex flex-col gap-1">
         <p className="text-xs text-olive-500 uppercase">Status Code</p>
@@ -78,7 +78,7 @@ export function ResponseTab({ log }: ResponseTabProps) {
       }
 
       {/* Response Body */}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 ">
         <p className="text-xs text-olive-500 uppercase">Response Body</p>
         {hasBody
           ?
@@ -86,7 +86,7 @@ export function ResponseTab({ log }: ResponseTabProps) {
             ?
             <SyntaxHighlighter code={bodyFormatted} language="json" />
             :
-            <pre className="text-xs rounded-lg p-3 overflow-x-auto max-h-96 overflow-y-auto bg-olive-900">
+            <pre className="text-xs rounded-lg p-3 overflow-x-auto max-w-full max-h-96 overflow-y-auto bg-olive-900">
               <code className="text-olive-200">{bodyFormatted}</code>
             </pre>
           :

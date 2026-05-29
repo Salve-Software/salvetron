@@ -64,7 +64,13 @@ const columns: TableColumn<JSLog>[] = [
     key: "message",
     header: "Log Message",
     width: "1fr",
-    render: (log) => <p className="text-sm truncate text-olive-400">{log.message}</p>,
+    render: (log) => (
+      <p className="text-sm truncate text-olive-400">
+        {log.message.length > 20
+          ? log.message.slice(0, 20) + "..."
+          : log.message}
+      </p>
+    ),
   },
 ];
 
