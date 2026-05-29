@@ -2111,8 +2111,8 @@ __metadata:
 
 "@mako/types@file:../mako-types::locator=mako-react-native%40workspace%3A.":
   version: 1.0.0
-  resolution: "@mako/types@file:../mako-types#../mako-types::hash=a8905a&locator=mako-react-native%40workspace%3A."
-  checksum: 10c0/d05598873c42b3035390605f7431836887aef02c5f69caf4f8dc07a3c6795def0bd6bbed0575778dcc3139bd1169911f05c95930a66bbba7f7d261fbbc4ebbb7
+  resolution: "@mako/types@file:../mako-types#../mako-types::hash=1132a5&locator=mako-react-native%40workspace%3A."
+  checksum: 10c0/b1478ab23b342b2e11586c7a643be1933b9f42d726ea91fc549513d840197d9359d2accf00e6d453e9a00d79892e0e7f0022d03a689f5f8060fdb35026fa26b8
   languageName: node
   linkType: hard
 
