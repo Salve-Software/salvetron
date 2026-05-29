@@ -26,7 +26,7 @@ import { ComponentHandler } from '../component-handler'
 import { PerformanceHandler } from '../performance-handler'
 import { deviceHandler } from '../device'
 import { projectHandler } from '../project'
-import { xhrInterceptor, reactDevToolsInterceptor } from '../interceptors'
+import { xhrInterceptor, reactDevToolsInterceptor, jsConsoleInterceptor } from '../interceptors'
 
 /**
  * Mako WebSocket Client
@@ -94,6 +94,9 @@ export class MakoClient {
     }
 
     this.manualDisconnect = false
+    jsConsoleInterceptor.start({
+      onLog: (level, message, metadata) => this.sendLog(level, message, metadata),
+    })
     this.connectWebSocket()
   }
 
@@ -399,6 +402,7 @@ export class MakoClient {
     this.stopComponentInspector()
     this.stopPerformanceMonitoring()
     xhrInterceptor.disable()
+    jsConsoleInterceptor.stop()
 
     if (this.networkHandler) {
       this.networkHandler.clear()
