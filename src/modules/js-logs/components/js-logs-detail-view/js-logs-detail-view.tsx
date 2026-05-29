@@ -10,6 +10,7 @@ interface JSLogsDetailViewProps {
 const levelConfig: Record<LogLevel, { icon: IconName; color: string; bgColor: string }> = {
   debug: { icon: "debug", color: "text-gray-400", bgColor: "bg-gray-400/10" },
   info: { icon: "info", color: "text-blue-400", bgColor: "bg-blue-400/10" },
+  log: { icon: "info", color: "text-gray-300", bgColor: "bg-gray-300/10" },
   warn: { icon: "warning", color: "text-amber-400", bgColor: "bg-amber-400/10" },
   error: { icon: "error", color: "text-red-400", bgColor: "bg-red-400/10" },
 };

@@ -1,5 +1,5 @@
 {
-  "name": "@mako/types",
+  "name": "@salve-software/mako-types",
   "version": "1.0.0",
   "description": "Shared types for Mako ecosystem",
   "type": "module",

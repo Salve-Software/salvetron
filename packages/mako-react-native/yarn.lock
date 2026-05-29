@@ -2109,13 +2109,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mako/types@file:../mako-types::locator=mako-react-native%40workspace%3A.":
-  version: 1.0.0
-  resolution: "@mako/types@file:../mako-types#../mako-types::hash=dbecc1&locator=mako-react-native%40workspace%3A."
-  checksum: 10c0/d625c96e0062e3bb78437ee9dbadd56858e4ee9c2714a6a7ef2876b62d7b2fcedcc65c34742bc65d209fa976cd4e7f32c7069bed75920ca1c9c2a995bed521d1
-  languageName: node
-  linkType: hard
-
 "@napi-rs/wasm-runtime@npm:^0.2.11":
   version: 0.2.12
   resolution: "@napi-rs/wasm-runtime@npm:0.2.12"
@@ -2605,6 +2598,35 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/cc34c7529ac9e308b995817476fd8de12c0db134ae5544cdbedc2a9e9f215e3d9b188d5e4ef9b23d02f482916b37fce0ff74fb1dd4cb9cc312394354b0b520e9
+  languageName: node
+  linkType: hard
+
+"@salve-software/mako-react-native@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@salve-software/mako-react-native@workspace:."
+  dependencies:
+    "@jamesacarr/eslint-formatter-github-actions": "npm:^0.2.0"
+    "@salve-software/mako-types": "npm:^1.0.0"
+    "@types/jest": "npm:^29.5.12"
+    "@types/react": "npm:19.2.0"
+    jest: "npm:^30.4.2"
+    nitrogen: "npm:0.35.4"
+    react: "npm:19.2.3"
+    react-native: "npm:0.84.1"
+    react-native-builder-bob: "npm:^0.40.18"
+    react-native-nitro-modules: "npm:0.35.4"
+    typescript: "npm:^5.8.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-nitro-modules: "*"
+  languageName: unknown
+  linkType: soft
+
+"@salve-software/mako-types@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@salve-software/mako-types@npm:1.0.0"
+  checksum: 10c0/82ffb6000ab9f32d645b7d8b1562050ea033228fdc671415c8c8681ec1426c512ff486115baa9290e3ae99d7323171663ed707dd07cf687ea74ee9308a796a15
   languageName: node
   linkType: hard
 
@@ -7033,28 +7055,6 @@ __metadata:
   checksum: 10c0/b0e6e599780ce6bab49cc413eba822f7d1f0dfebd1c103eaa3785c59e43e22c59018323cf9e1708f0ef5329e94a745d163fcbb6bff8e4c6742f9be9e86f3500c
   languageName: node
   linkType: hard
-
-"mako-react-native@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "mako-react-native@workspace:."
-  dependencies:
-    "@jamesacarr/eslint-formatter-github-actions": "npm:^0.2.0"
-    "@mako/types": ../mako-types
-    "@types/jest": "npm:^29.5.12"
-    "@types/react": "npm:19.2.0"
-    jest: "npm:^30.4.2"
-    nitrogen: "npm:0.35.4"
-    react: "npm:19.2.3"
-    react-native: "npm:0.84.1"
-    react-native-builder-bob: "npm:^0.40.18"
-    react-native-nitro-modules: "npm:0.35.4"
-    typescript: "npm:^5.8.3"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-nitro-modules: "*"
-  languageName: unknown
-  linkType: soft
 
 "marky@npm:^1.2.2":
   version: 1.3.0

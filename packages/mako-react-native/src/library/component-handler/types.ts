@@ -2,7 +2,7 @@
  * Component Handler Types
  */
 
-import type { ComponentRenderEvent, ComponentTreeEvent } from '@mako/types';
+import type { ComponentRenderEvent, ComponentTreeEvent } from '@salve-software/mako-types';
 
 export interface ComponentHandlerConfig {
   onEvent: (event: ComponentRenderEvent | ComponentTreeEvent) => void;

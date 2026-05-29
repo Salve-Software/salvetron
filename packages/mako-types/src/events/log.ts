@@ -3,7 +3,7 @@
  * Used by SDK to send logs to Mako desktop app
  */
 
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+export type LogLevel = 'debug' | 'info' | 'log' | 'warn' | 'error';
 export type LogSource = 'js' | 'ios' | 'android';
 export type NativeLogSource = 'ios' | 'android';
 

@@ -1,5 +1,5 @@
 {
-  "name": "mako-react-native",
+  "name": "@salve-software/mako-react-native",
   "version": "1.0.1",
   "description": "mako-react-native is a react native package built with Nitro",
   "main": "./lib/commonjs/index.js",
@@ -122,7 +122,7 @@
     ]
   },
   "dependencies": {
-    "@mako/types": "../mako-types",
+    "@salve-software/mako-types": "^1.0.0",
     "jest": "^30.4.2"
   }
 }

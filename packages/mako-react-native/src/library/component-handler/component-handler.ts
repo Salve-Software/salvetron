@@ -3,7 +3,7 @@
  * Manages component render tracking and event creation
  */
 
-import type { ComponentRenderEvent, ComponentTreeEvent, ComponentTreeNode, MemoType } from '@mako/types';
+import type { ComponentRenderEvent, ComponentTreeEvent, ComponentTreeNode, MemoType } from '@salve-software/mako-types';
 import type { ComponentHandlerConfig, ComponentRegistryEntry } from './types';
 import type { ComponentRenderInfo, ComponentRenderCallbacks } from '../interceptors/react-devtools';
 import { projectHandler } from '../project';

@@ -14,6 +14,7 @@ const levelOptions: DropdownOption[] = [
   { label: "All Levels", value: "all", iconName: "list" },
   { label: "Debug", value: "debug", iconName: "debug" },
   { label: "Info", value: "info", iconName: "info" },
+  { label: "Log", value: "log", iconName: "info" },
   { label: "Warning", value: "warn", iconName: "warning" },
   { label: "Error", value: "error", iconName: "error" },
 ];
