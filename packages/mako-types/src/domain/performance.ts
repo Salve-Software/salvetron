@@ -30,7 +30,7 @@ export interface PerformanceStats {
 export function calculateHealthLevel(
   uiFps: number,
   jsFps: number,
-  memoryUsage: number,
+  _memoryUsage: number,
   cpuUsage: number
 ): PerformanceHealthLevel {
   // Critical: Any critical metric

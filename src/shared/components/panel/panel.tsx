@@ -5,7 +5,7 @@ interface PanelProps {
   title: string
   focused?: boolean
   flexGrow?: number
-  height?: number
+  height?: number | string
   children: ReactNode
 }
 

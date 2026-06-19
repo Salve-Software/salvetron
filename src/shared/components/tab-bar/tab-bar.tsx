@@ -17,7 +17,7 @@ export function TabBar({ active }: TabBarProps) {
     <Box
       borderStyle="single"
       borderBottom={true}
-      marginTop={2}
+      marginTop={1}
       borderColor="gray"
       borderTop={false}
       borderLeft={false}

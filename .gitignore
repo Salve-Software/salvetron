@@ -104,3 +104,5 @@ tsconfig.tsbuildinfo
 
 # AIWorkers generated symlinks
 .claude/*/aiworkers/
+.claude/tmp
+.claude/worktrees

@@ -24,11 +24,16 @@ import { NativeLogDetail } from "../../../../native-logs/ui/components/native-lo
 type FocusPanel = "logs" | "network" | "native";
 const PANELS: FocusPanel[] = ["logs", "network", "native"];
 
-const APP_OVERHEAD_ROWS = 6;
-const PERF_PANEL_ROWS = 7;
+// Chrome rendered by App around DashboardContainer's content area:
+// AsciiLogo (6) + TabBar (marginTop 2 + content 1 + borderBottom 1 = 4) +
+// content wrapper paddingTop (1) = 11 above; StatusBar (borderTop 1 +
+// content 1 = 2) + content wrapper paddingBottom (1) = 3 below.
+const APP_OVERHEAD_ROWS = 14;
 const FOOTER_ROWS = 1;
+const PERF_PANEL_ROWS = 7;
+const PANEL_CHROME_ROWS = 3; // title (1) + border (2) per list Panel
+const NETWORK_HEADER_ROWS = 1;
 const DETAIL_FIXED_ROWS = 4;
-const PANEL_LIST_VISIBLE_ROWS = 5;
 
 export function DashboardContainer() {
   const [cols, rows] = useTerminalSize();
@@ -46,13 +51,18 @@ export function DashboardContainer() {
   const logsMsgWidth = Math.max(8, panelInner - 14);
   const nativeMsgWidth = Math.max(8, panelInner - 26);
 
-  const availableRows =
-    rows - APP_OVERHEAD_ROWS - PERF_PANEL_ROWS - FOOTER_ROWS;
-  const detailHeight = Math.max(
-    DETAIL_FIXED_ROWS + 2,
-    Math.floor(availableRows / 2),
+  // Row budget derived only from the terminal's real row count — never from
+  // measured/rendered content, which would feed back into itself and loop.
+  const availableRows = rows - APP_OVERHEAD_ROWS - FOOTER_ROWS;
+  const logsPanelRows = Math.max(
+    1,
+    Math.floor((availableRows - PERF_PANEL_ROWS) / 3) - PANEL_CHROME_ROWS,
   );
-  const detailBodyVisibleRows = Math.max(1, detailHeight - DETAIL_FIXED_ROWS);
+  const nativePanelRows = logsPanelRows;
+  const networkPanelRows = Math.max(1, logsPanelRows - NETWORK_HEADER_ROWS);
+
+  const detailRows = availableRows;
+  const detailBodyVisibleRows = Math.max(1, detailRows - DETAIL_FIXED_ROWS);
 
   const logsLinesRef = useRef<string[]>([]);
   const netLinesRef = useRef<string[]>([]);
@@ -80,21 +90,19 @@ export function DashboardContainer() {
     (focused === "network" && netDetail.detailOpen) ||
     (focused === "native" && nativeDetail.detailOpen);
 
-  const panelListRows = PANEL_LIST_VISIBLE_ROWS;
-
   const logsNav = useListNavigation({
     count: jsLogs.length,
-    visibleRows: panelListRows,
+    visibleRows: logsPanelRows,
     isActive: focused === "logs",
   });
   const netNav = useListNavigation({
     count: networkLogs.length,
-    visibleRows: panelListRows,
+    visibleRows: networkPanelRows,
     isActive: focused === "network",
   });
   const nativeNav = useListNavigation({
     count: nativeLogs.length,
-    visibleRows: panelListRows,
+    visibleRows: nativePanelRows,
     isActive: focused === "native",
   });
 
@@ -135,8 +143,8 @@ export function DashboardContainer() {
   });
 
   return (
-    <Box flexDirection="column">
-      <Box flexDirection="row">
+    <Box flexDirection="column" flexGrow={1}>
+      <Box flexDirection="row" flexGrow={1}>
         <Box flexDirection="column">
           <PerformancePanel
             latest={latest}
@@ -148,7 +156,7 @@ export function DashboardContainer() {
           <Panel title="Logs" focused={focused === "logs"} flexGrow={1}>
             <LogList
               logs={jsLogs}
-              visibleRows={panelListRows}
+              visibleRows={logsPanelRows}
               selectedIndex={logsNav.selectedIndex}
               scrollOffset={logsNav.scrollOffset}
               showHeader={false}
@@ -159,7 +167,10 @@ export function DashboardContainer() {
           <Panel title="Network" focused={focused === "network"} flexGrow={1}>
             <NetworkTableHeader />
             {networkLogs
-              .slice(netNav.scrollOffset, netNav.scrollOffset + panelListRows)
+              .slice(
+                netNav.scrollOffset,
+                netNav.scrollOffset + networkPanelRows,
+              )
               .map((log, i) => {
                 const absoluteIndex = netNav.scrollOffset + i;
                 return (
@@ -176,7 +187,7 @@ export function DashboardContainer() {
           <Panel title="Native" focused={focused === "native"} flexGrow={1}>
             <NativeLogList
               logs={nativeLogs}
-              visibleRows={panelListRows}
+              visibleRows={nativePanelRows}
               selectedIndex={nativeNav.selectedIndex}
               scrollOffset={nativeNav.scrollOffset}
               showHeader={false}
@@ -184,7 +195,16 @@ export function DashboardContainer() {
             />
           </Panel>
         </Box>
-        <Box flexDirection="column" height={focusedDetailOpen ? detailHeight : 0} flexGrow={1} borderStyle="single" borderColor="gray" paddingX={2}>
+        <Box
+          flexDirection="column"
+          height={focusedDetailOpen ? undefined : 0}
+          maxHeight={focusedDetailOpen ? detailRows : 0}
+          overflow="hidden"
+          flexGrow={1}
+          borderStyle="single"
+          borderColor="gray"
+          paddingX={2}
+        >
           {focused === "logs" && logsDetail.detailOpen && selLog ? (
             <LogDetail
               log={selLog}
