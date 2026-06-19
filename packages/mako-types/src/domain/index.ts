@@ -2,9 +2,9 @@
  * Domain Types - Data models used in Mako desktop app
  */
 
-export * from './device';
-export * from './project';
-export * from './log';
-export * from './network';
-export * from './component';
-export * from './performance';
+export * from './device.js';
+export * from './project.js';
+export * from './log.js';
+export * from './network.js';
+export * from './component.js';
+export * from './performance.js';

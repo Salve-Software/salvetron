@@ -4,7 +4,7 @@
  */
 
 // Event types (SDK → Desktop)
-export * from './events';
+export * from './events/index.js';
 
 // Domain types (Desktop app models)
-export * from './domain';
+export * from './domain/index.js';

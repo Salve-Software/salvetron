@@ -1,0 +1,55 @@
+import { Box, Text } from 'ink'
+import type { LogEvent } from '@salve-software/mako-types'
+
+const LEVEL_COLOR: Record<string, string> = {
+  error: 'red', warn: 'yellow', info: 'cyan', debug: 'gray', log: 'white',
+}
+
+interface LogDetailProps {
+  log: LogEvent
+  width: number
+  metaLines: string[]
+  metaScrollOffset: number
+  metaVisibleRows: number
+}
+
+export function LogDetail({ log, width, metaLines, metaScrollOffset, metaVisibleRows }: LogDetailProps) {
+  const color = LEVEL_COLOR[log.level] ?? 'white'
+  const time = new Date(log.timestamp).toLocaleTimeString('en', { hour12: false })
+  const visibleLines = metaLines.slice(metaScrollOffset, metaScrollOffset + metaVisibleRows)
+  const canScroll = metaLines.length > metaVisibleRows
+
+  return (
+    <Box
+      flexDirection="column"
+      borderStyle="single"
+      borderColor="gray"
+      borderTop={true}
+      borderBottom={false}
+      borderLeft={false}
+      borderRight={false}
+      paddingX={1}
+    >
+      <Box gap={2}>
+        <Text color={color} bold>[{log.level.toUpperCase()}]</Text>
+        <Text color="gray">{time}</Text>
+        <Text color="gray" dimColor>src: {log.source}</Text>
+      </Box>
+      <Text wrap="wrap">{log.message.slice(0, width * 3)}</Text>
+      {metaLines.length > 0
+        ?
+        <Box flexDirection="column">
+          <Text color="whiteBright" dimColor>
+            {'── metadata'}
+            {canScroll ? `  [ = up   ] = down  ·  line ${metaScrollOffset + 1} of ${metaLines.length}` : ''}
+            {' ──'}
+          </Text>
+          {visibleLines.map((line, i) => (
+            <Text key={i}>{line}</Text>
+          ))}
+        </Box>
+        : null
+      }
+    </Box>
+  )
+}

@@ -1,34 +1,21 @@
-import { create } from "zustand";
-import type { JSLog, LogLevel } from "@mako/types";
+import { create } from 'zustand'
+import { useShallow } from 'zustand/react/shallow'
+import type { LogEvent } from '@salve-software/mako-types'
 
-export interface JSLogsFilters {
-  searchQuery: string;
-  levelFilter: LogLevel | null;
+interface JsLogsStore {
+  logs: LogEvent[]
+  addLog: (log: LogEvent) => void
+  clear: () => void
 }
 
-export interface JSLogsStoreProps {
-  logs: JSLog[];
-  selectedLog: JSLog | null;
-  filters: JSLogsFilters;
-  addLog: (log: JSLog) => void;
-  setSelectedLog: (log: JSLog | null) => void;
-  setSearchQuery: (query: string) => void;
-  setLevelFilter: (level: LogLevel | null) => void;
-  clearLogs: () => void;
-}
+const MAX = 500
 
-export const useJSLogsStore = create<JSLogsStoreProps>((set) => ({
+export const useJsLogsStore = create<JsLogsStore>((set) => ({
   logs: [],
-  selectedLog: null,
-  filters: {
-    searchQuery: "",
-    levelFilter: null,
-  },
-  addLog: (log: JSLog) => set((state) => ({ logs: [...state.logs, log] })),
-  setSelectedLog: (log: JSLog | null) => set({ selectedLog: log }),
-  setSearchQuery: (query: string) =>
-    set((state) => ({ filters: { ...state.filters, searchQuery: query } })),
-  setLevelFilter: (level: LogLevel | null) =>
-    set((state) => ({ filters: { ...state.filters, levelFilter: level } })),
-  clearLogs: () => set({ logs: [], selectedLog: null }),
-}));
+  addLog: (log) => set((s) => ({ logs: [...s.logs, log].slice(-MAX) })),
+  clear: () => set({ logs: [] }),
+}))
+
+export const useJsLogs = () => useJsLogsStore(useShallow((s) => s.logs))
+export const useRecentJsLogs = (n: number) =>
+  useJsLogsStore(useShallow((s) => s.logs.slice(-n)))
