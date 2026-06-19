@@ -23,6 +23,7 @@ export function NetworkDetail({ log, width, bodyLines, bodyScrollOffset, bodyVis
     <Box
       flexDirection="column"
       borderStyle="single"
+      borderColor="gray"
       borderTop={true}
       borderBottom={false}
       borderLeft={false}

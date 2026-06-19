@@ -25,6 +25,7 @@ export function NativeLogDetail({ log, width, metaLines, metaScrollOffset, metaV
     <Box
       flexDirection="column"
       borderStyle="single"
+      borderColor="gray"
       borderTop={true}
       borderBottom={false}
       borderLeft={false}
