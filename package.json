@@ -6,7 +6,7 @@
   "type": "module",
   "packageManager": "yarn@4.9.1",
   "workspaces": [
-    "packages/*"
+    "packages/mako-types"
   ],
   "bin": "./bin/mako.tsx",
   "files": [
@@ -21,7 +21,7 @@
     "dev": "tsx bin/mako.tsx",
     "start": "tsx bin/mako.tsx",
     "sim": "node scripts/mako-sim.mjs",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "yarn build && tsc --noEmit",
     "build": "yarn workspace @salve-software/mako-types build",
     "test": "yarn workspaces foreach -Apt run test"
   },
