@@ -1,12 +1,13 @@
 import { Box } from 'ink'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useTerminalSize } from '../../../../../shared/hooks/use-terminal-size.js'
 import { useListNavigation } from '../../../../../shared/hooks/use-list-navigation.js'
 import { useDetailPanel } from '../../../../../shared/hooks/use-detail-panel.js'
 import { useJsLogs } from '../../../store/js-logs.store.js'
 import { LogList } from '../../components/log-list/index.js'
 import { LogDetail } from '../../components/log-detail/index.js'
-import { formatBody } from '../../../../../shared/utils/format-body.js'
+import { formatBody, formatPlainBody } from '../../../../../shared/utils/format-body.js'
+import type { LogEvent } from '@salve-software/mako-types'
 
 const OVERHEAD_ROWS = 6
 const DETAIL_FIXED_ROWS = 3
@@ -21,10 +22,19 @@ export function JsLogsContainer() {
   const metaVisibleRows = detailHeight - DETAIL_FIXED_ROWS
 
   const metaLinesRef = useRef<string[]>([])
+  const selectedLogRef = useRef<LogEvent | null>(null)
 
-  const { detailOpen, detailScrollOffset, resetDetailScroll } = useDetailPanel({
+  const onCopyBody = useCallback(() => {
+    const log = selectedLogRef.current
+    if (!log) return ''
+    const meta = log.metadata ? formatPlainBody(JSON.stringify(log.metadata)) : ''
+    return meta ? `${log.message}\n\n${meta}` : log.message
+  }, [])
+
+  const { detailOpen, detailScrollOffset, resetDetailScroll, copyFeedback } = useDetailPanel({
     linesRef: metaLinesRef,
     visibleRows: metaVisibleRows,
+    onCopyBody,
   })
 
   const listRows = detailOpen
@@ -36,6 +46,7 @@ export function JsLogsContainer() {
   const selectedLog = logs[selectedIndex] ?? null
   const metaLines = selectedLog?.metadata ? formatBody(JSON.stringify(selectedLog.metadata)) : []
   metaLinesRef.current = metaLines
+  selectedLogRef.current = selectedLog
 
   useEffect(() => {
     resetDetailScroll()
@@ -59,6 +70,7 @@ export function JsLogsContainer() {
           metaLines={metaLines}
           metaScrollOffset={detailScrollOffset}
           metaVisibleRows={metaVisibleRows}
+          copyFeedback={copyFeedback}
         />
         : null
       }

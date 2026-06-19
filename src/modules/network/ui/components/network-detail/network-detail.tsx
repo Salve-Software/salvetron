@@ -1,6 +1,7 @@
 import { Box, Text } from 'ink'
 import type { NetworkLog } from '@salve-software/mako-types'
 import { METHOD_COLOR, getStatusColor } from '../../../library/constants.js'
+import type { CopyFeedback } from '../../../../../shared/hooks/use-detail-panel.js'
 
 interface NetworkDetailProps {
   log: NetworkLog
@@ -8,9 +9,10 @@ interface NetworkDetailProps {
   bodyLines: string[]
   bodyScrollOffset: number
   bodyVisibleRows: number
+  copyFeedback?: CopyFeedback | null
 }
 
-export function NetworkDetail({ log, width, bodyLines, bodyScrollOffset, bodyVisibleRows }: NetworkDetailProps) {
+export function NetworkDetail({ log, width, bodyLines, bodyScrollOffset, bodyVisibleRows, copyFeedback }: NetworkDetailProps) {
   const time = new Date(log.requestTimestamp).toLocaleTimeString('en', { hour12: false })
   const reqHeaders = Object.entries(log.requestHeaders ?? {})
   const resHeaders = Object.entries(log.responseHeaders ?? {})
@@ -34,6 +36,15 @@ export function NetworkDetail({ log, width, bodyLines, bodyScrollOffset, bodyVis
         </Text>
         {log.duration ? <Text color="gray">{log.duration}ms</Text> : null}
         <Text color="gray" dimColor>{time}</Text>
+        {copyFeedback
+          ?
+          <Text color={copyFeedback.success ? 'green' : 'red'}>
+            {copyFeedback.success
+              ? (copyFeedback.kind === 'extra' ? '✓ curl copied' : '✓ Copied')
+              : '✗ Copy failed'}
+          </Text>
+          : null
+        }
       </Box>
       <Text color="whiteBright">{log.url.slice(0, width - 2)}</Text>
       {reqHeaders.length > 0
@@ -56,6 +67,7 @@ export function NetworkDetail({ log, width, bodyLines, bodyScrollOffset, bodyVis
           <Text color="whiteBright" dimColor>
             {'── body'}
             {canScroll ? `  [ = scroll up   ] = scroll down  ·  line ${bodyScrollOffset + 1} of ${bodyLines.length}` : ''}
+            {'  ·  c copy · u curl'}
             {' ──'}
           </Text>
           {visibleLines.map((line, i) => (

@@ -1,5 +1,6 @@
 import { Box, Text } from 'ink'
 import type { NativeLogEvent } from '@salve-software/mako-types'
+import type { CopyFeedback } from '../../../../../shared/hooks/use-detail-panel.js'
 
 const LEVEL_COLOR: Record<string, string> = {
   error: 'red', warn: 'yellow', info: 'cyan', debug: 'gray', log: 'white',
@@ -11,9 +12,10 @@ interface NativeLogDetailProps {
   metaLines: string[]
   metaScrollOffset: number
   metaVisibleRows: number
+  copyFeedback?: CopyFeedback | null
 }
 
-export function NativeLogDetail({ log, width, metaLines, metaScrollOffset, metaVisibleRows }: NativeLogDetailProps) {
+export function NativeLogDetail({ log, width, metaLines, metaScrollOffset, metaVisibleRows, copyFeedback }: NativeLogDetailProps) {
   const color = LEVEL_COLOR[log.level] ?? 'white'
   const time = new Date(log.timestamp).toLocaleTimeString('en', { hour12: false })
   const visibleLines = metaLines.slice(metaScrollOffset, metaScrollOffset + metaVisibleRows)
@@ -34,6 +36,10 @@ export function NativeLogDetail({ log, width, metaLines, metaScrollOffset, metaV
         <Text color="whiteBright">{time}</Text>
         <Text color="whiteBright" dimColor>[{log.source}]</Text>
         {log.tag ? <Text color="whiteBright" dimColor>tag: {log.tag}</Text> : null}
+        {copyFeedback
+          ? <Text color={copyFeedback.success ? 'green' : 'red'}>{copyFeedback.success ? '✓ Copied' : '✗ Copy failed'}</Text>
+          : null
+        }
       </Box>
       <Text wrap="wrap">{log.message.slice(0, width * 3)}</Text>
       {metaLines.length > 0
@@ -42,6 +48,7 @@ export function NativeLogDetail({ log, width, metaLines, metaScrollOffset, metaV
           <Text color="whiteBright" dimColor>
             {'── metadata'}
             {canScroll ? `  [ = up   ] = down  ·  line ${metaScrollOffset + 1} of ${metaLines.length}` : ''}
+            {'  ·  c copy'}
             {' ──'}
           </Text>
           {visibleLines.map((line, i) => (
