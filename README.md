@@ -5,31 +5,27 @@
 <h1 align="center">Mako</h1>
 
 <p align="center">
-  <strong>Real-time debugging console for React Native</strong>
+  <strong>Real-time terminal UI debugger for React Native</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Gabriel-Pereira1788/mako/releases">
-    <img src="https://img.shields.io/github/v/release/Gabriel-Pereira1788/mako?style=flat-square&label=download" alt="Download">
-  </a>
-  <img src="https://img.shields.io/badge/platform-macOS-blue?style=flat-square" alt="Platform">
   <img src="https://img.shields.io/badge/React%20Native-0.73+-61dafb?style=flat-square&logo=react" alt="React Native">
+  <img src="https://img.shields.io/badge/runtime-Node%2018+-339933?style=flat-square&logo=node.js" alt="Node">
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
 </p>
 
 ---
 
-Mako is a powerful debugging tool that helps React Native developers monitor their applications in real-time. It consists of a macOS desktop application that receives logs, network requests, and native platform information from your React Native apps via WebSocket connection.
+Mako is a real-time debugging tool for React Native developers, delivered as a terminal UI (TUI). The Mako CLI runs a WebSocket server in your terminal and renders incoming telemetry — JS logs, native logs, network traffic, and live performance metrics — from your running app. Your app streams that telemetry using the companion SDK, `@salve-software/mako-react-native`.
 
 ## Features
 
-- **JS Logs Capture** - Monitor JavaScript console logs with filtering by level (debug, info, warn, error)
-- **Native Logs Capture** - View iOS and Android native platform logs in real-time
-- **Network Inspector** - Intercept and inspect HTTP requests and responses with full headers and body
-- **Multi-Device Support** - Connect and monitor multiple devices/simulators simultaneously
-- **Multi-Panel Workspace** - Split your workspace into multiple panels for side-by-side debugging
-- **Real-time Updates** - WebSocket-based communication for instant log streaming
-- **Search & Filter** - Quickly find logs by message content, log level, or source
+- **Dashboard** - Live performance overview: UI/JS FPS, memory and CPU usage, with sparkline history
+- **JS Logs** - Stream JavaScript console logs with level filtering (debug, info, warn, error) and an expandable detail panel for metadata
+- **Network Inspector** - Inspect HTTP requests and responses: method, status, duration, headers, and pretty-printed bodies
+- **Native Logs** - View iOS and Android platform logs in real-time, with source tags
+- **Keyboard-driven TUI** - Navigate panels and lists entirely from the keyboard; no GUI required
+- **Zero-config WebSocket server** - Starts on port 8765 by default (override with `MAKO_PORT`)
 
 ## Screenshots
 
@@ -48,22 +44,24 @@ Example:
 
 ## Architecture
 
-Mako consists of two main components:
+Mako has two parts:
 
 ```
-┌─────────────────────┐         WebSocket          ┌─────────────────────┐
-│   React Native App  │ ──────────────────────────▶│      MakoApp        │
-│  (mako-react-native)│        port 8765           │   (macOS Desktop)   │
-└─────────────────────┘                            └─────────────────────┘
-         │                                                   │
-         ├── JS Console Logs                                 ├── Log Viewer
-         ├── Native Logs (iOS/Android)                       ├── Network Inspector
-         └── Network Requests/Responses                      └── Multi-panel Workspace
+┌──────────────────────────┐        WebSocket          ┌──────────────────────────┐
+│     React Native App      │ ───────────────────────▶ │        Mako CLI          │
+│ @salve-software/          │        port 8765          │  (terminal UI debugger)  │
+│   mako-react-native (SDK) │                           │                          │
+└──────────────────────────┘                            └──────────────────────────┘
+         │                                                        │
+         ├── JS Console Logs                                      ├── Dashboard (FPS/CPU/memory)
+         ├── Native Logs (iOS/Android)                            ├── JS Logs viewer
+         ├── Network Requests/Responses                           ├── Network Inspector
+         └── Performance Metrics                                  └── Native Logs viewer
 ```
 
-1. **MakoApp** (macOS Desktop): A SwiftUI application that runs a WebSocket server and displays debugging information in an organized, filterable interface.
+1. **Mako CLI** (`@salve-software/mako-cli`): an Ink-based terminal UI that runs a WebSocket server and renders telemetry from connected apps.
 
-2. **mako-react-native** (SDK): A React Native package built with Nitro Modules that captures logs and network activity from your app and sends them to MakoApp.
+2. **mako-react-native** (SDK): A React Native package built with Nitro Modules that captures logs, network activity, and performance metrics and streams them to the CLI.
 
 ## Installation
 
@@ -71,35 +69,34 @@ Mako consists of two main components:
 
 | Component | Requirement |
 |-----------|-------------|
-| MakoApp | macOS 13.0+ |
+| Mako CLI | Node.js 18+ |
 | React Native SDK | React Native 0.73+ |
-| Node.js | 18+ |
 | Xcode | 15+ (for iOS development) |
 | Android Studio | Latest (for Android development) |
 
-### Installing MakoApp (macOS)
-
-#### Option 1: Download DMG (Recommended)
-
-1. Go to the [Releases page](https://github.com/Gabriel-Pereira1788/mako/releases)
-2. Download the latest `Mako-x.x.x.dmg` file
-3. Open the DMG and drag Mako to your Applications folder
-4. Launch MakoApp - it will listen for connections on port **8765**
-
-#### Option 2: Build from Source
+### Running the Mako CLI
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/Gabriel-Pereira1788/mako.git
    cd mako
+   yarn install
    ```
 
-2. Open the Xcode project:
+2. Start the CLI:
    ```bash
-   open MakoApp/Mako.xcodeproj
+   yarn dev          # starts the Mako CLI (Ink TUI) on port 8765
    ```
 
-3. Select your Mac as the target and press **Cmd + R** to build and run.
+   Or, once linked as a bin:
+   ```bash
+   mako
+   ```
+
+   Override the port with the `MAKO_PORT` environment variable:
+   ```bash
+   MAKO_PORT=9000 yarn dev
+   ```
 
 ### Installing React Native SDK
 
@@ -107,10 +104,10 @@ Mako consists of two main components:
 
    ```bash
    # Using npm
-   npm install mako-react-native
+   npm install @salve-software/mako-react-native
 
    # Using yarn
-   yarn add mako-react-native
+   yarn add @salve-software/mako-react-native
    ```
 
 2. For iOS, install pods:
@@ -122,18 +119,16 @@ Mako consists of two main components:
 
 ## Usage
 
-### Starting MakoApp
+### Starting the Mako CLI
 
-1. Launch MakoApp on your Mac
-2. The app will automatically start the WebSocket server on port **8765**
-3. You'll see connected devices appear in the left sidebar
+Run `yarn dev` (or `mako`) in your terminal. The CLI starts a WebSocket server on port **8765** and shows the Dashboard. Use the tab bar / keyboard shortcuts shown in the status bar to switch between Dashboard, JS Logs, Network, and Native Logs. Connected device info appears in the header once your app connects.
 
 ### Connecting from React Native
 
 Add the following code to your React Native app's entry point (e.g., `App.tsx` or `index.js`):
 
 ```typescript
-import { Mako } from 'mako-react-native';
+import { Mako } from '@salve-software/mako-react-native';
 
 // Connect only in development mode
 if (__DEV__) {
@@ -154,7 +149,7 @@ if (__DEV__) {
 
 #### `Mako.connect(config?)`
 
-Establishes a WebSocket connection to MakoApp.
+Establishes a WebSocket connection to the Mako CLI.
 
 ```typescript
 interface MakoConfig {
@@ -201,12 +196,12 @@ All logging methods accept an optional metadata object as the second parameter.
 
 ### Connection Issues
 
-**Problem**: App can't connect to MakoApp
+**Problem**: App can't connect to the Mako CLI
 
 **Solutions**:
-1. Ensure MakoApp is running on your Mac
+1. Ensure the Mako CLI is running (`yarn dev` / `mako`)
 2. Check that both devices are on the same network
-3. Verify the IP address is correct (use `ifconfig` on Mac to find your IP)
+3. Verify the IP address is correct (use `ifconfig` to find your machine's IP)
 4. Check if port 8765 is not blocked by firewall
 5. For iOS Simulator, use `localhost` instead of IP address
 
@@ -221,19 +216,19 @@ All logging methods accept an optional metadata object as the second parameter.
 
 ### Logs Not Appearing
 
-**Problem**: Console logs are not showing in MakoApp
+**Problem**: Console logs are not showing in the Mako CLI
 
 **Solutions**:
 1. Verify the connection is established (`Mako.isConnected()`)
 2. Ensure you're running in development mode (`__DEV__ === true`)
-3. Check the device filter in MakoApp's sidebar
+3. Confirm the CLI shows your device in the header
 
 ### High Memory Usage
 
-**Problem**: MakoApp using too much memory
+**Problem**: The Mako CLI process using too much memory
 
 **Solutions**:
-1. Clear logs periodically using the context menu on devices
+1. Clear logs periodically from the JS Logs / Native Logs panels
 2. Reduce the number of connected devices
 3. Filter out verbose logs at the source
 
@@ -278,17 +273,16 @@ docs(readme): update installation instructions
 1. Ensure your code follows the existing style
 2. Update documentation if needed
 3. Test your changes thoroughly:
-   - For MakoApp: Build and run on macOS
+   - For Mako CLI: run `yarn dev` and verify with the simulator (`yarn sim`)
    - For SDK: Test with the example app
 4. Create a Pull Request with a clear description
 
 ### Code Style Guidelines
 
-**MakoApp (Swift)**:
-- Follow the MVVM architecture documented in `MakoApp/docs/ARQUITETURA_MVVM.md`
-- Use SwiftUI and SwiftData
-- Keep ViewModels free of UI code
-- Use `@Observable` for state management
+**mako-cli (TypeScript / Ink)**:
+- Use TypeScript for all source files
+- Keep modules organized under `src/modules/<feature>` and shared UI under `src/shared`
+- Run `yarn typecheck` before opening a PR
 
 **mako-react-native (TypeScript)**:
 - Use TypeScript for all source files
