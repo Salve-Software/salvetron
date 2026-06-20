@@ -1,10 +1,11 @@
 import { Box, Text, useInput } from "ink";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTerminalSize } from "../../../../../shared/hooks/use-terminal-size.js";
 import { useListNavigation } from "../../../../../shared/hooks/use-list-navigation.js";
 import { useDetailPanel } from "../../../../../shared/hooks/use-detail-panel.js";
 import { Panel } from "../../../../../shared/components/panel/index.js";
-import { formatBody } from "../../../../../shared/utils/format-body.js";
+import { formatBody, formatPlainBody } from "../../../../../shared/utils/format-body.js";
+import { buildCurlCommand } from "../../../../../shared/utils/build-curl-command.js";
 import {
   useDashboardSnapshots,
   useLatestSnapshot,
@@ -20,6 +21,7 @@ import { NetworkDetail } from "../../../../network/ui/components/network-detail/
 import { useNativeLogs } from "../../../../native-logs/store/native-logs.store.js";
 import { NativeLogList } from "../../../../native-logs/ui/components/native-log-list/index.js";
 import { NativeLogDetail } from "../../../../native-logs/ui/components/native-log-detail/index.js";
+import type { LogEvent, NativeLogEvent, NetworkLog } from "@salve-software/mako-types";
 
 type FocusPanel = "logs" | "network" | "native";
 const PANELS: FocusPanel[] = ["logs", "network", "native"];
@@ -33,7 +35,12 @@ const FOOTER_ROWS = 1;
 const PERF_PANEL_ROWS = 7;
 const PANEL_CHROME_ROWS = 3; // title (1) + border (2) per list Panel
 const NETWORK_HEADER_ROWS = 1;
-const DETAIL_FIXED_ROWS = 4;
+// NetworkDetail's leading content (border + header + url + req headers + res
+// headers + body header) can take up to 6 rows, plus the wrapper Box's own
+// top/bottom border (2 rows) — use that as the shared budget for all 3 detail
+// types so content never exceeds maxHeight (overflow="hidden" + an
+// over-budget frame corrupts Ink's redraw).
+const DETAIL_FIXED_ROWS = 8;
 
 export function DashboardContainer() {
   const [cols, rows] = useTerminalSize();
@@ -68,21 +75,50 @@ export function DashboardContainer() {
   const netLinesRef = useRef<string[]>([]);
   const nativeLinesRef = useRef<string[]>([]);
 
+  const selLogRef = useRef<LogEvent | null>(null);
+  const selNetRef = useRef<NetworkLog | null>(null);
+  const selNativeRef = useRef<NativeLogEvent | null>(null);
+
+  const onCopyLogBody = useCallback(() => {
+    const log = selLogRef.current;
+    if (!log) return "";
+    const meta = log.metadata ? formatPlainBody(JSON.stringify(log.metadata)) : "";
+    return meta ? `${log.message}\n\n${meta}` : log.message;
+  }, []);
+  const onCopyNativeBody = useCallback(() => {
+    const log = selNativeRef.current;
+    if (!log) return "";
+    const meta = log.metadata ? formatPlainBody(JSON.stringify(log.metadata)) : "";
+    return meta ? `${log.message}\n\n${meta}` : log.message;
+  }, []);
+  const onCopyNetBody = useCallback(() => {
+    const log = selNetRef.current;
+    return log ? formatPlainBody(log.responseBody) : "";
+  }, []);
+  const onCopyNetExtra = useCallback(() => {
+    const log = selNetRef.current;
+    return log ? buildCurlCommand(log) : "";
+  }, []);
+
   const logsDetail = useDetailPanel({
     linesRef: logsLinesRef,
     visibleRows: detailBodyVisibleRows,
     isActive: focused === "logs",
+    onCopyBody: onCopyLogBody,
   });
   const netDetail = useDetailPanel({
     linesRef: netLinesRef,
     visibleRows: detailBodyVisibleRows,
     scrollStep: 5,
     isActive: focused === "network",
+    onCopyBody: onCopyNetBody,
+    onCopyExtra: onCopyNetExtra,
   });
   const nativeDetail = useDetailPanel({
     linesRef: nativeLinesRef,
     visibleRows: detailBodyVisibleRows,
     isActive: focused === "native",
+    onCopyBody: onCopyNativeBody,
   });
 
   const focusedDetailOpen =
@@ -110,16 +146,21 @@ export function DashboardContainer() {
   const selNet = networkLogs[netNav.selectedIndex] ?? null;
   const selNative = nativeLogs[nativeNav.selectedIndex] ?? null;
 
-  const logMeta = selLog?.metadata
-    ? formatBody(JSON.stringify(selLog.metadata))
-    : [];
-  const netBody = formatBody(selNet?.responseBody);
-  const nativeMeta = selNative?.metadata
-    ? formatBody(JSON.stringify(selNative.metadata))
-    : [];
+  const logMeta = useMemo(
+    () => (selLog?.metadata ? formatBody(JSON.stringify(selLog.metadata)) : []),
+    [selLog],
+  );
+  const netBody = useMemo(() => formatBody(selNet?.responseBody), [selNet]);
+  const nativeMeta = useMemo(
+    () => (selNative?.metadata ? formatBody(JSON.stringify(selNative.metadata)) : []),
+    [selNative],
+  );
   logsLinesRef.current = logMeta;
   netLinesRef.current = netBody;
   nativeLinesRef.current = nativeMeta;
+  selLogRef.current = selLog;
+  selNetRef.current = selNet;
+  selNativeRef.current = selNative;
 
   useEffect(() => {
     logsDetail.resetDetailScroll();
@@ -212,6 +253,7 @@ export function DashboardContainer() {
               metaLines={logMeta}
               metaScrollOffset={logsDetail.detailScrollOffset}
               metaVisibleRows={detailBodyVisibleRows}
+              copyFeedback={logsDetail.copyFeedback}
             />
           ) : null}
           {focused === "network" && netDetail.detailOpen && selNet ? (
@@ -221,6 +263,7 @@ export function DashboardContainer() {
               bodyLines={netBody}
               bodyScrollOffset={netDetail.detailScrollOffset}
               bodyVisibleRows={detailBodyVisibleRows}
+              copyFeedback={netDetail.copyFeedback}
             />
           ) : null}
           {focused === "native" && nativeDetail.detailOpen && selNative ? (
@@ -230,13 +273,14 @@ export function DashboardContainer() {
               metaLines={nativeMeta}
               metaScrollOffset={nativeDetail.detailScrollOffset}
               metaVisibleRows={detailBodyVisibleRows}
+              copyFeedback={nativeDetail.copyFeedback}
             />
           ) : null}
         </Box>
       </Box>
       <Box>
         <Text color="whiteBright" dimColor>
-          ←→ panel · ↑↓ navigate · ↵ open · esc close · [ ] scroll detail
+          ←→ panel · ↑↓ navigate · ↵ open · esc close · [ ] scroll detail · c copy{focused === "network" ? " · u curl" : ""}
         </Text>
       </Box>
     </Box>

@@ -1,5 +1,5 @@
 import { Box } from 'ink'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useTerminalSize } from '../../../../../shared/hooks/use-terminal-size.js'
 import { useListNavigation } from '../../../../../shared/hooks/use-list-navigation.js'
 import { useDetailPanel } from '../../../../../shared/hooks/use-detail-panel.js'
@@ -7,7 +7,9 @@ import { useNetworkLogs } from '../../../store/network.store.js'
 import { NetworkTableHeader } from '../../components/network-table-header/index.js'
 import { NetworkRow } from '../../components/network-row/index.js'
 import { NetworkDetail } from '../../components/network-detail/index.js'
-import { formatBody } from '../../../../../shared/utils/format-body.js'
+import { formatBody, formatPlainBody } from '../../../../../shared/utils/format-body.js'
+import { buildCurlCommand } from '../../../../../shared/utils/build-curl-command.js'
+import type { NetworkLog } from '@salve-software/mako-types'
 
 const OVERHEAD_ROWS = 6
 const DETAIL_FIXED_ROWS = 5
@@ -22,11 +24,23 @@ export function NetworkContainer() {
   const bodyVisibleRows = detailHeight - DETAIL_FIXED_ROWS
 
   const bodyLinesRef = useRef<string[]>([])
+  const selectedLogRef = useRef<NetworkLog | null>(null)
 
-  const { detailOpen, detailScrollOffset, resetDetailScroll } = useDetailPanel({
+  const onCopyBody = useCallback(() => {
+    const log = selectedLogRef.current
+    return log ? formatPlainBody(log.responseBody) : ''
+  }, [])
+  const onCopyExtra = useCallback(() => {
+    const log = selectedLogRef.current
+    return log ? buildCurlCommand(log) : ''
+  }, [])
+
+  const { detailOpen, detailScrollOffset, resetDetailScroll, copyFeedback } = useDetailPanel({
     linesRef: bodyLinesRef,
     visibleRows: bodyVisibleRows,
     scrollStep: 5,
+    onCopyBody,
+    onCopyExtra,
   })
 
   const listRows = detailOpen
@@ -38,6 +52,7 @@ export function NetworkContainer() {
   const selectedLog = logs[selectedIndex] ?? null
   const bodyLines = formatBody(selectedLog?.responseBody)
   bodyLinesRef.current = bodyLines
+  selectedLogRef.current = selectedLog
 
   useEffect(() => {
     resetDetailScroll()
@@ -69,6 +84,7 @@ export function NetworkContainer() {
           bodyLines={bodyLines}
           bodyScrollOffset={detailScrollOffset}
           bodyVisibleRows={bodyVisibleRows}
+          copyFeedback={copyFeedback}
         />
         : null
       }

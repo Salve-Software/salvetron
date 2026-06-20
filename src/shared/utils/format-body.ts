@@ -9,3 +9,13 @@ export function formatBody(body: string | null | undefined): string[] {
     return body.split('\n')
   }
 }
+
+export function formatPlainBody(body: string | null | undefined): string {
+  if (!body) return ''
+  try {
+    const parsed = JSON.parse(body)
+    return JSON.stringify(parsed, null, 2)
+  } catch {
+    return body
+  }
+}
