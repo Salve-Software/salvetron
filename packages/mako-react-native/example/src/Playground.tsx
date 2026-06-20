@@ -3,7 +3,6 @@ import { Button, Text, View } from "react-native";
 import { styles } from "./styles";
 
 mako.connect({
-  enableComponentInspector: true,
   enablePerformanceMonitoring:true,
 });
 
