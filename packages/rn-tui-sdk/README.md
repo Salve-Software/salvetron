@@ -1,10 +1,10 @@
 # rn-tui-sdk
 
-React Native SDK for [RN TUI](https://github.com/Gabriel-Pereira1788/rn-tui) - Real-time debugging console for React Native.
+React Native SDK for [RN TUI](https://github.com/Salve-Software/rn-tui) - Real-time debugging console for React Native.
 
 [![npm version](https://img.shields.io/npm/v/@salve-software/rn-tui-sdk.svg)](https://www.npmjs.com/package/@salve-software/rn-tui-sdk)
 [![npm downloads](https://img.shields.io/npm/dm/@salve-software/rn-tui-sdk.svg)](https://www.npmjs.com/package/@salve-software/rn-tui-sdk)
-[![license](https://img.shields.io/npm/l/@salve-software/rn-tui-sdk.svg)](https://github.com/Gabriel-Pereira1788/rn-tui/blob/main/LICENSE)
+[![license](https://img.shields.io/npm/l/@salve-software/rn-tui-sdk.svg)](https://github.com/Salve-Software/rn-tui/blob/main/LICENSE)
 
 ## Requirements
 
@@ -81,9 +81,9 @@ RnTuiSdk.error('Error message');
 
 ## RN TUI CLI
 
-This SDK requires the [RN TUI CLI](https://github.com/Gabriel-Pereira1788/rn-tui) running in your terminal to receive and display logs.
+This SDK requires the [RN TUI CLI](https://github.com/Salve-Software/rn-tui) running in your terminal to receive and display logs.
 
-For full documentation, visit the [main repository](https://github.com/Gabriel-Pereira1788/rn-tui).
+For full documentation, visit the [main repository](https://github.com/Salve-Software/rn-tui).
 
 ## License
 

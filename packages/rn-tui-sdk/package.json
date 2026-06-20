@@ -46,13 +46,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gabriel-Pereira1788/rn-tui.git",
+    "url": "https://github.com/Salve-Software/rn-tui.git",
     "directory": "packages/rn-tui-sdk"
   },
   "author": "Gabriel-Pereira1788",
   "license": "MIT",
-  "bugs": "https://github.com/Gabriel-Pereira1788/rn-tui/issues",
-  "homepage": "https://github.com/Gabriel-Pereira1788/rn-tui/tree/main/packages/rn-tui-sdk#readme",
+  "bugs": "https://github.com/Salve-Software/rn-tui/issues",
+  "homepage": "https://github.com/Salve-Software/rn-tui/tree/main/packages/rn-tui-sdk#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

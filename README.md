@@ -78,7 +78,7 @@ RN TUI has two parts:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Gabriel-Pereira1788/rn-tui.git
+   git clone https://github.com/Salve-Software/rn-tui.git
    cd rn-tui
    yarn install
    ```
