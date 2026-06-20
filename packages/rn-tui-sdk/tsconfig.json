@@ -24,8 +24,8 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
-      "@mako/types": ["../mako-types/dist"],
-      "@mako/types/*": ["../mako-types/dist/*"]
+      "@rn-tui/types": ["../rn-tui-types/dist"],
+      "@rn-tui/types/*": ["../rn-tui-types/dist/*"]
     }
   },
   "exclude": [

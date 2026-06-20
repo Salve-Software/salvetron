@@ -46,7 +46,7 @@ export interface PerformanceMetrics {
  */
 export type PerformanceMetricsCallback = (metrics: PerformanceMetrics) => void
 
-export interface NitroMako extends HybridObject<{ ios: 'swift', android: 'kotlin' }> {
+export interface NitroRnTuiSdk extends HybridObject<{ ios: 'swift', android: 'kotlin' }> {
   sum(num1: number, num2: number): number
 
   /**

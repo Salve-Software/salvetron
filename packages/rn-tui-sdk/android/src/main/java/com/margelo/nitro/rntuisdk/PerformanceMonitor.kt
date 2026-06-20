@@ -1,4 +1,4 @@
-package com.margelo.nitro.mako
+package com.margelo.nitro.rntuisdk
 
 import android.os.Handler
 import android.os.Looper

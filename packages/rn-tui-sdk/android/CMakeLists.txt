@@ -1,7 +1,7 @@
-project(NitroMako)
+project(NitroRnTuiSdk)
 cmake_minimum_required(VERSION 3.9.0)
 
-set (PACKAGE_NAME NitroMako)
+set (PACKAGE_NAME NitroRnTuiSdk)
 set (CMAKE_VERBOSE_MAKEFILE ON)
 set (CMAKE_CXX_STANDARD 20)
 
@@ -14,7 +14,7 @@ add_library(${PACKAGE_NAME} SHARED
 )
 
 # Add Nitrogen specs :)
-include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/NitroMako+autolinking.cmake)
+include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/NitroRnTuiSdk+autolinking.cmake)
 
 # Set up local includes
 include_directories(

@@ -1,6 +1,6 @@
 //
 //  PerformanceMonitor.swift
-//  NitroMako
+//  NitroRnTuiSdk
 //
 //  Performance metrics monitoring for iOS
 //  Measures UI FPS, JS FPS, memory usage, and CPU usage

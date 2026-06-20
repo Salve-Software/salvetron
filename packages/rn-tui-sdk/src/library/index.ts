@@ -1,15 +1,15 @@
 /**
- * Mako SDK for React Native
+ * RN TUI SDK for React Native
  *
- * Captures network requests and sends them to the Mako macOS app
+ * Captures network requests and sends them to the RN TUI CLI
  * for debugging and inspection.
  *
  * @example
  * ```typescript
- * import { Mako } from 'mako-react-native';
+ * import RnTuiSdk from '@salve-software/rn-tui-sdk';
  *
  * if (__DEV__) {
- *   Mako.connect({
+ *   RnTuiSdk.connect({
  *     host: 'localhost',
  *     port: 8765,
  *   });
@@ -18,41 +18,41 @@
  */
 
 import { client } from './client'
-import type { MakoConfig } from './types'
+import type { RnTuiSdkConfig } from './types'
 
 /**
- * Mako SDK main interface
+ * RN TUI SDK main interface
  */
 export default {
   /**
-   * Connect to Mako macOS app
+   * Connect to RN TUI CLI
    *
    * @param config - Configuration options
    * @example
    * ```typescript
-   * Mako.connect({
+   * RnTuiSdk.connect({
    *   host: '192.168.1.100', // Mac IP address
    *   port: 8765,
    *   enableNetworkCapture: true,
    *   ignoredUrls: [/my-internal-api/],
-   *   onConnect: () => console.log('Connected to Mako'),
-   *   onDisconnect: () => console.log('Disconnected from Mako'),
+   *   onConnect: () => console.log('Connected to RN TUI'),
+   *   onDisconnect: () => console.log('Disconnected from RN TUI'),
    * });
    * ```
    */
-  connect(config?: MakoConfig): void {
+  connect(config?: RnTuiSdkConfig): void {
     client.connect(config)
   },
 
   /**
-   * Disconnect from Mako macOS app
+   * Disconnect from RN TUI CLI
    */
   disconnect(): void {
     client.disconnect()
   },
 
   /**
-   * Check if currently connected to Mako
+   * Check if currently connected to RN TUI
    */
   isConnected(): boolean {
     return client.isConnected()
@@ -145,7 +145,7 @@ export default {
 
 // Export types for consumers
 export type {
-  MakoConfig,
+  RnTuiSdkConfig,
   NetworkRequestEvent,
   NetworkResponseEvent,
   NetworkEvent,

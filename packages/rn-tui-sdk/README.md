@@ -1,10 +1,10 @@
-# mako-react-native
+# rn-tui-sdk
 
-React Native SDK for [Mako](https://github.com/Gabriel-Pereira1788/mako) - Real-time debugging console for React Native.
+React Native SDK for [RN TUI](https://github.com/Gabriel-Pereira1788/rn-tui) - Real-time debugging console for React Native.
 
-[![npm version](https://img.shields.io/npm/v/mako-react-native.svg)](https://www.npmjs.com/package/mako-react-native)
-[![npm downloads](https://img.shields.io/npm/dm/mako-react-native.svg)](https://www.npmjs.com/package/mako-react-native)
-[![license](https://img.shields.io/npm/l/mako-react-native.svg)](https://github.com/Gabriel-Pereira1788/mako/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@salve-software/rn-tui-sdk.svg)](https://www.npmjs.com/package/@salve-software/rn-tui-sdk)
+[![npm downloads](https://img.shields.io/npm/dm/@salve-software/rn-tui-sdk.svg)](https://www.npmjs.com/package/@salve-software/rn-tui-sdk)
+[![license](https://img.shields.io/npm/l/@salve-software/rn-tui-sdk.svg)](https://github.com/Gabriel-Pereira1788/rn-tui/blob/main/LICENSE)
 
 ## Requirements
 
@@ -16,7 +16,7 @@ React Native SDK for [Mako](https://github.com/Gabriel-Pereira1788/mako) - Real-
 ## Installation
 
 ```bash
-npm install mako-react-native react-native-nitro-modules
+npm install @salve-software/rn-tui-sdk react-native-nitro-modules
 ```
 
 For iOS, install pods:
@@ -32,10 +32,10 @@ For Android, the package will auto-link.
 Add the following code to your app's entry point (e.g., `App.tsx`):
 
 ```typescript
-import { Mako } from 'mako-react-native';
+import RnTuiSdk from '@salve-software/rn-tui-sdk';
 
 if (__DEV__) {
-  Mako.connect({
+  RnTuiSdk.connect({
     host: '192.168.1.100', // Your Mac's IP address
     port: 8765,
     enableNetworkCapture: true,
@@ -47,10 +47,10 @@ if (__DEV__) {
 
 ## API
 
-### `Mako.connect(config?)`
+### `RnTuiSdk.connect(config?)`
 
 ```typescript
-interface MakoConfig {
+interface RnTuiSdkConfig {
   host?: string;                    // Default: 'localhost'
   port?: number;                    // Default: 8765
   enableNetworkCapture?: boolean;   // Default: true
@@ -61,29 +61,29 @@ interface MakoConfig {
 }
 ```
 
-### `Mako.disconnect()`
+### `RnTuiSdk.disconnect()`
 
 Closes the WebSocket connection.
 
-### `Mako.isConnected()`
+### `RnTuiSdk.isConnected()`
 
 Returns the current connection status.
 
 ### Logging
 
 ```typescript
-Mako.log('General message');
-Mako.debug('Debug info', { userId: 123 });
-Mako.info('Info message');
-Mako.warn('Warning message');
-Mako.error('Error message');
+RnTuiSdk.log('General message');
+RnTuiSdk.debug('Debug info', { userId: 123 });
+RnTuiSdk.info('Info message');
+RnTuiSdk.warn('Warning message');
+RnTuiSdk.error('Error message');
 ```
 
-## MakoApp
+## RN TUI CLI
 
-This SDK requires [MakoApp](https://github.com/Gabriel-Pereira1788/mako/releases) (macOS) to receive and display logs.
+This SDK requires the [RN TUI CLI](https://github.com/Gabriel-Pereira1788/rn-tui) running in your terminal to receive and display logs.
 
-For full documentation, visit the [main repository](https://github.com/Gabriel-Pereira1788/mako).
+For full documentation, visit the [main repository](https://github.com/Gabriel-Pereira1788/rn-tui).
 
 ## License
 

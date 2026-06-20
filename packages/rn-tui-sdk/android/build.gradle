@@ -20,7 +20,7 @@ def isNewArchitectureEnabled() {
 
 apply plugin: "com.android.library"
 apply plugin: 'org.jetbrains.kotlin.android'
-apply from: '../nitrogen/generated/android/NitroMako+autolinking.gradle'
+apply from: '../nitrogen/generated/android/NitroRnTuiSdk+autolinking.gradle'
 apply from: "./fix-prefab.gradle"
 
 if (isNewArchitectureEnabled()) {
@@ -28,15 +28,15 @@ if (isNewArchitectureEnabled()) {
 }
 
 def getExtOrDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["NitroMako_" + name]
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["NitroRnTuiSdk_" + name]
 }
 
 def getExtOrIntegerDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["NitroMako_" + name]).toInteger()
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["NitroRnTuiSdk_" + name]).toInteger()
 }
 
 android {
-  namespace "com.margelo.nitro.mako"
+  namespace "com.margelo.nitro.rntuisdk"
 
   ndkVersion getExtOrDefault("ndkVersion")
   compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
@@ -142,7 +142,7 @@ dependencies {
 if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
-    libraryName = "NitroMako"
-    codegenJavaPackageName = "com.margelo.nitro.mako"
+    libraryName = "NitroRnTuiSdk"
+    codegenJavaPackageName = "com.margelo.nitro.rntuisdk"
   }
 }

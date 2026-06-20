@@ -1,5 +1,5 @@
 import { Platform } from 'react-native'
-import { NitroMako } from '../../index'
+import { NitroRnTuiSdk } from '../../index'
 import { generateUUID } from './utils/generate-uuid'
 import type { DeviceInfoData } from './types'
 
@@ -13,20 +13,20 @@ export class DeviceHandler {
     }
 
     try {
-      const nativeInfo = NitroMako.getDeviceInfo()
+      const nativeInfo = NitroRnTuiSdk.getDeviceInfo()
       if (nativeInfo.deviceId) {
         this.cachedDeviceId = nativeInfo.deviceId
         return nativeInfo.deviceId
       }
 
-      const storedId = NitroMako.getStoredDeviceId()
+      const storedId = NitroRnTuiSdk.getStoredDeviceId()
       if (storedId) {
         this.cachedDeviceId = storedId
         return storedId
       }
 
       const newId = generateUUID()
-      NitroMako.storeDeviceId(newId)
+      NitroRnTuiSdk.storeDeviceId(newId)
       this.cachedDeviceId = newId
       return newId
     } catch (err) {
@@ -40,7 +40,7 @@ export class DeviceHandler {
       return this.cachedDeviceName
     }
 
-    const nativeInfo = NitroMako.getDeviceInfo()
+    const nativeInfo = NitroRnTuiSdk.getDeviceInfo()
     if (nativeInfo.deviceName) {
       this.cachedDeviceName = nativeInfo.deviceName
       return nativeInfo.deviceName
@@ -53,7 +53,7 @@ export class DeviceHandler {
 
   getAppName(): string {
     try {
-      const nativeInfo = NitroMako.getDeviceInfo()
+      const nativeInfo = NitroRnTuiSdk.getDeviceInfo()
       return nativeInfo.appName || 'React Native App'
     } catch {
       return 'React Native App'
@@ -62,7 +62,7 @@ export class DeviceHandler {
 
   getBundleId(): string {
     try {
-      const nativeInfo = NitroMako.getDeviceInfo()
+      const nativeInfo = NitroRnTuiSdk.getDeviceInfo()
       return nativeInfo.bundleId || ''
     } catch {
       return ''

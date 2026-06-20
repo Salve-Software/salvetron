@@ -3,18 +3,18 @@
  * Tracks JS thread responsiveness and forwards native performance metrics
  */
 
-import type { NitroMako as NitroMakoSpec } from '../../specs/mako.nitro'
+import type { NitroRnTuiSdk as NitroRnTuiSdkSpec } from '../../specs/rn-tui-sdk.nitro'
 import type { PerformanceHandlerConfig, PerformanceMetricsEvent } from './types'
 
 export class PerformanceHandler {
-  private nitroMako: NitroMakoSpec
+  private nitroRnTuiSdk: NitroRnTuiSdkSpec
   private onEvent: (event: PerformanceMetricsEvent) => void
   private intervalMs: number
   private isMonitoring = false
   private jsFrameInterval: ReturnType<typeof setInterval> | null = null
 
   constructor(config: PerformanceHandlerConfig) {
-    this.nitroMako = config.nitroMako
+    this.nitroRnTuiSdk = config.nitroRnTuiSdk
     this.onEvent = config.onEvent
     this.intervalMs = config.intervalMs ?? 1000
   }
@@ -24,13 +24,13 @@ export class PerformanceHandler {
    */
   start(): boolean {
     if (this.isMonitoring) {
-      console.warn('[Mako] Performance monitoring already enabled')
+      console.warn('[RnTuiSdk] Performance monitoring already enabled')
       return false
     }
 
     try {
       // Start native performance monitoring
-      const success = this.nitroMako.startPerformanceMonitoring((metrics) => {
+      const success = this.nitroRnTuiSdk.startPerformanceMonitoring((metrics) => {
         this.handleMetrics(metrics)
       }, this.intervalMs)
 
@@ -40,17 +40,17 @@ export class PerformanceHandler {
         // Start JS frame tracking - call recordJsFrame every 16ms (~60fps)
         this.jsFrameInterval = setInterval(() => {
           try {
-            this.nitroMako.recordJsFrame()
+            this.nitroRnTuiSdk.recordJsFrame()
           } catch (error) {
-            console.error('[Mako] Failed to record JS frame:', error)
+            console.error('[RnTuiSdk] Failed to record JS frame:', error)
           }
         }, 16)
 
-        console.log('[Mako] Performance monitoring enabled')
+        console.log('[RnTuiSdk] Performance monitoring enabled')
       }
       return success
     } catch (error) {
-      console.error('[Mako] Failed to start performance monitoring:', error)
+      console.error('[RnTuiSdk] Failed to start performance monitoring:', error)
       return false
     }
   }
@@ -69,11 +69,11 @@ export class PerformanceHandler {
       }
 
       // Stop native monitoring
-      this.nitroMako.stopPerformanceMonitoring()
+      this.nitroRnTuiSdk.stopPerformanceMonitoring()
       this.isMonitoring = false
-      console.log('[Mako] Performance monitoring disabled')
+      console.log('[RnTuiSdk] Performance monitoring disabled')
     } catch (error) {
-      console.error('[Mako] Failed to stop performance monitoring:', error)
+      console.error('[RnTuiSdk] Failed to stop performance monitoring:', error)
     }
   }
 

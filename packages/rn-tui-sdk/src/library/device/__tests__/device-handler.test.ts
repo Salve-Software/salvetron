@@ -8,12 +8,12 @@ import { Platform } from 'react-native';
 
 import { DeviceHandler } from '../device-handler';
 
-import { NitroMako } from '../../../index';
+import { NitroRnTuiSdk } from '../../../index';
 
 import { generateUUID } from '../utils/generate-uuid';
 
 jest.mock('../../../index', () => ({
-  NitroMako: {
+  NitroRnTuiSdk: {
     getDeviceInfo: jest.fn(),
     getStoredDeviceId: jest.fn(),
     storeDeviceId: jest.fn(),
@@ -37,7 +37,7 @@ describe('DeviceHandler', () => {
     Platform.OS = 'ios';
 
     (
-      NitroMako.getDeviceInfo as jest.Mock
+      NitroRnTuiSdk.getDeviceInfo as jest.Mock
     ).mockReturnValue({});
 
     const handler = new DeviceHandler();
@@ -51,7 +51,7 @@ describe('DeviceHandler', () => {
     Platform.OS = 'android';
 
     (
-      NitroMako.getDeviceInfo as jest.Mock
+      NitroRnTuiSdk.getDeviceInfo as jest.Mock
     ).mockReturnValue({});
 
     const handler = new DeviceHandler();
@@ -65,7 +65,7 @@ describe('DeviceHandler', () => {
     Platform.OS = 'android';
 
     (
-      NitroMako.getDeviceInfo as jest.Mock
+      NitroRnTuiSdk.getDeviceInfo as jest.Mock
     ).mockReturnValue({
       deviceId: 'id',
       deviceName: 'Pixel',

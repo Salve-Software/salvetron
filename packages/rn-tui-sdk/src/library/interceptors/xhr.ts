@@ -31,7 +31,7 @@ export class XHRInterceptor {
 
   public enable(callbacks: NetworkCallbacks): boolean {
     if (this.enabled) {
-      console.warn('[Mako] Network interceptor already enabled');
+      console.warn('[RnTuiSdk] Network interceptor already enabled');
       return false;
     }
 
@@ -101,7 +101,7 @@ export class XHRInterceptor {
 
     this.enabled = true;
 
-    console.log('[Mako] Network interception enabled (XMLHttpRequest monkey-patch)');
+    console.log('[RnTuiSdk] Network interception enabled (XMLHttpRequest monkey-patch)');
 
     return true;
   }
@@ -118,6 +118,6 @@ export class XHRInterceptor {
     this.callbacks = {};
     this.enabled = false;
 
-    console.log('[Mako] Network interception disabled');
+    console.log('[RnTuiSdk] Network interception disabled');
   }
 }

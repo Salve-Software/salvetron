@@ -1,17 +1,17 @@
-package com.margelo.nitro.mako
+package com.margelo.nitro.rntuisdk
 
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import com.margelo.nitro.NitroModules
-import com.margelo.nitro.mako.HybridNitroMakoSpec
-import com.margelo.nitro.mako.NativeLogEntry
-import com.margelo.nitro.mako.NativeLogLevel
+import com.margelo.nitro.rntuisdk.HybridNitroRnTuiSdkSpec
+import com.margelo.nitro.rntuisdk.NativeLogEntry
+import com.margelo.nitro.rntuisdk.NativeLogLevel
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.concurrent.thread
 
-class HybridMako : HybridNitroMakoSpec() {
+class HybridRnTuiSdk : HybridNitroRnTuiSdkSpec() {
 
     // MARK: - Properties
 
@@ -21,8 +21,8 @@ class HybridMako : HybridNitroMakoSpec() {
     private var readerThread: Thread? = null
 
     // Storage constants
-    private val PREFS_NAME = "mako_prefs"
-    private val DEVICE_ID_KEY = "mako_device_id"
+    private val PREFS_NAME = "rn_tui_sdk_prefs"
+    private val DEVICE_ID_KEY = "rn_tui_sdk_device_id"
 
     // Context accessor
     private val context: Context?
@@ -64,7 +64,7 @@ class HybridMako : HybridNitroMakoSpec() {
             )
 
             // Read logcat output in background thread
-            readerThread = thread(start = true, isDaemon = true, name = "Mako-Logcat") {
+            readerThread = thread(start = true, isDaemon = true, name = "RnTuiSdk-Logcat") {
                 try {
                     val reader = BufferedReader(
                         InputStreamReader(logcatProcess!!.inputStream)

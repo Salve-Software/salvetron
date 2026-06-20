@@ -123,7 +123,7 @@ describe('XHRInterceptor', () => {
     expect(result).toBe(false)
 
     expect(console.warn).toHaveBeenCalledWith(
-      '[Mako] Network interceptor already enabled'
+      '[RnTuiSdk] Network interceptor already enabled'
     )
   })
 

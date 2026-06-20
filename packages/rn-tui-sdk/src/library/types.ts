@@ -1,8 +1,8 @@
 /**
- * Mako SDK Types
+ * RN TUI SDK Types
  */
 
-// Re-export shared event types from @mako/types
+// Re-export shared event types from @rn-tui/types
 export type {
   LogLevel,
   LogSource,
@@ -17,15 +17,15 @@ export type {
   ProjectInfoEvent,
   PerformanceMetricsEvent,
   EventType,
-  MakoEvent,
-} from '@salve-software/mako-types';
+  RnTuiEvent,
+} from '@salve-software/rn-tui-types';
 
 // ============================================
 // SDK Configuration (SDK-specific)
 // ============================================
 
-export interface MakoConfig {
-  /** Host IP/hostname of the Mako macOS app (default: 'localhost') */
+export interface RnTuiSdkConfig {
+  /** Host IP/hostname of the RN TUI CLI (default: 'localhost') */
   host?: string;
   /** WebSocket port (default: 8765) */
   port?: number;
@@ -35,9 +35,9 @@ export interface MakoConfig {
   enablePerformanceMonitoring?: boolean;
   /** URL patterns to ignore (default includes Metro bundler URLs) */
   ignoredUrls?: RegExp[];
-  /** Callback when connected to Mako */
+  /** Callback when connected to RN TUI */
   onConnect?: () => void;
-  /** Callback when disconnected from Mako */
+  /** Callback when disconnected from RN TUI */
   onDisconnect?: () => void;
   /** Callback on connection error */
   onError?: (error: Error) => void;

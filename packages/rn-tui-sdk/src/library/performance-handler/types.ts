@@ -2,10 +2,10 @@
  * Performance handler types
  */
 
-import type { NitroMako as NitroMakoSpec } from '../../specs/mako.nitro'
+import type { NitroRnTuiSdk as NitroRnTuiSdkSpec } from '../../specs/rn-tui-sdk.nitro'
 
 export interface PerformanceHandlerConfig {
-  nitroMako: NitroMakoSpec
+  nitroRnTuiSdk: NitroRnTuiSdkSpec
   onEvent: (event: PerformanceMetricsEvent) => void
   intervalMs?: number
 }

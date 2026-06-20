@@ -100,9 +100,9 @@ describe('JSConsoleInterceptor', () => {
     expect(onLog).toHaveBeenCalledWith('log', 'a', { args: ['b', 'c'] })
   })
 
-  // ── [Mako] guard ─────────────────────────────────────────────────────────
+  // ── [RnTuiSdk] guard ─────────────────────────────────────────────────────
 
-  it('console.log("[Mako] internal") is not forwarded; original still called', () => {
+  it('console.log("[RnTuiSdk] internal") is not forwarded; original still called', () => {
     const { callbacks, onLog } = createCallbacks()
 
     // Replace the stored original BEFORE start() so the patched closure captures our spy
@@ -111,7 +111,7 @@ describe('JSConsoleInterceptor', () => {
 
     interceptor.start(callbacks)
 
-    console.log('[Mako] internal')
+    console.log('[RnTuiSdk] internal')
 
     // Restore properly: stop() will restore console.log to originalSpy,
     // then we put realLog back so subsequent tests are unaffected.
@@ -119,14 +119,14 @@ describe('JSConsoleInterceptor', () => {
     console.log = realLog
 
     expect(onLog).not.toHaveBeenCalled()
-    expect(originalSpy).toHaveBeenCalledWith('[Mako] internal')
+    expect(originalSpy).toHaveBeenCalledWith('[RnTuiSdk] internal')
   })
 
-  it('non-string first arg with [Mako] prefix check does not throw', () => {
+  it('non-string first arg with [RnTuiSdk] prefix check does not throw', () => {
     const { callbacks, onLog } = createCallbacks()
     interceptor.start(callbacks)
 
-    // Non-string first arg: should not match [Mako] guard, should forward
+    // Non-string first arg: should not match [RnTuiSdk] guard, should forward
     expect(() => console.log({ y: 2 })).not.toThrow()
     expect(onLog).toHaveBeenCalledWith('log', '[object Object]', undefined)
   })

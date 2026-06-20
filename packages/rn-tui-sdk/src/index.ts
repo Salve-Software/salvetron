@@ -1,7 +1,7 @@
 import { NitroModules } from 'react-native-nitro-modules'
-import type { NitroMako as NitroMakoSpec } from './specs/mako.nitro'
+import type { NitroRnTuiSdk as NitroRnTuiSdkSpec } from './specs/rn-tui-sdk.nitro'
 
-export const NitroMako =
-  NitroModules.createHybridObject<NitroMakoSpec>('NitroMako')
+export const NitroRnTuiSdk =
+  NitroModules.createHybridObject<NitroRnTuiSdkSpec>('NitroRnTuiSdk')
 
 export { default } from './library'

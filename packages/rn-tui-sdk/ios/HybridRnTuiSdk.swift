@@ -1,6 +1,6 @@
 //
-//  HybridMako.swift
-//  NitroMako
+//  HybridRnTuiSdk.swift
+//  NitroRnTuiSdk
 //
 //  Native log capture implementation for iOS
 //
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HybridMako: HybridNitroMakoSpec {
+class HybridRnTuiSdk: HybridNitroRnTuiSdkSpec {
 
     // MARK: - Properties
 
@@ -19,7 +19,7 @@ class HybridMako: HybridNitroMakoSpec {
     private var readSource: DispatchSourceRead?
 
     // Storage key for device ID
-    private let deviceIdStorageKey = "mako_device_id"
+    private let deviceIdStorageKey = "rn_tui_sdk_device_id"
 
     // Performance monitoring
     private let performanceMonitor = PerformanceMonitor()

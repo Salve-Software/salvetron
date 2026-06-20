@@ -1,7 +1,7 @@
 {
-  "name": "@salve-software/mako-react-native",
+  "name": "@salve-software/rn-tui-sdk",
   "version": "1.0.1",
-  "description": "mako-react-native is a react native package built with Nitro",
+  "description": "rn-tui-sdk is a react native package built with Nitro",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
@@ -17,7 +17,7 @@
   },
   "keywords": [
     "react-native",
-    "mako-react-native"
+    "rn-tui-sdk"
   ],
   "files": [
     "src",
@@ -46,13 +46,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gabriel-Pereira1788/mako.git",
-    "directory": "mako-react-native"
+    "url": "https://github.com/Gabriel-Pereira1788/rn-tui.git",
+    "directory": "packages/rn-tui-sdk"
   },
   "author": "Gabriel-Pereira1788",
   "license": "MIT",
-  "bugs": "https://github.com/Gabriel-Pereira1788/mako/issues",
-  "homepage": "https://github.com/Gabriel-Pereira1788/mako/tree/main/mako-react-native#readme",
+  "bugs": "https://github.com/Gabriel-Pereira1788/rn-tui/issues",
+  "homepage": "https://github.com/Gabriel-Pereira1788/rn-tui/tree/main/packages/rn-tui-sdk#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -122,7 +122,7 @@
     ]
   },
   "dependencies": {
-    "@salve-software/mako-types": "^1.0.0",
+    "@salve-software/rn-tui-types": "^1.0.0",
     "jest": "^30.4.2"
   }
 }

@@ -1,22 +1,22 @@
 {
   "$schema": "https://nitro.margelo.com/nitro.schema.json",
-  "cxxNamespace": ["mako"],
+  "cxxNamespace": ["rntuisdk"],
   "ios": {
-    "iosModuleName": "NitroMako"
+    "iosModuleName": "NitroRnTuiSdk"
   },
   "android": {
-    "androidNamespace": ["mako"],
-    "androidCxxLibName": "NitroMako"
+    "androidNamespace": ["rntuisdk"],
+    "androidCxxLibName": "NitroRnTuiSdk"
   },
   "autolinking": {
-    "NitroMako": {
+    "NitroRnTuiSdk": {
       "ios": {
         "language": "swift",
-        "implementationClassName": "HybridMako"
+        "implementationClassName": "HybridRnTuiSdk"
       },
       "android": {
         "language": "kotlin",
-        "implementationClassName": "HybridMako"
+        "implementationClassName": "HybridRnTuiSdk"
       }
     }
   },

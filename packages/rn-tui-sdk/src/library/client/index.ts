@@ -1,4 +1,4 @@
-import { MakoClient } from './mako-client'
+import { RnTuiSdkClient } from './rn-tui-sdk-client'
 
 export {
   DEFAULT_IGNORED_URLS,
@@ -6,4 +6,4 @@ export {
   DEFAULT_CONFIG,
 } from './constants'
 
-export const client = new MakoClient()
+export const client = new RnTuiSdkClient()

@@ -1,12 +1,12 @@
 /**
- * WebSocket client for communicating with Mako macOS app
+ * WebSocket client for communicating with RN TUI CLI
  */
 
 import { Platform } from 'react-native'
 import { NitroModules } from 'react-native-nitro-modules'
 import type {
-  MakoConfig,
-  MakoEvent,
+  RnTuiSdkConfig,
+  RnTuiEvent,
   DeviceInfoEvent,
   LogEvent,
   NativeLogEvent,
@@ -14,7 +14,7 @@ import type {
   NativeLogSource,
   ProjectInfoEvent,
 } from '../types'
-import type { NitroMako as NitroMakoSpec } from '../../specs/mako.nitro'
+import type { NitroRnTuiSdk as NitroRnTuiSdkSpec } from '../../specs/rn-tui-sdk.nitro'
 
 import {
   DEFAULT_IGNORED_URLS,
@@ -28,19 +28,19 @@ import { projectHandler } from '../project'
 import { xhrInterceptor, jsConsoleInterceptor } from '../interceptors'
 
 /**
- * Mako WebSocket Client
+ * RN TUI WebSocket Client
  */
-export class MakoClient {
+export class RnTuiSdkClient {
   private ws: WebSocket | null = null
-  private config: Required<MakoConfig>
-  private messageQueue: MakoEvent[] = []
+  private config: Required<RnTuiSdkConfig>
+  private messageQueue: RnTuiEvent[] = []
   private reconnectAttempts = 0
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null
   private isConnecting = false
   private manualDisconnect = false
 
   // Native log capture
-  private nitroMako: NitroMakoSpec | null = null
+  private nitroRnTuiSdk: NitroRnTuiSdkSpec | null = null
   private nativeLogCaptureEnabled = false
 
   // Network handler
@@ -64,11 +64,11 @@ export class MakoClient {
   }
 
   /**
-   * Connect to Mako macOS app
+   * Connect to RN TUI CLI
    */
-  connect(userConfig: MakoConfig = {}): void {
+  connect(userConfig: RnTuiSdkConfig = {}): void {
     if (typeof __DEV__ !== 'undefined' && !__DEV__) {
-      console.warn('[Mako] SDK only works in development mode')
+      console.warn('[RnTuiSdk] SDK only works in development mode')
       return
     }
 
@@ -90,7 +90,7 @@ export class MakoClient {
   }
 
   /**
-   * Disconnect from Mako
+   * Disconnect from RN TUI
    */
   disconnect(): void {
     this.manualDisconnect = true
@@ -105,7 +105,7 @@ export class MakoClient {
   }
 
   /**
-   * Send a log event to Mako
+   * Send a log event to RN TUI
    */
   sendLog(
     level: LogLevel,
@@ -129,23 +129,23 @@ export class MakoClient {
    */
   startNativeLogCapture(): boolean {
     if (this.nativeLogCaptureEnabled) {
-      console.warn('[Mako] Native log capture already enabled')
+      console.warn('[RnTuiSdk] Native log capture already enabled')
       return false
     }
 
     try {
-      const nitro = this.getNitroMako()
+      const nitro = this.getNitroRnTuiSdk()
       const success = nitro.startLogCapture((log) => {
         this.handleNativeLog(log)
       })
 
       if (success) {
         this.nativeLogCaptureEnabled = true
-        console.log('[Mako] Native log capture enabled')
+        console.log('[RnTuiSdk] Native log capture enabled')
       }
       return success
     } catch (error) {
-      console.error('[Mako] Failed to start native log capture:', error)
+      console.error('[RnTuiSdk] Failed to start native log capture:', error)
       return false
     }
   }
@@ -157,12 +157,12 @@ export class MakoClient {
     if (!this.nativeLogCaptureEnabled) return
 
     try {
-      const nitro = this.getNitroMako()
+      const nitro = this.getNitroRnTuiSdk()
       nitro.stopLogCapture()
       this.nativeLogCaptureEnabled = false
-      console.log('[Mako] Native log capture disabled')
+      console.log('[RnTuiSdk] Native log capture disabled')
     } catch (error) {
-      console.error('[Mako] Failed to stop native log capture:', error)
+      console.error('[RnTuiSdk] Failed to stop native log capture:', error)
     }
   }
 
@@ -178,19 +178,19 @@ export class MakoClient {
    */
   startPerformanceMonitoring(): boolean {
     if (this.performanceMonitoringEnabled) {
-      console.warn('[Mako] Performance monitoring already enabled')
+      console.warn('[RnTuiSdk] Performance monitoring already enabled')
       return false
     }
 
     this.performanceHandler = new PerformanceHandler({
-      nitroMako: this.getNitroMako(),
+      nitroRnTuiSdk: this.getNitroRnTuiSdk(),
       onEvent: (event) => this.send(event),
     })
 
     const success = this.performanceHandler.start()
     if (success) {
       this.performanceMonitoringEnabled = true
-      console.log('[Mako] Performance monitoring enabled')
+      console.log('[RnTuiSdk] Performance monitoring enabled')
     }
     return success
   }
@@ -207,9 +207,9 @@ export class MakoClient {
         this.performanceHandler = null
       }
       this.performanceMonitoringEnabled = false
-      console.log('[Mako] Performance monitoring disabled')
+      console.log('[RnTuiSdk] Performance monitoring disabled')
     } catch (error) {
-      console.error('[Mako] Failed to stop performance monitoring:', error)
+      console.error('[RnTuiSdk] Failed to stop performance monitoring:', error)
     }
   }
 
@@ -220,12 +220,12 @@ export class MakoClient {
     return this.performanceMonitoringEnabled
   }
 
-  private getNitroMako(): NitroMakoSpec {
-    if (!this.nitroMako) {
-      this.nitroMako =
-        NitroModules.createHybridObject<NitroMakoSpec>('NitroMako')
+  private getNitroRnTuiSdk(): NitroRnTuiSdkSpec {
+    if (!this.nitroRnTuiSdk) {
+      this.nitroRnTuiSdk =
+        NitroModules.createHybridObject<NitroRnTuiSdkSpec>('NitroRnTuiSdk')
     }
-    return this.nitroMako
+    return this.nitroRnTuiSdk
   }
 
   private handleNativeLog(log: {
@@ -266,7 +266,7 @@ export class MakoClient {
       this.ws.onopen = () => {
         this.isConnecting = false
         this.reconnectAttempts = 0
-        console.log(`[Mako] Connected to ${url}`)
+        console.log(`[RnTuiSdk] Connected to ${url}`)
         this.config.onConnect()
 
         this.sendProjectInfo()
@@ -286,7 +286,7 @@ export class MakoClient {
 
       this.ws.onclose = () => {
         this.isConnecting = false
-        console.log('[Mako] Disconnected')
+        console.log('[RnTuiSdk] Disconnected')
         this.config.onDisconnect()
 
         if (!this.manualDisconnect) {
@@ -297,16 +297,16 @@ export class MakoClient {
       this.ws.onerror = (event) => {
         this.isConnecting = false
         const error = new Error('WebSocket error')
-        console.error('[Mako] Connection error:', event)
+        console.error('[RnTuiSdk] Connection error:', event)
         this.config.onError(error)
       }
 
       this.ws.onmessage = (event) => {
-        console.log('[Mako] Received:', event.data)
+        console.log('[RnTuiSdk] Received:', event.data)
       }
     } catch (error) {
       this.isConnecting = false
-      console.error('[Mako] Failed to create WebSocket:', error)
+      console.error('[RnTuiSdk] Failed to create WebSocket:', error)
       this.scheduleReconnect()
     }
   }
@@ -314,7 +314,7 @@ export class MakoClient {
   private scheduleReconnect(): void {
     if (this.manualDisconnect) return
     if (this.reconnectAttempts >= RECONNECT_CONFIG.maxAttempts) {
-      console.warn('[Mako] Max reconnection attempts reached')
+      console.warn('[RnTuiSdk] Max reconnection attempts reached')
       return
     }
 
@@ -325,7 +325,7 @@ export class MakoClient {
     this.reconnectAttempts++
 
     console.log(
-      `[Mako] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`
+      `[RnTuiSdk] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`
     )
 
     this.reconnectTimeout = setTimeout(() => {
@@ -363,12 +363,12 @@ export class MakoClient {
     this.isConnecting = false
   }
 
-  private send(event: MakoEvent): void {
+  private send(event: RnTuiEvent): void {
     if (this.isConnected() && this.ws) {
       try {
         this.ws.send(JSON.stringify(event))
       } catch (error) {
-        console.error('[Mako] Failed to send event:', error)
+        console.error('[RnTuiSdk] Failed to send event:', error)
         this.messageQueue.push(event)
       }
     } else {
@@ -385,10 +385,10 @@ export class MakoClient {
       }
       this.send(event)
       console.log(
-        `[Mako] Project registered: ${projectInfo.appName} (${projectInfo.projectId})`
+        `[RnTuiSdk] Project registered: ${projectInfo.appName} (${projectInfo.projectId})`
       )
     } catch (error) {
-      console.warn('[Mako] Failed to send project info:', error)
+      console.warn('[RnTuiSdk] Failed to send project info:', error)
     }
   }
 
@@ -403,10 +403,10 @@ export class MakoClient {
       }
       this.send(event)
       console.log(
-        `[Mako] Device registered: ${deviceInfo.deviceName} (${deviceInfo.deviceId})`
+        `[RnTuiSdk] Device registered: ${deviceInfo.deviceName} (${deviceInfo.deviceId})`
       )
     } catch (error) {
-      console.warn('[Mako] Failed to send device info:', error)
+      console.warn('[RnTuiSdk] Failed to send device info:', error)
     }
   }
 
@@ -427,7 +427,7 @@ export class MakoClient {
 
     const success = xhrInterceptor.enable(this.networkHandler.getCallbacks())
     if (success) {
-      console.log('[Mako] Network capture enabled')
+      console.log('[RnTuiSdk] Network capture enabled')
     }
   }
 }
