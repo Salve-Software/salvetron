@@ -1,8 +1,9 @@
 import { Box, useInput } from 'ink'
-import { useState } from 'react'
-import { AsciiLogo } from './shared/components/ascii-logo/index.js'
+import { useMemo, useState } from 'react'
+import { AsciiLogo, pickRandomColor } from './shared/components/ascii-logo/index.js'
 import { TabBar } from './shared/components/tab-bar/index.js'
 import { StatusBar } from './shared/components/status-bar/index.js'
+import { useProject } from './shared/store/device.store.js'
 import { DashboardContainer } from './modules/dashboard/ui/containers/dashboard-container/index.js'
 import { JsLogsContainer } from './modules/js-logs/ui/containers/js-logs-container/index.js'
 import { NetworkContainer } from './modules/network/ui/containers/network-container/index.js'
@@ -11,9 +12,16 @@ import { NativeLogsContainer } from './modules/native-logs/ui/containers/native-
 export type Tab = 'dashboard' | 'js-logs' | 'network' | 'native'
 
 const TABS: Tab[] = ['dashboard', 'js-logs', 'network', 'native']
+const DEFAULT_LOGO_COLOR = '#61DAFB'
 
 export function App() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
+  const appName = useProject()?.appName
+
+  const logoColor = useMemo(
+    () => (appName ? pickRandomColor() : DEFAULT_LOGO_COLOR),
+    [appName],
+  )
 
   useInput((input, key) => {
     if (input === '1') setActiveTab('dashboard')
@@ -28,7 +36,7 @@ export function App() {
 
   return (
     <Box flexDirection="column" height="100%" paddingTop={1}>
-      <AsciiLogo />
+      <AsciiLogo text={appName} color={logoColor} />
       <TabBar active={activeTab} />
       <Box flexGrow={1} flexDirection="column" paddingX={1}>
         {activeTab === 'dashboard'
