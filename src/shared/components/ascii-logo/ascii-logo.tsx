@@ -2,29 +2,37 @@ import { Text, useStdout } from "ink";
 import { useEffect, useMemo, useRef, useState } from "react";
 import figlet from "figlet";
 
-const ART = figlet
-  .textSync("REACT NATIVE CLI", { font: "ANSI Shadow" })
-  .split("\n")
-  .filter((line) => line.trim().length > 0);
-
-const MAX_WIDTH = Math.max(...ART.map((line) => line.length));
+const FALLBACK_TEXT = "RN PANEL";
+const MAX_TEXT_LENGTH = 18;
 
 const DURATION_MS = 4000;
 const TICK_MS = 80;
 const TWO_PI = Math.PI * 2;
-
-// Several ripples across the full width so the wave never dims everything
-// at once (a single period close to MAX_WIDTH caused a visible gap
-// mid-animation).
-const WAVE_FREQUENCY = (TWO_PI * 3) / MAX_WIDTH;
 
 // Glyphs are never swapped for block characters anymore — only color
 // brightness is modulated, so the full name stays legible at every frame,
 // including loop edges. The wave crest lightens the base color toward a
 // slightly lighter shade (not pure white) instead of dimming it, for a
 // glow/shine sweep.
-const GLOW_MIX = 0.45;
-const GLOW_LEVELS = 20;
+const GLOW_MIX = 0.65;
+const GLOW_LEVELS = 55;
+
+export const LOGO_COLOR_PALETTE = [
+  "#61DAFB", // React cyan (original brand color)
+  "#FF6B6B", // coral red
+  "#4ECDC4", // teal
+  "#FFD93D", // gold
+  "#A78BFA", // violet
+  "#FF8C42", // orange
+  "#52D17C", // emerald green
+  "#F472B6", // pink
+  "#38BDF8", // sky blue
+  "#FACC15", // amber
+] as const;
+
+export function pickRandomColor(): string {
+  return LOGO_COLOR_PALETTE[Math.floor(Math.random() * LOGO_COLOR_PALETTE.length)];
+}
 
 type Rgb = [number, number, number];
 
@@ -46,7 +54,28 @@ function ansiColor([r, g, b]: Rgb): string {
   return `[38;2;${r};${g};${b}m`;
 }
 
-function render(t: number, rgb: Rgb): string {
+function buildArt(text: string) {
+  // Truncated so longer project names don't blow past typical terminal
+  // width and wrap mid-glyph.
+  const safeText = text.slice(0, MAX_TEXT_LENGTH);
+  const art = figlet
+    .textSync(safeText, { font: "ANSI Shadow" })
+    .split("\n")
+    .filter((line) => line.trim().length > 0);
+
+  // Guard against an empty `art` (e.g. blank input) collapsing Math.max to
+  // -Infinity, which would propagate NaN into the wave frequency below.
+  const maxWidth = Math.max(1, ...art.map((line) => line.length));
+
+  // Several ripples across the full width so the wave never dims everything
+  // at once (a single period close to maxWidth caused a visible gap
+  // mid-animation).
+  const waveFrequency = (TWO_PI * 3) / maxWidth;
+
+  return { art, waveFrequency };
+}
+
+function render(t: number, rgb: Rgb, art: string[], waveFrequency: number): string {
   const [r, g, b] = rgb;
   const peak: Rgb = [
     lerp(r, 255, GLOW_MIX),
@@ -55,8 +84,8 @@ function render(t: number, rgb: Rgb): string {
   ];
 
   const lines: string[] = [];
-  for (let y = 0; y < ART.length; y++) {
-    const row = ART[y];
+  for (let y = 0; y < art.length; y++) {
+    const row = art[y];
     let line = "";
     let lastLevel = -1;
     for (let x = 0; x < row.length; x++) {
@@ -65,7 +94,7 @@ function render(t: number, rgb: Rgb): string {
         line += " ";
         continue;
       }
-      const wave = Math.sin(x * WAVE_FREQUENCY + t) * 0.5 + 0.5;
+      const wave = Math.sin(x * waveFrequency + t) * 0.5 + 0.5;
       const verticalWave = Math.sin(y * 0.5 + t * 0.8) * 0.5 + 0.5;
       const glow = wave * 0.6 + verticalWave * 0.4;
       const level = Math.round(glow * GLOW_LEVELS);
@@ -87,12 +116,15 @@ function render(t: number, rgb: Rgb): string {
 }
 
 interface AsciiLogoProps {
+  text?: string;
   color?: string;
 }
 
-export function AsciiLogo({ color = "#61DAFB" }: AsciiLogoProps) {
+export function AsciiLogo({ text = FALLBACK_TEXT, color = "#61DAFB" }: AsciiLogoProps) {
+  const upperText = text.toUpperCase();
+  const { art, waveFrequency } = useMemo(() => buildArt(upperText), [upperText]);
   const rgb = useMemo(() => hexToRgb(color), [color]);
-  const [frame, setFrame] = useState(() => render(0, rgb));
+  const [frame, setFrame] = useState(() => render(0, rgb, art, waveFrequency));
   const { stdout } = useStdout();
   const isResizingRef = useRef(false);
 
@@ -115,6 +147,10 @@ export function AsciiLogo({ color = "#61DAFB" }: AsciiLogoProps) {
 
   useEffect(() => {
     const start = Date.now();
+    // Render immediately so a text/color change doesn't leave a stale frame
+    // on screen until the next tick.
+    setFrame(render(0, rgb, art, waveFrequency));
+
     const id = setInterval(() => {
       if (isResizingRef.current) return;
       const pos = (Date.now() - start) % (DURATION_MS * 2);
@@ -123,11 +159,11 @@ export function AsciiLogo({ color = "#61DAFB" }: AsciiLogoProps) {
           ? pos / DURATION_MS
           : 1 - (pos - DURATION_MS) / DURATION_MS;
       const eased = linear * linear * (3 - 2 * linear);
-      setFrame(render(eased * TWO_PI, rgb));
+      setFrame(render(eased * TWO_PI, rgb, art, waveFrequency));
     }, TICK_MS);
 
     return () => clearInterval(id);
-  }, [rgb]);
+  }, [art, waveFrequency, rgb]);
 
   return <Text>{frame}</Text>;
 }

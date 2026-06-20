@@ -1,1 +1,1 @@
-export { AsciiLogo } from './ascii-logo'
+export { AsciiLogo, pickRandomColor } from './ascii-logo'

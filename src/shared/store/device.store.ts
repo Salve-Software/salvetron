@@ -17,8 +17,9 @@ export const useDeviceStore = create<DeviceStore>((set) => ({
     if (event.type === 'device_info') set({ device: event, connected: true })
     if (event.type === 'project_info') set({ project: event })
   },
-  setDisconnected: () => set({ connected: false, device: null }),
+  setDisconnected: () => set({ connected: false, device: null, project: null }),
 }))
 
 export const useDevice = () => useDeviceStore((s) => s.device)
+export const useProject = () => useDeviceStore((s) => s.project)
 export const useConnectionStatus = () => useDeviceStore((s) => s.connected)
