@@ -103,6 +103,7 @@ export function DashboardContainer() {
   const logsDetail = useDetailPanel({
     linesRef: logsLinesRef,
     visibleRows: detailBodyVisibleRows,
+    scrollStep: 5,
     isActive: focused === "logs",
     onCopyBody: onCopyLogBody,
   });
@@ -117,6 +118,7 @@ export function DashboardContainer() {
   const nativeDetail = useDetailPanel({
     linesRef: nativeLinesRef,
     visibleRows: detailBodyVisibleRows,
+    scrollStep: 5,
     isActive: focused === "native",
     onCopyBody: onCopyNativeBody,
   });

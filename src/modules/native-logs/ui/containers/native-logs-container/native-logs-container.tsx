@@ -34,6 +34,7 @@ export function NativeLogsContainer() {
   const { detailOpen, detailScrollOffset, resetDetailScroll, copyFeedback } = useDetailPanel({
     linesRef: metaLinesRef,
     visibleRows: metaVisibleRows,
+    scrollStep: 5,
     onCopyBody,
   })
 
