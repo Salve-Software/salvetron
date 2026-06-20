@@ -106,3 +106,4 @@ tsconfig.tsbuildinfo
 .claude/*/aiworkers/
 .claude/tmp
 .claude/worktrees
+.npmrc
