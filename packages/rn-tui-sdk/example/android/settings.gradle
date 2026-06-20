@@ -1,0 +1,18 @@
+pluginManagement { includeBuild("../../node_modules/@react-native/gradle-plugin") }
+plugins { id("com.facebook.react.settings") }
+extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand() }
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+        // AsyncStorage 3.x local maven repository
+        maven { url = uri("${rootProject.projectDir}/../../node_modules/@react-native-async-storage/async-storage/android/local_repo") }
+    }
+}
+
+rootProject.name = 'NitroTraceExample'
+include ':app'
+includeBuild('../../node_modules/@react-native/gradle-plugin')
