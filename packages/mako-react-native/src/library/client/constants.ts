@@ -31,6 +31,5 @@ export const DEFAULT_CONFIG = {
   host: 'localhost',
   port: 8765,
   enableNetworkCapture: true,
-  enableComponentInspector: false,
   enablePerformanceMonitoring: false,
 } as const;

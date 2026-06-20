@@ -22,11 +22,10 @@ import {
   DEFAULT_CONFIG,
 } from './constants'
 import { NetworkHandler } from '../network-handler'
-import { ComponentHandler } from '../component-handler'
 import { PerformanceHandler } from '../performance-handler'
 import { deviceHandler } from '../device'
 import { projectHandler } from '../project'
-import { xhrInterceptor, reactDevToolsInterceptor, jsConsoleInterceptor } from '../interceptors'
+import { xhrInterceptor, jsConsoleInterceptor } from '../interceptors'
 
 /**
  * Mako WebSocket Client
@@ -47,10 +46,6 @@ export class MakoClient {
   // Network handler
   private networkHandler: NetworkHandler | null = null
 
-  // Component handler
-  private componentHandler: ComponentHandler | null = null
-  private componentInspectorEnabled = false
-
   // Performance handler
   private performanceHandler: PerformanceHandler | null = null
   private performanceMonitoringEnabled = false
@@ -60,7 +55,6 @@ export class MakoClient {
       host: DEFAULT_CONFIG.host,
       port: DEFAULT_CONFIG.port,
       enableNetworkCapture: DEFAULT_CONFIG.enableNetworkCapture,
-      enableComponentInspector: DEFAULT_CONFIG.enableComponentInspector,
       enablePerformanceMonitoring: DEFAULT_CONFIG.enablePerformanceMonitoring,
       ignoredUrls: [],
       onConnect: () => {},
@@ -83,8 +77,6 @@ export class MakoClient {
       port: userConfig.port ?? DEFAULT_CONFIG.port,
       enableNetworkCapture:
         userConfig.enableNetworkCapture ?? DEFAULT_CONFIG.enableNetworkCapture,
-      enableComponentInspector:
-        userConfig.enableComponentInspector ?? DEFAULT_CONFIG.enableComponentInspector,
       enablePerformanceMonitoring:
         userConfig.enablePerformanceMonitoring ?? DEFAULT_CONFIG.enablePerformanceMonitoring,
       ignoredUrls: [...DEFAULT_IGNORED_URLS, ...(userConfig.ignoredUrls ?? [])],
@@ -179,54 +171,6 @@ export class MakoClient {
    */
   isNativeLogCaptureEnabled(): boolean {
     return this.nativeLogCaptureEnabled
-  }
-
-  /**
-   * Start component inspector
-   */
-  startComponentInspector(): boolean {
-    if (this.componentInspectorEnabled) {
-      console.warn('[Mako] Component inspector already enabled')
-      return false
-    }
-
-    this.componentHandler = new ComponentHandler({
-      onEvent: (event) => this.send(event),
-    })
-
-    const success = reactDevToolsInterceptor.enable(this.componentHandler.getCallbacks())
-    if (success) {
-      this.componentInspectorEnabled = true
-      this.componentHandler.startTreeSnapshots()
-      console.log('[Mako] Component inspector enabled')
-    }
-    return success
-  }
-
-  /**
-   * Stop component inspector
-   */
-  stopComponentInspector(): void {
-    if (!this.componentInspectorEnabled) return
-
-    try {
-      reactDevToolsInterceptor.disable()
-      if (this.componentHandler) {
-        this.componentHandler.clear()
-        this.componentHandler = null
-      }
-      this.componentInspectorEnabled = false
-      console.log('[Mako] Component inspector disabled')
-    } catch (error) {
-      console.error('[Mako] Failed to stop component inspector:', error)
-    }
-  }
-
-  /**
-   * Check if component inspector is active
-   */
-  isComponentInspectorEnabled(): boolean {
-    return this.componentInspectorEnabled
   }
 
   /**
@@ -333,10 +277,6 @@ export class MakoClient {
           this.setupNetworkInterception()
         }
 
-        if (this.config.enableComponentInspector) {
-          this.startComponentInspector()
-        }
-
         if (this.config.enablePerformanceMonitoring) {
           this.startPerformanceMonitoring()
         }
@@ -400,7 +340,6 @@ export class MakoClient {
     }
 
     this.stopNativeLogCapture()
-    this.stopComponentInspector()
     this.stopPerformanceMonitoring()
     xhrInterceptor.disable()
     jsConsoleInterceptor.stop()

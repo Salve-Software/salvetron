@@ -120,29 +120,6 @@ export default {
   },
 
   /**
-   * Start component inspector to track React component renders
-   * @returns true if successfully enabled
-   */
-  startComponentInspector(): boolean {
-    return client.startComponentInspector()
-  },
-
-  /**
-   * Stop component inspector
-   */
-  stopComponentInspector(): void {
-    client.stopComponentInspector()
-  },
-
-  /**
-   * Check if component inspector is currently active
-   * @returns true if component inspector is enabled
-   */
-  isComponentInspectorEnabled(): boolean {
-    return client.isComponentInspectorEnabled()
-  },
-
-  /**
    * Start performance monitoring to track FPS, memory, and CPU
    * @returns true if successfully enabled
    */
@@ -177,7 +154,5 @@ export type {
   LogLevel,
   LogSource,
   NativeLogSource,
-  ComponentRenderEvent,
-  ComponentTreeEvent,
   PerformanceMetricsEvent,
 } from './types'
