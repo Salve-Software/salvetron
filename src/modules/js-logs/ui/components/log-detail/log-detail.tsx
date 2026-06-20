@@ -1,5 +1,5 @@
 import { Box, Text } from 'ink'
-import type { LogEvent } from '@salve-software/mako-types'
+import type { LogEvent } from '@salve-software/rn-tui-types'
 import type { CopyFeedback } from '../../../../../shared/hooks/use-detail-panel.js'
 
 const LEVEL_COLOR: Record<string, string> = {

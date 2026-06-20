@@ -1,5 +1,5 @@
 import { Box, Text } from 'ink'
-import type { NetworkLog } from '@salve-software/mako-types'
+import type { NetworkLog } from '@salve-software/rn-tui-types'
 import { METHOD_COLOR, getStatusColor } from '../../../library/constants.js'
 
 interface NetworkRowProps {

@@ -1,0 +1,78 @@
+/**
+ * RN TUI SDK Types
+ */
+
+// Re-export shared event types from @rn-tui/types
+export type {
+  LogLevel,
+  LogSource,
+  NativeLogSource,
+  LogEvent,
+  NativeLogEvent,
+  NetworkStage,
+  NetworkRequestEvent,
+  NetworkResponseEvent,
+  NetworkEvent,
+  DeviceInfoEvent,
+  ProjectInfoEvent,
+  PerformanceMetricsEvent,
+  EventType,
+  RnTuiEvent,
+} from '@salve-software/rn-tui-types';
+
+// ============================================
+// SDK Configuration (SDK-specific)
+// ============================================
+
+export interface RnTuiSdkConfig {
+  /** Host IP/hostname of the RN TUI CLI (default: 'localhost') */
+  host?: string;
+  /** WebSocket port (default: 8765) */
+  port?: number;
+  /** Enable network request/response capture (default: true) */
+  enableNetworkCapture?: boolean;
+  /** Enable performance monitoring for FPS, memory, and CPU tracking (default: false) */
+  enablePerformanceMonitoring?: boolean;
+  /** URL patterns to ignore (default includes Metro bundler URLs) */
+  ignoredUrls?: RegExp[];
+  /** Callback when connected to RN TUI */
+  onConnect?: () => void;
+  /** Callback when disconnected from RN TUI */
+  onDisconnect?: () => void;
+  /** Callback on connection error */
+  onError?: (error: Error) => void;
+}
+
+// ============================================
+// Internal Types (SDK-specific)
+// ============================================
+
+export interface PendingRequest {
+  id: string;
+  method: string;
+  url: string;
+  headers: Record<string, string>;
+  body?: string;
+  startTime: number;
+  responseHeaders?: Record<string, string>;
+}
+
+export interface NetworkCallbacks {
+  onOpen: (method: string, url: string, xhr: XMLHttpRequest) => void;
+  onSend: (data: unknown, xhr: XMLHttpRequest) => void;
+  onRequestHeader: (header: string, value: string, xhr: XMLHttpRequest) => void;
+  onHeaderReceived: (
+    responseContentType: string | undefined,
+    responseSize: number | undefined,
+    responseHeaders: string,
+    xhr: XMLHttpRequest
+  ) => void;
+  onResponse: (
+    status: number,
+    timeout: boolean,
+    response: unknown,
+    responseURL: string,
+    responseType: string,
+    xhr: XMLHttpRequest
+  ) => void;
+}

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { PerformanceMetricsEvent } from '@salve-software/mako-types'
+import type { PerformanceMetricsEvent } from '@salve-software/rn-tui-types'
 
 interface DashboardStore {
   snapshots: PerformanceMetricsEvent[]

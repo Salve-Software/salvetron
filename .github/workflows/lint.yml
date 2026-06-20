@@ -9,12 +9,12 @@ on:
       - main
     paths:
       - '.github/workflows/lint.yml'
-      - '!packages/mako-react-native/**'
+      - '!packages/rn-tui-sdk/**'
       - '**'
   pull_request:
     paths:
       - '.github/workflows/lint.yml'
-      - '!packages/mako-react-native/**'
+      - '!packages/rn-tui-sdk/**'
       - '**'
   workflow_dispatch:
 
