@@ -7,7 +7,7 @@ import { useNativeLogs } from '../../../store/native-logs.store.js'
 import { NativeLogList } from '../../components/native-log-list/index.js'
 import { NativeLogDetail } from '../../components/native-log-detail/index.js'
 import { formatBody, formatPlainBody } from '../../../../../shared/utils/format-body.js'
-import type { NativeLogEvent } from '@salve-software/mako-types'
+import type { NativeLogEvent } from '@salve-software/rn-tui-types'
 
 const OVERHEAD_ROWS = 6
 const DETAIL_FIXED_ROWS = 3

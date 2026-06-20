@@ -1,9 +1,9 @@
-'lib: mako-react-native':
+'lib: rn-tui-sdk':
   - changed-files:
-    - any-glob-to-any-file: 'packages/mako-react-native/**'
+    - any-glob-to-any-file: 'packages/rn-tui-sdk/**'
 
-'lib: mako':
+'lib: rn-tui':
   - changed-files:
     - any-glob-to-any-file:
       - '**'
-      - '!packages/mako-react-native/**'
+      - '!packages/rn-tui-sdk/**'

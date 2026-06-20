@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { DeviceInfoEvent, ProjectInfoEvent } from '@salve-software/mako-types'
+import type { DeviceInfoEvent, ProjectInfoEvent } from '@salve-software/rn-tui-types'
 
 interface DeviceStore {
   device: DeviceInfoEvent | null

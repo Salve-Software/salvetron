@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
-import type { LogEvent } from '@salve-software/mako-types'
+import type { LogEvent } from '@salve-software/rn-tui-types'
 
 interface JsLogsStore {
   logs: LogEvent[]

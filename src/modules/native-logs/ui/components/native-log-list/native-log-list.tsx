@@ -1,5 +1,5 @@
 import { Box, Text } from 'ink'
-import type { NativeLogEvent } from '@salve-software/mako-types'
+import type { NativeLogEvent } from '@salve-software/rn-tui-types'
 import { LogRow } from '../../../../../shared/components/log-row/index.js'
 
 interface NativeLogListProps {

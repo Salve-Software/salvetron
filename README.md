@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/banner.png" alt="Mako Logo" width="1280" height="720" style="border-radius: 20px;">
+  <img src="assets/banner.png" alt="RN TUI Logo" width="1280" height="720" style="border-radius: 20px;">
 </p>
 
-<h1 align="center">Mako</h1>
+<h1 align="center">RN TUI</h1>
 
 <p align="center">
   <strong>Real-time terminal UI debugger for React Native</strong>
@@ -16,7 +16,7 @@
 
 ---
 
-Mako is a real-time debugging tool for React Native developers, delivered as a terminal UI (TUI). The Mako CLI runs a WebSocket server in your terminal and renders incoming telemetry — JS logs, native logs, network traffic, and live performance metrics — from your running app. Your app streams that telemetry using the companion SDK, `@salve-software/mako-react-native`.
+RN TUI is a real-time debugging tool for React Native developers, delivered as a terminal UI (TUI). The RN TUI CLI runs a WebSocket server in your terminal and renders incoming telemetry — JS logs, native logs, network traffic, and live performance metrics — from your running app. Your app streams that telemetry using the companion SDK, `@salve-software/rn-tui-sdk`.
 
 ## Features
 
@@ -25,7 +25,7 @@ Mako is a real-time debugging tool for React Native developers, delivered as a t
 - **Network Inspector** - Inspect HTTP requests and responses: method, status, duration, headers, and pretty-printed bodies
 - **Native Logs** - View iOS and Android platform logs in real-time, with source tags
 - **Keyboard-driven TUI** - Navigate panels and lists entirely from the keyboard; no GUI required
-- **Zero-config WebSocket server** - Starts on port 8765 by default (override with `MAKO_PORT`)
+- **Zero-config WebSocket server** - Starts on port 8765 by default (override with `RN_TUI_PORT`)
 
 ## Screenshots
 
@@ -44,13 +44,13 @@ Example:
 
 ## Architecture
 
-Mako has two parts:
+RN TUI has two parts:
 
 ```
 ┌──────────────────────────┐        WebSocket          ┌──────────────────────────┐
-│     React Native App      │ ───────────────────────▶ │        Mako CLI          │
+│     React Native App      │ ───────────────────────▶ │        RN TUI CLI        │
 │ @salve-software/          │        port 8765          │  (terminal UI debugger)  │
-│   mako-react-native (SDK) │                           │                          │
+│   rn-tui-sdk (SDK)        │                           │                          │
 └──────────────────────────┘                            └──────────────────────────┘
          │                                                        │
          ├── JS Console Logs                                      ├── Dashboard (FPS/CPU/memory)
@@ -59,9 +59,9 @@ Mako has two parts:
          └── Performance Metrics                                  └── Native Logs viewer
 ```
 
-1. **Mako CLI** (`@salve-software/mako-cli`): an Ink-based terminal UI that runs a WebSocket server and renders telemetry from connected apps.
+1. **RN TUI CLI** (`@salve-software/rn-tui`): an Ink-based terminal UI that runs a WebSocket server and renders telemetry from connected apps.
 
-2. **mako-react-native** (SDK): A React Native package built with Nitro Modules that captures logs, network activity, and performance metrics and streams them to the CLI.
+2. **rn-tui-sdk** (SDK): A React Native package built with Nitro Modules that captures logs, network activity, and performance metrics and streams them to the CLI.
 
 ## Installation
 
@@ -69,33 +69,33 @@ Mako has two parts:
 
 | Component | Requirement |
 |-----------|-------------|
-| Mako CLI | Node.js 18+ |
+| RN TUI CLI | Node.js 18+ |
 | React Native SDK | React Native 0.73+ |
 | Xcode | 15+ (for iOS development) |
 | Android Studio | Latest (for Android development) |
 
-### Running the Mako CLI
+### Running the RN TUI CLI
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Gabriel-Pereira1788/mako.git
-   cd mako
+   git clone https://github.com/Gabriel-Pereira1788/rn-tui.git
+   cd rn-tui
    yarn install
    ```
 
 2. Start the CLI:
    ```bash
-   yarn dev          # starts the Mako CLI (Ink TUI) on port 8765
+   yarn dev          # starts the RN TUI CLI (Ink TUI) on port 8765
    ```
 
    Or, once linked as a bin:
    ```bash
-   mako
+   rn-tui
    ```
 
-   Override the port with the `MAKO_PORT` environment variable:
+   Override the port with the `RN_TUI_PORT` environment variable:
    ```bash
-   MAKO_PORT=9000 yarn dev
+   RN_TUI_PORT=9000 yarn dev
    ```
 
 ### Installing React Native SDK
@@ -104,10 +104,10 @@ Mako has two parts:
 
    ```bash
    # Using npm
-   npm install @salve-software/mako-react-native
+   npm install @salve-software/rn-tui-sdk
 
    # Using yarn
-   yarn add @salve-software/mako-react-native
+   yarn add @salve-software/rn-tui-sdk
    ```
 
 2. For iOS, install pods:
@@ -119,26 +119,26 @@ Mako has two parts:
 
 ## Usage
 
-### Starting the Mako CLI
+### Starting the RN TUI CLI
 
-Run `yarn dev` (or `mako`) in your terminal. The CLI starts a WebSocket server on port **8765** and shows the Dashboard. Use the tab bar / keyboard shortcuts shown in the status bar to switch between Dashboard, JS Logs, Network, and Native Logs. Connected device info appears in the header once your app connects.
+Run `yarn dev` (or `rn-tui`) in your terminal. The CLI starts a WebSocket server on port **8765** and shows the Dashboard. Use the tab bar / keyboard shortcuts shown in the status bar to switch between Dashboard, JS Logs, Network, and Native Logs. Connected device info appears in the header once your app connects.
 
 ### Connecting from React Native
 
 Add the following code to your React Native app's entry point (e.g., `App.tsx` or `index.js`):
 
 ```typescript
-import { Mako } from '@salve-software/mako-react-native';
+import RnTuiSdk from '@salve-software/rn-tui-sdk';
 
 // Connect only in development mode
 if (__DEV__) {
-  Mako.connect({
+  RnTuiSdk.connect({
     host: '192.168.1.100', // Your Mac's IP address
     port: 8765,
     enableNetworkCapture: true,
-    onConnect: () => console.log('Connected to Mako!'),
-    onDisconnect: () => console.log('Disconnected from Mako'),
-    onError: (error) => console.error('Mako error:', error),
+    onConnect: () => console.log('Connected to RN TUI!'),
+    onDisconnect: () => console.log('Disconnected from RN TUI'),
+    onError: (error) => console.error('RN TUI error:', error),
   });
 }
 ```
@@ -147,12 +147,12 @@ if (__DEV__) {
 
 ### API Reference
 
-#### `Mako.connect(config?)`
+#### `RnTuiSdk.connect(config?)`
 
-Establishes a WebSocket connection to the Mako CLI.
+Establishes a WebSocket connection to the RN TUI CLI.
 
 ```typescript
-interface MakoConfig {
+interface RnTuiSdkConfig {
   host?: string;              // Default: 'localhost'
   port?: number;              // Default: 8765
   enableNetworkCapture?: boolean;  // Default: true
@@ -163,31 +163,31 @@ interface MakoConfig {
 }
 ```
 
-#### `Mako.disconnect()`
+#### `RnTuiSdk.disconnect()`
 
 Closes the WebSocket connection.
 
 ```typescript
-Mako.disconnect();
+RnTuiSdk.disconnect();
 ```
 
-#### `Mako.isConnected()`
+#### `RnTuiSdk.isConnected()`
 
 Returns the current connection status.
 
 ```typescript
-const connected = Mako.isConnected(); // boolean
+const connected = RnTuiSdk.isConnected(); // boolean
 ```
 
 #### Logging Methods
 
 ```typescript
 // Send logs with different levels
-Mako.log('General log message');
-Mako.debug('Debug information', { userId: 123 });
-Mako.info('Informational message');
-Mako.warn('Warning message');
-Mako.error('Error message', { stack: error.stack });
+RnTuiSdk.log('General log message');
+RnTuiSdk.debug('Debug information', { userId: 123 });
+RnTuiSdk.info('Informational message');
+RnTuiSdk.warn('Warning message');
+RnTuiSdk.error('Error message', { stack: error.stack });
 ```
 
 All logging methods accept an optional metadata object as the second parameter.
@@ -196,10 +196,10 @@ All logging methods accept an optional metadata object as the second parameter.
 
 ### Connection Issues
 
-**Problem**: App can't connect to the Mako CLI
+**Problem**: App can't connect to the RN TUI CLI
 
 **Solutions**:
-1. Ensure the Mako CLI is running (`yarn dev` / `mako`)
+1. Ensure the RN TUI CLI is running (`yarn dev` / `rn-tui`)
 2. Check that both devices are on the same network
 3. Verify the IP address is correct (use `ifconfig` to find your machine's IP)
 4. Check if port 8765 is not blocked by firewall
@@ -216,16 +216,16 @@ All logging methods accept an optional metadata object as the second parameter.
 
 ### Logs Not Appearing
 
-**Problem**: Console logs are not showing in the Mako CLI
+**Problem**: Console logs are not showing in the RN TUI CLI
 
 **Solutions**:
-1. Verify the connection is established (`Mako.isConnected()`)
+1. Verify the connection is established (`RnTuiSdk.isConnected()`)
 2. Ensure you're running in development mode (`__DEV__ === true`)
 3. Confirm the CLI shows your device in the header
 
 ### High Memory Usage
 
-**Problem**: The Mako CLI process using too much memory
+**Problem**: The RN TUI CLI process using too much memory
 
 **Solutions**:
 1. Clear logs periodically from the JS Logs / Native Logs panels
@@ -241,7 +241,7 @@ We welcome contributions! Here's how you can help:
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/your-username/mako.git
+   git clone https://github.com/your-username/rn-tui.git
    ```
 3. Create a new branch:
    ```bash
@@ -273,18 +273,18 @@ docs(readme): update installation instructions
 1. Ensure your code follows the existing style
 2. Update documentation if needed
 3. Test your changes thoroughly:
-   - For Mako CLI: run `yarn dev` and verify with the simulator (`yarn sim`)
+   - For RN TUI CLI: run `yarn dev` and verify with the simulator (`yarn sim`)
    - For SDK: Test with the example app
 4. Create a Pull Request with a clear description
 
 ### Code Style Guidelines
 
-**mako-cli (TypeScript / Ink)**:
+**rn-tui-cli (TypeScript / Ink)**:
 - Use TypeScript for all source files
 - Keep modules organized under `src/modules/<feature>` and shared UI under `src/shared`
 - Run `yarn typecheck` before opening a PR
 
-**mako-react-native (TypeScript)**:
+**rn-tui-sdk (TypeScript)**:
 - Use TypeScript for all source files
 - Follow existing patterns in the codebase
 - Document public APIs with JSDoc comments
@@ -292,7 +292,7 @@ docs(readme): update installation instructions
 ### Running the Example App
 
 ```bash
-cd mako-react-native/example
+cd packages/rn-tui-sdk/example
 yarn install
 cd ios && pod install && cd ..
 yarn ios  # or yarn android
@@ -305,7 +305,7 @@ This project is licensed under the MIT License - see below for details:
 ```
 MIT License
 
-Copyright (c) 2024 Mako Contributors
+Copyright (c) 2024 RN TUI Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
