@@ -27,10 +27,10 @@ export function App() {
   })
 
   return (
-    <Box flexDirection="column" height="100%">
+    <Box flexDirection="column" height="100%" paddingTop={1}>
       <AsciiLogo />
       <TabBar active={activeTab} />
-      <Box flexGrow={1} flexDirection="column" paddingX={1} paddingY={1}>
+      <Box flexGrow={1} flexDirection="column" paddingX={1}>
         {activeTab === 'dashboard'
           ? <DashboardContainer />
           : null

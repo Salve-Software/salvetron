@@ -1,4 +1,4 @@
-import mako from 'mako-react-native';
+import mako from '@salve-software/mako-react-native';
 import { Button, Text, View } from "react-native";
 import { styles } from "./styles";
 
@@ -14,9 +14,9 @@ export const Playground: React.FC = () => {
       <Button
         title="Test"
         onPress={() => {
-          fetch('https://jsonplaceholder.typicode.com/todos/1')
+          fetch('https://dummyjson.com/users?limit=100')
             .then(response => response.json())
-            .then(json => mako.log('RESPONSE-API', json))
+            .then(json => mako.log('RESPONSE-API-API-API-API-API', json))
         }}
       />
 
