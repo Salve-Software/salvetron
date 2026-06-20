@@ -15,8 +15,6 @@ export type {
   NetworkEvent,
   DeviceInfoEvent,
   ProjectInfoEvent,
-  ComponentRenderEvent,
-  ComponentTreeEvent,
   PerformanceMetricsEvent,
   EventType,
   MakoEvent,
@@ -33,8 +31,6 @@ export interface MakoConfig {
   port?: number;
   /** Enable network request/response capture (default: true) */
   enableNetworkCapture?: boolean;
-  /** Enable component inspector for React render tracking (default: false) */
-  enableComponentInspector?: boolean;
   /** Enable performance monitoring for FPS, memory, and CPU tracking (default: false) */
   enablePerformanceMonitoring?: boolean;
   /** URL patterns to ignore (default includes Metro bundler URLs) */
