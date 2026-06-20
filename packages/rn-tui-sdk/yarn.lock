@@ -2601,12 +2601,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@salve-software/mako-react-native@workspace:.":
+"@salve-software/rn-tui-sdk@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@salve-software/mako-react-native@workspace:."
+  resolution: "@salve-software/rn-tui-sdk@workspace:."
   dependencies:
     "@jamesacarr/eslint-formatter-github-actions": "npm:^0.2.0"
-    "@salve-software/mako-types": "npm:^1.0.0"
+    "@salve-software/rn-tui-types": "npm:^1.0.0"
     "@types/jest": "npm:^29.5.12"
     "@types/react": "npm:19.2.0"
     jest: "npm:^30.4.2"
@@ -2623,10 +2623,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@salve-software/mako-types@npm:^1.0.0":
+"@salve-software/rn-tui-types@npm:^1.0.0":
   version: 1.0.0
-  resolution: "@salve-software/mako-types@npm:1.0.0"
-  checksum: 10c0/82ffb6000ab9f32d645b7d8b1562050ea033228fdc671415c8c8681ec1426c512ff486115baa9290e3ae99d7323171663ed707dd07cf687ea74ee9308a796a15
+  resolution: "@salve-software/rn-tui-types@npm:1.0.0"
+  checksum: 10c0/a2361def22fdfa0f7ed47267586a196569429c9735129327fe2181da8acafbd8d2735d1cf54dd2c8052b7ce83fc5a66a078be29f0a0f4db386aee17625cadd4d
   languageName: node
   linkType: hard
 
@@ -8209,30 +8209,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-nitro-trace-example@workspace:example":
-  version: 0.0.0-use.local
-  resolution: "react-native-nitro-trace-example@workspace:example"
-  dependencies:
-    "@babel/core": "npm:^7.25.2"
-    "@babel/preset-env": "npm:^7.25.3"
-    "@babel/runtime": "npm:^7.25.0"
-    "@react-native-community/cli": "npm:20.1.0"
-    "@react-native-community/cli-platform-android": "npm:20.1.0"
-    "@react-native-community/cli-platform-ios": "npm:20.1.0"
-    "@react-native/babel-preset": "npm:0.84.1"
-    "@react-native/eslint-config": "npm:0.84.1"
-    "@react-native/metro-config": "npm:0.84.1"
-    "@react-native/new-app-screen": "npm:0.84.1"
-    "@react-native/typescript-config": "npm:0.84.1"
-    "@types/jest": "npm:^29.5.13"
-    babel-plugin-module-resolver: "npm:^5.0.2"
-    react: "npm:19.2.3"
-    react-native: "npm:0.84.1"
-    react-native-nitro-modules: "npm:0.35.4"
-    react-native-safe-area-context: "npm:^5.5.2"
-  languageName: unknown
-  linkType: soft
-
 "react-native-safe-area-context@npm:^5.5.2":
   version: 5.7.0
   resolution: "react-native-safe-area-context@npm:5.7.0"
@@ -8535,6 +8511,30 @@ __metadata:
   checksum: 10c0/9cb7757acb489bd83757ba1a274ab545eafd75598a9d817e0c3f8b164238dd90eba50d6b848bd4dcc5f3040912e882dc7ba71653e35af660d77b25c381d402e8
   languageName: node
   linkType: hard
+
+"rn-tui-sdk-example@workspace:example":
+  version: 0.0.0-use.local
+  resolution: "rn-tui-sdk-example@workspace:example"
+  dependencies:
+    "@babel/core": "npm:^7.25.2"
+    "@babel/preset-env": "npm:^7.25.3"
+    "@babel/runtime": "npm:^7.25.0"
+    "@react-native-community/cli": "npm:20.1.0"
+    "@react-native-community/cli-platform-android": "npm:20.1.0"
+    "@react-native-community/cli-platform-ios": "npm:20.1.0"
+    "@react-native/babel-preset": "npm:0.84.1"
+    "@react-native/eslint-config": "npm:0.84.1"
+    "@react-native/metro-config": "npm:0.84.1"
+    "@react-native/new-app-screen": "npm:0.84.1"
+    "@react-native/typescript-config": "npm:0.84.1"
+    "@types/jest": "npm:^29.5.13"
+    babel-plugin-module-resolver: "npm:^5.0.2"
+    react: "npm:19.2.3"
+    react-native: "npm:0.84.1"
+    react-native-nitro-modules: "npm:0.35.4"
+    react-native-safe-area-context: "npm:^5.5.2"
+  languageName: unknown
+  linkType: soft
 
 "run-parallel@npm:^1.1.9":
   version: 1.2.0
