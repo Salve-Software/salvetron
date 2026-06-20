@@ -1,6 +1,6 @@
 /**
  * Project Domain Type
- * Represents a connected project in Mako
+ * Represents a connected project in RN TUI
  */
 
 export interface Project {

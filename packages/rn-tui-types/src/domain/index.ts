@@ -1,5 +1,5 @@
 /**
- * Domain Types - Data models used in Mako desktop app
+ * Domain Types - Data models used in RN TUI CLI
  */
 
 export * from './device.js';

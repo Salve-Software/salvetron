@@ -1,5 +1,5 @@
 /**
- * Event Types - Messages sent from SDK to Mako desktop app
+ * Event Types - Messages sent from SDK to RN TUI CLI
  */
 
 export * from './log.js';
@@ -17,7 +17,7 @@ import type { DeviceInfoEvent } from './device.js';
 import type { ProjectInfoEvent } from './project.js';
 import type { PerformanceMetricsEvent } from './performance.js';
 
-export type MakoEvent =
+export type RnTuiEvent =
   | LogEvent
   | NativeLogEvent
   | NetworkEvent

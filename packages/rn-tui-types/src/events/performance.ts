@@ -1,6 +1,6 @@
 /**
  * Performance Event Types
- * Used by SDK to send performance metrics to Mako desktop app
+ * Used by SDK to send performance metrics to RN TUI CLI
  */
 
 export interface PerformanceMetricsEvent {

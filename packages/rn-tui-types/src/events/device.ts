@@ -1,6 +1,6 @@
 /**
  * Device Info Event
- * Sent when device connects to Mako
+ * Sent when device connects to RN TUI
  */
 
 export type Platform = 'ios' | 'android';

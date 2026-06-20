@@ -1,7 +1,7 @@
 {
-  "name": "@salve-software/mako-types",
+  "name": "@salve-software/rn-tui-types",
   "version": "1.0.0",
-  "description": "Shared types for Mako ecosystem",
+  "description": "Shared types for RN TUI ecosystem",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

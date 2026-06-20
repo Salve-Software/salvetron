@@ -1,6 +1,6 @@
 /**
  * Network Log Domain Types
- * Stored representation of network requests in Mako desktop app
+ * Stored representation of network requests in RN TUI CLI
  */
 
 export type HttpMethod =

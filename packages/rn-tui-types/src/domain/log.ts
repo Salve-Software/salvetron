@@ -1,6 +1,6 @@
 /**
  * JS Log Domain Type
- * Stored representation of a log in Mako
+ * Stored representation of a log in RN TUI
  */
 
 import type { LogLevel } from '../events/log';

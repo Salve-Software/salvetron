@@ -1,6 +1,6 @@
 /**
  * Project Info Event
- * Sent when project connects to Mako
+ * Sent when project connects to RN TUI
  */
 
 export interface ProjectInfoEvent {

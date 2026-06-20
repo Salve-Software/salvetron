@@ -1,6 +1,6 @@
 /**
- * @mako/types
- * Shared types for Mako ecosystem
+ * @rn-tui/types
+ * Shared types for RN TUI ecosystem
  */
 
 // Event types (SDK → Desktop)

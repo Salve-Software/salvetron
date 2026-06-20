@@ -1,6 +1,6 @@
 /**
  * Network Event Types
- * Used by SDK to send network logs to Mako desktop app
+ * Used by SDK to send network logs to RN TUI CLI
  */
 
 export type NetworkStage = 'request' | 'response';

@@ -1,6 +1,6 @@
 /**
  * Component Domain Types
- * Data models used in Mako desktop app for component inspection
+ * Data models used in RN TUI CLI for component inspection
  */
 
 export type RenderHeatLevel = 'cold' | 'warm' | 'hot' | 'critical';

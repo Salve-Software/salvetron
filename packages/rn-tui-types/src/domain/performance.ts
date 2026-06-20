@@ -1,6 +1,6 @@
 /**
  * Performance Domain Types
- * Stored representation of performance metrics in Mako desktop app
+ * Stored representation of performance metrics in RN TUI CLI
  */
 
 export type PerformanceHealthLevel = 'good' | 'moderate' | 'poor' | 'critical';

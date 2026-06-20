@@ -1,6 +1,6 @@
 /**
  * Device Domain Type
- * Represents a connected device in Mako
+ * Represents a connected device in RN TUI
  */
 
 import type { Platform } from '../events/device';
