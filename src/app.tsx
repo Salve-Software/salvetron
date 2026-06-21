@@ -6,6 +6,7 @@ import { AsciiLogo, pickRandomColor } from './shared/components/ascii-logo/index
 import { TabBar } from './shared/components/tab-bar/index.js'
 import { StatusBar } from './shared/components/status-bar/index.js'
 import { useProject } from './shared/store/device.store.js'
+import { useIsSearchBarOpen } from './shared/store/search-bar.store.js'
 import { DashboardContainer } from './modules/dashboard/ui/containers/dashboard-container/index.js'
 import { JsLogsContainer } from './modules/js-logs/ui/containers/js-logs-container/index.js'
 import { NetworkContainer } from './modules/network/ui/containers/network-container/index.js'
@@ -19,6 +20,7 @@ const DEFAULT_LOGO_COLOR = '#61DAFB'
 export function App() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
   const appName = useProject()?.appName
+  const isSearchBarOpen = useIsSearchBarOpen()
 
   const logoColor = useMemo(
     () => (appName ? pickRandomColor() : DEFAULT_LOGO_COLOR),
@@ -26,6 +28,7 @@ export function App() {
   )
 
   useInput((input, key) => {
+    if (isSearchBarOpen) return
     if (input === '1') setActiveTab('dashboard')
     if (input === '2') setActiveTab('js-logs')
     if (input === '3') setActiveTab('network')
