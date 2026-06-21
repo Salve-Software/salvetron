@@ -24,10 +24,10 @@
     "typecheck": "yarn build && tsc --noEmit",
     "build": "yarn workspace @salve-software/salvetron-types build",
     "test": "yarn workspaces foreach -Apt run test",
-    "prepublishOnly": "node ./scripts/assert-yarn-publish.mjs && yarn build"
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@salve-software/salvetron-types": "workspace:^",
+    "@salve-software/salvetron-types": "^1.0.0",
     "figlet": "^1.11.0",
     "ink": "^7.0.6",
     "json-colorizer": "^3.0.1",
