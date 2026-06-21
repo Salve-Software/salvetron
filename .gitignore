@@ -107,3 +107,4 @@ tsconfig.tsbuildinfo
 .claude/tmp
 .claude/worktrees
 .npmrc
+.env
