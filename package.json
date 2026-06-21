@@ -1,7 +1,7 @@
 {
   "name": "salvetron",
   "description": "Terminal UI debugger for React Native",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "type": "module",
   "packageManager": "yarn@4.9.1",
   "workspaces": [
@@ -11,7 +11,8 @@
   "files": [
     "bin",
     "src",
-    "scripts"
+    "scripts",
+    "tsconfig.json"
   ],
   "engines": {
     "node": ">=18"
@@ -30,6 +31,7 @@
     "ink": "^7.0.6",
     "json-colorizer": "^3.0.1",
     "react": "^19.1.0",
+    "tsx": "^4.0.0",
     "ws": "^8.18.0",
     "zustand": "^5.0.0"
   },
@@ -37,7 +39,6 @@
     "@types/figlet": "^1.7.0",
     "@types/react": "^19.0.0",
     "@types/ws": "^8.5.0",
-    "tsx": "^4.0.0",
     "typescript": "~5.8.3"
   }
 }

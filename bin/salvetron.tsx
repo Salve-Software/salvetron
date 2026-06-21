@@ -1,4 +1,6 @@
 #!/usr/bin/env -S tsx
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { render } from 'ink'
 import { App } from '../src/app.js'
 import { startWsServer } from '../src/server/ws-server.js'

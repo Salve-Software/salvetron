@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Box, Text } from 'ink'
 import type { NativeLogEvent } from '@salve-software/salvetron-types'
 import type { CopyFeedback } from '../../../../../shared/hooks/use-detail-panel.js'

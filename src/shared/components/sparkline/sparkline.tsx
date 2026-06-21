@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Text } from 'ink'
 
 const BLOCKS = ' ▁▂▃▄▅▆▇█'

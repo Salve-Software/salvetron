@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Box } from 'ink'
 import { useCallback, useEffect, useRef } from 'react'
 import { useTerminalSize } from '../../../../../shared/hooks/use-terminal-size.js'

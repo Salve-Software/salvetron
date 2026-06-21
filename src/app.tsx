@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Box, useInput } from 'ink'
 import { useMemo, useState } from 'react'
 import { AsciiLogo, pickRandomColor } from './shared/components/ascii-logo/index.js'

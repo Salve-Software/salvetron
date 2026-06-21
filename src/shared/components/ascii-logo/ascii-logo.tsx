@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Text, useStdout } from "ink";
 import { useEffect, useMemo, useRef, useState } from "react";
 import figlet from "figlet";

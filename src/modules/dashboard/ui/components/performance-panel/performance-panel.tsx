@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Text } from "ink";
 import type { PerformanceMetricsEvent } from "@salve-software/salvetron-types";
 import { Panel } from "../../../../../shared/components/panel/index.js";

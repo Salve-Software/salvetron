@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Box, Text } from 'ink'
 import { useDevice, useConnectionStatus } from '../../store/device.store.js'
 

@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Box, Text } from 'ink'
 import { Gauge } from '../../../../../shared/components/gauge/index.js'
 import { Sparkline } from '../../../../../shared/components/sparkline/index.js'
