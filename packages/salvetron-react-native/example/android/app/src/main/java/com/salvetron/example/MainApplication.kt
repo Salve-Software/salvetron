@@ -1,6 +1,7 @@
 package com.salvetron.example
 
 import android.app.Application
+import android.util.Log
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -22,6 +23,9 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    // Fires before Salvetron's startLogCapture() activates (capture starts on WS connect),
+    // so this is not captured on cold start — visible only in Logcat.
+    Log.i("Salvetron-Example", "App launched (Android native)")
     loadReactNative(this)
   }
 }

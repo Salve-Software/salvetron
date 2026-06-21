@@ -14,6 +14,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    // Fires before Salvetron's startLogCapture() activates (capture starts on WS connect),
+    // so this is not captured on cold start — visible only in the Xcode console.
+    NSLog("[Salvetron-Example] App launched (iOS native)")
+
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()
