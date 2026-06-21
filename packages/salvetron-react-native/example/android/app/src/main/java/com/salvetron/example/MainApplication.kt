@@ -23,8 +23,8 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    // Fires before Salvetron's startLogCapture() activates (capture starts on WS connect),
-    // so this is not captured on cold start — visible only in Logcat.
+    // Fires during native launch, before the JS bundle evaluates Salvetron.connect(),
+    // so this specific line is not captured — visible only in Logcat.
     Log.i("Salvetron-Example", "App launched (Android native)")
     loadReactNative(this)
   }
