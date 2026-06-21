@@ -102,7 +102,7 @@ export function JsLogsContainer() {
         </Box>
         : null
       }
-      <Box flexGrow={1}>
+      <Box flexGrow={1} paddingY={1}>
         <LogList
           logs={filtered}
           visibleRows={listRows}
