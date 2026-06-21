@@ -38,7 +38,7 @@ export function App() {
 
   return (
     <Box flexDirection="column" height="100%" paddingTop={1}>
-      <AsciiLogo text={appName} color={logoColor} />
+      <AsciiLogo color={logoColor} />
       <TabBar active={activeTab} />
       <Box flexGrow={1} flexDirection="column" paddingX={1}>
         {activeTab === 'dashboard'

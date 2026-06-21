@@ -4,8 +4,7 @@ import { Text, useStdout } from "ink";
 import { useEffect, useMemo, useRef, useState } from "react";
 import figlet from "figlet";
 
-const FALLBACK_TEXT = "SALVETRON";
-const MAX_TEXT_LENGTH = 18;
+const LOGO_TEXT = "SALVETRON";
 
 const DURATION_MS = 4000;
 const TICK_MS = 80;
@@ -57,11 +56,8 @@ function ansiColor([r, g, b]: Rgb): string {
 }
 
 function buildArt(text: string) {
-  // Truncated so longer project names don't blow past typical terminal
-  // width and wrap mid-glyph.
-  const safeText = text.slice(0, MAX_TEXT_LENGTH);
   const art = figlet
-    .textSync(safeText, { font: "ANSI Shadow" })
+    .textSync(text, { font: "ANSI Shadow" })
     .split("\n")
     .filter((line) => line.trim().length > 0);
 
@@ -117,14 +113,13 @@ function render(t: number, rgb: Rgb, art: string[], waveFrequency: number): stri
   return lines.join("\n");
 }
 
+const { art, waveFrequency } = buildArt(LOGO_TEXT);
+
 interface AsciiLogoProps {
-  text?: string;
   color?: string;
 }
 
-export function AsciiLogo({ text = FALLBACK_TEXT, color = "#61DAFB" }: AsciiLogoProps) {
-  const upperText = text.toUpperCase();
-  const { art, waveFrequency } = useMemo(() => buildArt(upperText), [upperText]);
+export function AsciiLogo({ color = "#61DAFB" }: AsciiLogoProps) {
   const rgb = useMemo(() => hexToRgb(color), [color]);
   const [frame, setFrame] = useState(() => render(0, rgb, art, waveFrequency));
   const { stdout } = useStdout();
@@ -149,7 +144,7 @@ export function AsciiLogo({ text = FALLBACK_TEXT, color = "#61DAFB" }: AsciiLogo
 
   useEffect(() => {
     const start = Date.now();
-    // Render immediately so a text/color change doesn't leave a stale frame
+    // Render immediately so a color change doesn't leave a stale frame
     // on screen until the next tick.
     setFrame(render(0, rgb, art, waveFrequency));
 
