@@ -1,7 +1,7 @@
 {
-  "name": "@salve-software/rn-tui-types",
+  "name": "@salve-software/salvetron-types",
   "version": "1.0.0",
-  "description": "Shared types for RN TUI ecosystem",
+  "description": "Shared types for Salvetron ecosystem",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

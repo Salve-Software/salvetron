@@ -1,6 +1,6 @@
 /**
- * @rn-tui/types
- * Shared types for RN TUI ecosystem
+ * @salvetron/types
+ * Shared types for Salvetron ecosystem
  */
 
 // Event types (SDK → Desktop)
