@@ -1,10 +1,10 @@
-# rn-tui-sdk
+# salvetron-react-native
 
-React Native SDK for [RN TUI](https://github.com/Salve-Software/rn-tui) - Real-time debugging console for React Native.
+React Native SDK for [Salvetron](https://github.com/Salve-Software/salvetron) - Real-time debugging console for React Native.
 
-[![npm version](https://img.shields.io/npm/v/@salve-software/rn-tui-sdk.svg)](https://www.npmjs.com/package/@salve-software/rn-tui-sdk)
-[![npm downloads](https://img.shields.io/npm/dm/@salve-software/rn-tui-sdk.svg)](https://www.npmjs.com/package/@salve-software/rn-tui-sdk)
-[![license](https://img.shields.io/npm/l/@salve-software/rn-tui-sdk.svg)](https://github.com/Salve-Software/rn-tui/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@salve-software/salvetron-react-native.svg)](https://www.npmjs.com/package/@salve-software/salvetron-react-native)
+[![npm downloads](https://img.shields.io/npm/dm/@salve-software/salvetron-react-native.svg)](https://www.npmjs.com/package/@salve-software/salvetron-react-native)
+[![license](https://img.shields.io/npm/l/@salve-software/salvetron-react-native.svg)](https://github.com/Salve-Software/salvetron/blob/main/LICENSE)
 
 ## Requirements
 
@@ -16,7 +16,7 @@ React Native SDK for [RN TUI](https://github.com/Salve-Software/rn-tui) - Real-t
 ## Installation
 
 ```bash
-npm install @salve-software/rn-tui-sdk react-native-nitro-modules
+npm install @salve-software/salvetron-react-native react-native-nitro-modules
 ```
 
 For iOS, install pods:
@@ -32,10 +32,10 @@ For Android, the package will auto-link.
 Add the following code to your app's entry point (e.g., `App.tsx`):
 
 ```typescript
-import RnTuiSdk from '@salve-software/rn-tui-sdk';
+import Salvetron from '@salve-software/salvetron-react-native';
 
 if (__DEV__) {
-  RnTuiSdk.connect({
+  Salvetron.connect({
     host: '192.168.1.100', // Your Mac's IP address
     port: 8765,
     enableNetworkCapture: true,
@@ -47,10 +47,10 @@ if (__DEV__) {
 
 ## API
 
-### `RnTuiSdk.connect(config?)`
+### `Salvetron.connect(config?)`
 
 ```typescript
-interface RnTuiSdkConfig {
+interface SalvetronConfig {
   host?: string;                    // Default: 'localhost'
   port?: number;                    // Default: 8765
   enableNetworkCapture?: boolean;   // Default: true
@@ -61,29 +61,29 @@ interface RnTuiSdkConfig {
 }
 ```
 
-### `RnTuiSdk.disconnect()`
+### `Salvetron.disconnect()`
 
 Closes the WebSocket connection.
 
-### `RnTuiSdk.isConnected()`
+### `Salvetron.isConnected()`
 
 Returns the current connection status.
 
 ### Logging
 
 ```typescript
-RnTuiSdk.log('General message');
-RnTuiSdk.debug('Debug info', { userId: 123 });
-RnTuiSdk.info('Info message');
-RnTuiSdk.warn('Warning message');
-RnTuiSdk.error('Error message');
+Salvetron.log('General message');
+Salvetron.debug('Debug info', { userId: 123 });
+Salvetron.info('Info message');
+Salvetron.warn('Warning message');
+Salvetron.error('Error message');
 ```
 
-## RN TUI CLI
+## Salvetron CLI
 
-This SDK requires the [RN TUI CLI](https://github.com/Salve-Software/rn-tui) running in your terminal to receive and display logs.
+This SDK requires the [Salvetron CLI](https://github.com/Salve-Software/salvetron) running in your terminal to receive and display logs.
 
-For full documentation, visit the [main repository](https://github.com/Salve-Software/rn-tui).
+For full documentation, visit the [main repository](https://github.com/Salve-Software/salvetron).
 
 ## License
 
