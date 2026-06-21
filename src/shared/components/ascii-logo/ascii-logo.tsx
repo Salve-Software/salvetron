@@ -4,7 +4,7 @@ import { Text, useStdout } from "ink";
 import { useEffect, useMemo, useRef, useState } from "react";
 import figlet from "figlet";
 
-const FALLBACK_TEXT = "RN PANEL";
+const FALLBACK_TEXT = "SALVETRON";
 const MAX_TEXT_LENGTH = 18;
 
 const DURATION_MS = 4000;
