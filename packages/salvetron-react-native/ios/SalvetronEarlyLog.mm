@@ -9,7 +9,10 @@
 
 #if DEBUG
 #import <Foundation/Foundation.h>
-#import "NitroSalvetron-Swift.h"
+// Pulls in the margelo::nitro::salvetron C++ types before including the
+// generated -Swift.h header, mirroring NitroSalvetronAutolinking.mm — importing
+// -Swift.h directly fails because it references those types inline.
+#import "NitroSalvetron-Swift-Cxx-Umbrella.hpp"
 
 @interface SalvetronEarlyLog : NSObject
 @end
