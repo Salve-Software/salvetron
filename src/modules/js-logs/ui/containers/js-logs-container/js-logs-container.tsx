@@ -17,9 +17,11 @@ import { LogDetail } from '../../components/log-detail/index.js'
 import { formatBody, formatPlainBody } from '../../../../../shared/utils/format-body.js'
 import type { LogEvent } from '@salve-software/salvetron-types'
 
-const OVERHEAD_ROWS = 6
+const OVERHEAD_ROWS = 7
 const DETAIL_FIXED_ROWS = 3
 const MIN_LIST_ROWS = 10
+const BAR_BORDER_ROWS = 2
+const BAR_CHROME_COLS = 4
 
 export function JsLogsContainer() {
   const [cols, rows] = useTerminalSize()
@@ -42,7 +44,7 @@ export function JsLogsContainer() {
     [logs, query, active],
   )
 
-  const barRows = isOpen ? 1 + JS_LOG_FILTER_GROUPS.length + 1 : 0
+  const barRows = isOpen ? BAR_BORDER_ROWS + 1 + JS_LOG_FILTER_GROUPS.length + 1 : 0
   const clearRows = clearPending ? 1 : 0
   const availableRows = rows - OVERHEAD_ROWS - barRows - clearRows
   const detailHeight = Math.max(DETAIL_FIXED_ROWS + 2, availableRows - MIN_LIST_ROWS)
@@ -89,8 +91,8 @@ export function JsLogsContainer() {
     <Box flexDirection="column">
       {isOpen
         ?
-        <Box flexDirection="column">
-          <SearchBar query={query} width={cols} resultCount={filtered.length} totalCount={logs.length} />
+        <Box flexDirection="column" borderStyle="single" borderColor="cyan" paddingX={1}>
+          <SearchBar query={query} width={cols - BAR_CHROME_COLS} resultCount={filtered.length} totalCount={logs.length} />
           <FilterBar
             groups={JS_LOG_FILTER_GROUPS}
             active={active}
@@ -108,6 +110,7 @@ export function JsLogsContainer() {
           scrollOffset={scrollOffset}
         />
       </Box>
+      <Text color="gray" dimColor>/ search · x clear</Text>
       {clearPending ? <Text color="yellow">⚠ press x again to clear · esc to cancel</Text> : null}
       {detailOpen && selectedLog
         ?

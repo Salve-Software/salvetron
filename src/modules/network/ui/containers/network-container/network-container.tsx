@@ -19,9 +19,11 @@ import { formatBody, formatPlainBody } from '../../../../../shared/utils/format-
 import { buildCurlCommand } from '../../../../../shared/utils/build-curl-command.js'
 import type { NetworkLog } from '@salve-software/salvetron-types'
 
-const OVERHEAD_ROWS = 6
+const OVERHEAD_ROWS = 7
 const DETAIL_FIXED_ROWS = 5
 const MIN_LIST_ROWS = 4
+const BAR_BORDER_ROWS = 2
+const BAR_CHROME_COLS = 4
 
 export function NetworkContainer() {
   const [cols, rows] = useTerminalSize()
@@ -44,7 +46,7 @@ export function NetworkContainer() {
     [logs, query, active],
   )
 
-  const barRows = isOpen ? 1 + NETWORK_FILTER_GROUPS.length + 1 : 0
+  const barRows = isOpen ? BAR_BORDER_ROWS + 1 + NETWORK_FILTER_GROUPS.length + 1 : 0
   const clearRows = clearPending ? 1 : 0
   const availableRows = rows - OVERHEAD_ROWS - barRows - clearRows
   const detailHeight = Math.max(DETAIL_FIXED_ROWS + 2, availableRows - MIN_LIST_ROWS)
@@ -96,8 +98,8 @@ export function NetworkContainer() {
     <Box flexDirection="column">
       {isOpen
         ?
-        <Box flexDirection="column">
-          <SearchBar query={query} width={cols} resultCount={filtered.length} totalCount={logs.length} />
+        <Box flexDirection="column" borderStyle="single" borderColor="cyan" paddingX={1}>
+          <SearchBar query={query} width={cols - BAR_CHROME_COLS} resultCount={filtered.length} totalCount={logs.length} />
           <FilterBar
             groups={NETWORK_FILTER_GROUPS}
             active={active}
@@ -121,6 +123,7 @@ export function NetworkContainer() {
           )
         })}
       </Box>
+      <Text color="gray" dimColor>/ search · x clear</Text>
       {clearPending ? <Text color="yellow">⚠ press x again to clear · esc to cancel</Text> : null}
       {detailOpen && selectedLog
         ?
