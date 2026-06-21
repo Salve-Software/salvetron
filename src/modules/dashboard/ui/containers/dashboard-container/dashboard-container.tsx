@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Box, Text, useInput } from "ink";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTerminalSize } from "../../../../../shared/hooks/use-terminal-size.js";
@@ -21,7 +23,7 @@ import { NetworkDetail } from "../../../../network/ui/components/network-detail/
 import { useNativeLogs } from "../../../../native-logs/store/native-logs.store.js";
 import { NativeLogList } from "../../../../native-logs/ui/components/native-log-list/index.js";
 import { NativeLogDetail } from "../../../../native-logs/ui/components/native-log-detail/index.js";
-import type { LogEvent, NativeLogEvent, NetworkLog } from "@salve-software/rn-tui-types";
+import type { LogEvent, NativeLogEvent, NetworkLog } from "@salve-software/salvetron-types";
 
 type FocusPanel = "logs" | "network" | "native";
 const PANELS: FocusPanel[] = ["logs", "network", "native"];

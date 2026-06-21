@@ -1,5 +1,5 @@
 import { WebSocketServer } from 'ws'
-import type { RnTuiEvent } from '@salve-software/rn-tui-types'
+import type { RnTuiEvent } from '@salve-software/salvetron-types'
 import { useJsLogsStore } from '../modules/js-logs/store/js-logs.store.js'
 import { useNativeLogsStore } from '../modules/native-logs/store/native-logs.store.js'
 import { useNetworkStore } from '../modules/network/store/network.store.js'
@@ -11,7 +11,7 @@ export function startWsServer(port: number) {
 
   wss.on('error', (err: NodeJS.ErrnoException) => {
     if (err.code === 'EADDRINUSE') {
-      console.error(`Port ${port} already in use. Set RN_TUI_PORT env var to change port.`)
+      console.error(`Port ${port} already in use. Set SALVETRON_PORT env var to change port.`)
       process.exit(1)
     }
   })

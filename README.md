@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/banner.png" alt="RN TUI Logo" width="1280" height="720" style="border-radius: 20px;">
+  <img src="assets/banner.png" alt="Salvetron Logo" width="1280" height="720" style="border-radius: 20px;">
 </p>
 
-<h1 align="center">RN TUI</h1>
+<h1 align="center">Salvetron</h1>
 
 <p align="center">
   <strong>Real-time terminal UI debugger for React Native</strong>
@@ -16,7 +16,7 @@
 
 ---
 
-RN TUI is a real-time debugging tool for React Native developers, delivered as a terminal UI (TUI). The RN TUI CLI runs a WebSocket server in your terminal and renders incoming telemetry — JS logs, native logs, network traffic, and live performance metrics — from your running app. Your app streams that telemetry using the companion SDK, `@salve-software/rn-tui-sdk`.
+Salvetron is a real-time debugging tool for React Native developers, delivered as a terminal UI (TUI). The Salvetron CLI runs a WebSocket server in your terminal and renders incoming telemetry — JS logs, native logs, network traffic, and live performance metrics — from your running app. Your app streams that telemetry using the companion SDK, `@salve-software/salvetron-react-native`.
 
 ## Features
 
@@ -25,7 +25,7 @@ RN TUI is a real-time debugging tool for React Native developers, delivered as a
 - **Network Inspector** - Inspect HTTP requests and responses: method, status, duration, headers, and pretty-printed bodies
 - **Native Logs** - View iOS and Android platform logs in real-time, with source tags
 - **Keyboard-driven TUI** - Navigate panels and lists entirely from the keyboard; no GUI required
-- **Zero-config WebSocket server** - Starts on port 8765 by default (override with `RN_TUI_PORT`)
+- **Zero-config WebSocket server** - Starts on port 8765 by default (override with `SALVETRON_PORT`)
 
 ## Screenshots
 
@@ -44,13 +44,13 @@ Example:
 
 ## Architecture
 
-RN TUI has two parts:
+Salvetron has two parts:
 
 ```
 ┌──────────────────────────┐        WebSocket          ┌──────────────────────────┐
-│     React Native App      │ ───────────────────────▶ │        RN TUI CLI        │
+│     React Native App      │ ───────────────────────▶ │       Salvetron CLI      │
 │ @salve-software/          │        port 8765          │  (terminal UI debugger)  │
-│   rn-tui-sdk (SDK)        │                           │                          │
+│   salvetron-react-native  │                           │                          │
 └──────────────────────────┘                            └──────────────────────────┘
          │                                                        │
          ├── JS Console Logs                                      ├── Dashboard (FPS/CPU/memory)
@@ -59,9 +59,9 @@ RN TUI has two parts:
          └── Performance Metrics                                  └── Native Logs viewer
 ```
 
-1. **RN TUI CLI** (`@salve-software/rn-tui`): an Ink-based terminal UI that runs a WebSocket server and renders telemetry from connected apps.
+1. **Salvetron CLI** (`salvetron`): an Ink-based terminal UI that runs a WebSocket server and renders telemetry from connected apps.
 
-2. **rn-tui-sdk** (SDK): A React Native package built with Nitro Modules that captures logs, network activity, and performance metrics and streams them to the CLI.
+2. **salvetron-react-native** (SDK): A React Native package built with Nitro Modules that captures logs, network activity, and performance metrics and streams them to the CLI.
 
 ## Installation
 
@@ -69,33 +69,33 @@ RN TUI has two parts:
 
 | Component | Requirement |
 |-----------|-------------|
-| RN TUI CLI | Node.js 18+ |
+| Salvetron CLI | Node.js 18+ |
 | React Native SDK | React Native 0.73+ |
 | Xcode | 15+ (for iOS development) |
 | Android Studio | Latest (for Android development) |
 
-### Running the RN TUI CLI
+### Running the Salvetron CLI
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Salve-Software/rn-tui.git
-   cd rn-tui
+   git clone https://github.com/Salve-Software/salvetron.git
+   cd salvetron
    yarn install
    ```
 
 2. Start the CLI:
    ```bash
-   yarn dev          # starts the RN TUI CLI (Ink TUI) on port 8765
+   yarn dev          # starts the Salvetron CLI (Ink TUI) on port 8765
    ```
 
-   Or, once linked as a bin:
+   Or, once published:
    ```bash
-   rn-tui
+   npx salvetron
    ```
 
-   Override the port with the `RN_TUI_PORT` environment variable:
+   Override the port with the `SALVETRON_PORT` environment variable:
    ```bash
-   RN_TUI_PORT=9000 yarn dev
+   SALVETRON_PORT=9000 yarn dev
    ```
 
 ### Installing React Native SDK
@@ -104,10 +104,10 @@ RN TUI has two parts:
 
    ```bash
    # Using npm
-   npm install @salve-software/rn-tui-sdk
+   npm install @salve-software/salvetron-react-native
 
    # Using yarn
-   yarn add @salve-software/rn-tui-sdk
+   yarn add @salve-software/salvetron-react-native
    ```
 
 2. For iOS, install pods:
@@ -119,26 +119,26 @@ RN TUI has two parts:
 
 ## Usage
 
-### Starting the RN TUI CLI
+### Starting the Salvetron CLI
 
-Run `yarn dev` (or `rn-tui`) in your terminal. The CLI starts a WebSocket server on port **8765** and shows the Dashboard. Use the tab bar / keyboard shortcuts shown in the status bar to switch between Dashboard, JS Logs, Network, and Native Logs. Connected device info appears in the header once your app connects.
+Run `yarn dev` (or `npx salvetron`) in your terminal. The CLI starts a WebSocket server on port **8765** and shows the Dashboard. Use the tab bar / keyboard shortcuts shown in the status bar to switch between Dashboard, JS Logs, Network, and Native Logs. Connected device info appears in the header once your app connects.
 
 ### Connecting from React Native
 
 Add the following code to your React Native app's entry point (e.g., `App.tsx` or `index.js`):
 
 ```typescript
-import RnTuiSdk from '@salve-software/rn-tui-sdk';
+import Salvetron from '@salve-software/salvetron-react-native';
 
 // Connect only in development mode
 if (__DEV__) {
-  RnTuiSdk.connect({
+  Salvetron.connect({
     host: '192.168.1.100', // Your Mac's IP address
     port: 8765,
     enableNetworkCapture: true,
-    onConnect: () => console.log('Connected to RN TUI!'),
-    onDisconnect: () => console.log('Disconnected from RN TUI'),
-    onError: (error) => console.error('RN TUI error:', error),
+    onConnect: () => console.log('Connected to Salvetron!'),
+    onDisconnect: () => console.log('Disconnected from Salvetron'),
+    onError: (error) => console.error('Salvetron error:', error),
   });
 }
 ```
@@ -147,12 +147,12 @@ if (__DEV__) {
 
 ### API Reference
 
-#### `RnTuiSdk.connect(config?)`
+#### `Salvetron.connect(config?)`
 
-Establishes a WebSocket connection to the RN TUI CLI.
+Establishes a WebSocket connection to the Salvetron CLI.
 
 ```typescript
-interface RnTuiSdkConfig {
+interface SalvetronConfig {
   host?: string;              // Default: 'localhost'
   port?: number;              // Default: 8765
   enableNetworkCapture?: boolean;  // Default: true
@@ -163,31 +163,31 @@ interface RnTuiSdkConfig {
 }
 ```
 
-#### `RnTuiSdk.disconnect()`
+#### `Salvetron.disconnect()`
 
 Closes the WebSocket connection.
 
 ```typescript
-RnTuiSdk.disconnect();
+Salvetron.disconnect();
 ```
 
-#### `RnTuiSdk.isConnected()`
+#### `Salvetron.isConnected()`
 
 Returns the current connection status.
 
 ```typescript
-const connected = RnTuiSdk.isConnected(); // boolean
+const connected = Salvetron.isConnected(); // boolean
 ```
 
 #### Logging Methods
 
 ```typescript
 // Send logs with different levels
-RnTuiSdk.log('General log message');
-RnTuiSdk.debug('Debug information', { userId: 123 });
-RnTuiSdk.info('Informational message');
-RnTuiSdk.warn('Warning message');
-RnTuiSdk.error('Error message', { stack: error.stack });
+Salvetron.log('General log message');
+Salvetron.debug('Debug information', { userId: 123 });
+Salvetron.info('Informational message');
+Salvetron.warn('Warning message');
+Salvetron.error('Error message', { stack: error.stack });
 ```
 
 All logging methods accept an optional metadata object as the second parameter.
@@ -196,10 +196,10 @@ All logging methods accept an optional metadata object as the second parameter.
 
 ### Connection Issues
 
-**Problem**: App can't connect to the RN TUI CLI
+**Problem**: App can't connect to the Salvetron CLI
 
 **Solutions**:
-1. Ensure the RN TUI CLI is running (`yarn dev` / `rn-tui`)
+1. Ensure the Salvetron CLI is running (`yarn dev` / `npx salvetron`)
 2. Check that both devices are on the same network
 3. Verify the IP address is correct (use `ifconfig` to find your machine's IP)
 4. Check if port 8765 is not blocked by firewall
@@ -216,16 +216,16 @@ All logging methods accept an optional metadata object as the second parameter.
 
 ### Logs Not Appearing
 
-**Problem**: Console logs are not showing in the RN TUI CLI
+**Problem**: Console logs are not showing in the Salvetron CLI
 
 **Solutions**:
-1. Verify the connection is established (`RnTuiSdk.isConnected()`)
+1. Verify the connection is established (`Salvetron.isConnected()`)
 2. Ensure you're running in development mode (`__DEV__ === true`)
 3. Confirm the CLI shows your device in the header
 
 ### High Memory Usage
 
-**Problem**: The RN TUI CLI process using too much memory
+**Problem**: The Salvetron CLI process using too much memory
 
 **Solutions**:
 1. Clear logs periodically from the JS Logs / Native Logs panels
@@ -241,7 +241,7 @@ We welcome contributions! Here's how you can help:
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/your-username/rn-tui.git
+   git clone https://github.com/your-username/salvetron.git
    ```
 3. Create a new branch:
    ```bash
@@ -273,18 +273,18 @@ docs(readme): update installation instructions
 1. Ensure your code follows the existing style
 2. Update documentation if needed
 3. Test your changes thoroughly:
-   - For RN TUI CLI: run `yarn dev` and verify with the simulator (`yarn sim`)
+   - For Salvetron CLI: run `yarn dev` and verify with the simulator (`yarn sim`)
    - For SDK: Test with the example app
 4. Create a Pull Request with a clear description
 
 ### Code Style Guidelines
 
-**rn-tui-cli (TypeScript / Ink)**:
+**salvetron (CLI, TypeScript / Ink)**:
 - Use TypeScript for all source files
 - Keep modules organized under `src/modules/<feature>` and shared UI under `src/shared`
 - Run `yarn typecheck` before opening a PR
 
-**rn-tui-sdk (TypeScript)**:
+**salvetron-react-native (SDK, TypeScript)**:
 - Use TypeScript for all source files
 - Follow existing patterns in the codebase
 - Document public APIs with JSDoc comments
@@ -292,7 +292,7 @@ docs(readme): update installation instructions
 ### Running the Example App
 
 ```bash
-cd packages/rn-tui-sdk/example
+cd packages/salvetron-react-native/example
 yarn install
 cd ios && pod install && cd ..
 yarn ios  # or yarn android
@@ -305,7 +305,7 @@ This project is licensed under the MIT License - see below for details:
 ```
 MIT License
 
-Copyright (c) 2024 RN TUI Contributors
+Copyright (c) 2024 Salvetron Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Box } from 'ink'
 import { useCallback, useEffect, useRef } from 'react'
 import { useTerminalSize } from '../../../../../shared/hooks/use-terminal-size.js'
@@ -7,7 +9,7 @@ import { useJsLogs } from '../../../store/js-logs.store.js'
 import { LogList } from '../../components/log-list/index.js'
 import { LogDetail } from '../../components/log-detail/index.js'
 import { formatBody, formatPlainBody } from '../../../../../shared/utils/format-body.js'
-import type { LogEvent } from '@salve-software/rn-tui-types'
+import type { LogEvent } from '@salve-software/salvetron-types'
 
 const OVERHEAD_ROWS = 6
 const DETAIL_FIXED_ROWS = 3

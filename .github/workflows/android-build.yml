@@ -9,11 +9,11 @@ on:
       - main
     paths:
       - '.github/workflows/android-build.yml'
-      - 'packages/rn-tui-sdk/**'
+      - 'packages/salvetron-react-native/**'
   pull_request:
     paths:
       - '.github/workflows/android-build.yml'
-      - 'packages/rn-tui-sdk/**'
+      - 'packages/salvetron-react-native/**'
   workflow_dispatch:
 
 concurrency:
@@ -43,12 +43,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('packages/rn-tui-sdk/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('packages/salvetron-react-native/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        working-directory: packages/rn-tui-sdk
+        working-directory: packages/salvetron-react-native
         run: yarn install --immutable
 
       - name: Setup JDK 17
@@ -64,15 +64,15 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('packages/rn-tui-sdk/example/android/**/*.gradle*') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('packages/salvetron-react-native/example/android/**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
       - name: Run Gradle build
-        working-directory: packages/rn-tui-sdk/example/android
+        working-directory: packages/salvetron-react-native/example/android
         run: ./gradlew assembleDebug --no-daemon --build-cache
 
       - name: Stop Gradle daemon
         if: always()
-        working-directory: packages/rn-tui-sdk/example/android
+        working-directory: packages/salvetron-react-native/example/android
         run: ./gradlew --stop

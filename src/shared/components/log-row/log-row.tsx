@@ -1,3 +1,5 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Text } from 'ink'
 import type { AnyLog } from '../../types.js'
 

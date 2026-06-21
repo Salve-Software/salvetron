@@ -1,5 +1,7 @@
+/** @jsxRuntime automatic */
+/** @jsxImportSource react */
 import { Box, Text } from 'ink'
-import type { NativeLogEvent } from '@salve-software/rn-tui-types'
+import type { NativeLogEvent } from '@salve-software/salvetron-types'
 import { LogRow } from '../../../../../shared/components/log-row/index.js'
 
 interface NativeLogListProps {
