@@ -39,7 +39,7 @@ export class JSConsoleInterceptor {
       self.originalLog.apply(console, args)
       try {
         const first = args[0]
-        if (typeof first === 'string' && first.startsWith('[RnTuiSdk]')) return
+        if (typeof first === 'string' && first.startsWith('[Salvetron]')) return
         const message = String(args[0])
         const metadata = args.length > 1 ? { args: args.slice(1) } : undefined
         self.callbacks?.onLog('log', message, metadata)
@@ -52,7 +52,7 @@ export class JSConsoleInterceptor {
       self.originalWarn.apply(console, args)
       try {
         const first = args[0]
-        if (typeof first === 'string' && first.startsWith('[RnTuiSdk]')) return
+        if (typeof first === 'string' && first.startsWith('[Salvetron]')) return
         const message = String(args[0])
         const metadata = args.length > 1 ? { args: args.slice(1) } : undefined
         self.callbacks?.onLog('warn', message, metadata)
@@ -65,7 +65,7 @@ export class JSConsoleInterceptor {
       self.originalError.apply(console, args)
       try {
         const first = args[0]
-        if (typeof first === 'string' && first.startsWith('[RnTuiSdk]')) return
+        if (typeof first === 'string' && first.startsWith('[Salvetron]')) return
         const message = String(args[0])
         const metadata = args.length > 1 ? { args: args.slice(1) } : undefined
         self.callbacks?.onLog('error', message, metadata)

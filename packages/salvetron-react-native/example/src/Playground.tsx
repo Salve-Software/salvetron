@@ -1,8 +1,8 @@
-import RnTuiSdk from '@salve-software/rn-tui-sdk';
+import Salvetron from '@salve-software/salvetron-react-native';
 import { Button, Text, View } from "react-native";
 import { styles } from "./styles";
 
-RnTuiSdk.connect({
+Salvetron.connect({
   enablePerformanceMonitoring:true,
 });
 
@@ -15,7 +15,7 @@ export const Playground: React.FC = () => {
         onPress={() => {
           fetch('https://dummyjson.com/users?limit=100')
             .then(response => response.json())
-            .then(json => RnTuiSdk.log('RESPONSE-API-API-API-API-API', json))
+            .then(json => Salvetron.log('RESPONSE-API-API-API-API-API', json))
         }}
       />
 

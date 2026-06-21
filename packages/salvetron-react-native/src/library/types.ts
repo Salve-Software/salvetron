@@ -1,8 +1,8 @@
 /**
- * RN TUI SDK Types
+ * Salvetron SDK Types
  */
 
-// Re-export shared event types from @rn-tui/types
+// Re-export shared event types from @salve-software/salvetron-types
 export type {
   LogLevel,
   LogSource,
@@ -18,14 +18,14 @@ export type {
   PerformanceMetricsEvent,
   EventType,
   RnTuiEvent,
-} from '@salve-software/rn-tui-types';
+} from '@salve-software/salvetron-types';
 
 // ============================================
 // SDK Configuration (SDK-specific)
 // ============================================
 
-export interface RnTuiSdkConfig {
-  /** Host IP/hostname of the RN TUI CLI (default: 'localhost') */
+export interface SalvetronConfig {
+  /** Host IP/hostname of the Salvetron CLI (default: 'localhost') */
   host?: string;
   /** WebSocket port (default: 8765) */
   port?: number;
@@ -35,9 +35,9 @@ export interface RnTuiSdkConfig {
   enablePerformanceMonitoring?: boolean;
   /** URL patterns to ignore (default includes Metro bundler URLs) */
   ignoredUrls?: RegExp[];
-  /** Callback when connected to RN TUI */
+  /** Callback when connected to Salvetron */
   onConnect?: () => void;
-  /** Callback when disconnected from RN TUI */
+  /** Callback when disconnected from Salvetron */
   onDisconnect?: () => void;
   /** Callback on connection error */
   onError?: (error: Error) => void;

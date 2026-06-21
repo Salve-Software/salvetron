@@ -123,7 +123,7 @@ describe('XHRInterceptor', () => {
     expect(result).toBe(false)
 
     expect(console.warn).toHaveBeenCalledWith(
-      '[RnTuiSdk] Network interceptor already enabled'
+      '[Salvetron] Network interceptor already enabled'
     )
   })
 

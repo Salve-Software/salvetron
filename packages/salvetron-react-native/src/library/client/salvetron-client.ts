@@ -1,11 +1,11 @@
 /**
- * WebSocket client for communicating with RN TUI CLI
+ * WebSocket client for communicating with Salvetron CLI
  */
 
 import { Platform } from 'react-native'
 import { NitroModules } from 'react-native-nitro-modules'
 import type {
-  RnTuiSdkConfig,
+  SalvetronConfig,
   RnTuiEvent,
   DeviceInfoEvent,
   LogEvent,
@@ -28,11 +28,11 @@ import { projectHandler } from '../project'
 import { xhrInterceptor, jsConsoleInterceptor } from '../interceptors'
 
 /**
- * RN TUI WebSocket Client
+ * Salvetron WebSocket Client
  */
-export class RnTuiSdkClient {
+export class SalvetronClient {
   private ws: WebSocket | null = null
-  private config: Required<RnTuiSdkConfig>
+  private config: Required<SalvetronConfig>
   private messageQueue: RnTuiEvent[] = []
   private reconnectAttempts = 0
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null
@@ -64,11 +64,11 @@ export class RnTuiSdkClient {
   }
 
   /**
-   * Connect to RN TUI CLI
+   * Connect to Salvetron CLI
    */
-  connect(userConfig: RnTuiSdkConfig = {}): void {
+  connect(userConfig: SalvetronConfig = {}): void {
     if (typeof __DEV__ !== 'undefined' && !__DEV__) {
-      console.warn('[RnTuiSdk] SDK only works in development mode')
+      console.warn('[Salvetron] SDK only works in development mode')
       return
     }
 
@@ -90,7 +90,7 @@ export class RnTuiSdkClient {
   }
 
   /**
-   * Disconnect from RN TUI
+   * Disconnect from Salvetron
    */
   disconnect(): void {
     this.manualDisconnect = true
@@ -105,7 +105,7 @@ export class RnTuiSdkClient {
   }
 
   /**
-   * Send a log event to RN TUI
+   * Send a log event to Salvetron
    */
   sendLog(
     level: LogLevel,
@@ -129,7 +129,7 @@ export class RnTuiSdkClient {
    */
   startNativeLogCapture(): boolean {
     if (this.nativeLogCaptureEnabled) {
-      console.warn('[RnTuiSdk] Native log capture already enabled')
+      console.warn('[Salvetron] Native log capture already enabled')
       return false
     }
 
@@ -141,11 +141,11 @@ export class RnTuiSdkClient {
 
       if (success) {
         this.nativeLogCaptureEnabled = true
-        console.log('[RnTuiSdk] Native log capture enabled')
+        console.log('[Salvetron] Native log capture enabled')
       }
       return success
     } catch (error) {
-      console.error('[RnTuiSdk] Failed to start native log capture:', error)
+      console.error('[Salvetron] Failed to start native log capture:', error)
       return false
     }
   }
@@ -160,9 +160,9 @@ export class RnTuiSdkClient {
       const nitro = this.getNitroRnTuiSdk()
       nitro.stopLogCapture()
       this.nativeLogCaptureEnabled = false
-      console.log('[RnTuiSdk] Native log capture disabled')
+      console.log('[Salvetron] Native log capture disabled')
     } catch (error) {
-      console.error('[RnTuiSdk] Failed to stop native log capture:', error)
+      console.error('[Salvetron] Failed to stop native log capture:', error)
     }
   }
 
@@ -178,7 +178,7 @@ export class RnTuiSdkClient {
    */
   startPerformanceMonitoring(): boolean {
     if (this.performanceMonitoringEnabled) {
-      console.warn('[RnTuiSdk] Performance monitoring already enabled')
+      console.warn('[Salvetron] Performance monitoring already enabled')
       return false
     }
 
@@ -190,7 +190,7 @@ export class RnTuiSdkClient {
     const success = this.performanceHandler.start()
     if (success) {
       this.performanceMonitoringEnabled = true
-      console.log('[RnTuiSdk] Performance monitoring enabled')
+      console.log('[Salvetron] Performance monitoring enabled')
     }
     return success
   }
@@ -207,9 +207,9 @@ export class RnTuiSdkClient {
         this.performanceHandler = null
       }
       this.performanceMonitoringEnabled = false
-      console.log('[RnTuiSdk] Performance monitoring disabled')
+      console.log('[Salvetron] Performance monitoring disabled')
     } catch (error) {
-      console.error('[RnTuiSdk] Failed to stop performance monitoring:', error)
+      console.error('[Salvetron] Failed to stop performance monitoring:', error)
     }
   }
 
@@ -266,7 +266,7 @@ export class RnTuiSdkClient {
       this.ws.onopen = () => {
         this.isConnecting = false
         this.reconnectAttempts = 0
-        console.log(`[RnTuiSdk] Connected to ${url}`)
+        console.log(`[Salvetron] Connected to ${url}`)
         this.config.onConnect()
 
         this.sendProjectInfo()
@@ -286,7 +286,7 @@ export class RnTuiSdkClient {
 
       this.ws.onclose = () => {
         this.isConnecting = false
-        console.log('[RnTuiSdk] Disconnected')
+        console.log('[Salvetron] Disconnected')
         this.config.onDisconnect()
 
         if (!this.manualDisconnect) {
@@ -297,16 +297,16 @@ export class RnTuiSdkClient {
       this.ws.onerror = (event) => {
         this.isConnecting = false
         const error = new Error('WebSocket error')
-        console.error('[RnTuiSdk] Connection error:', event)
+        console.error('[Salvetron] Connection error:', event)
         this.config.onError(error)
       }
 
       this.ws.onmessage = (event) => {
-        console.log('[RnTuiSdk] Received:', event.data)
+        console.log('[Salvetron] Received:', event.data)
       }
     } catch (error) {
       this.isConnecting = false
-      console.error('[RnTuiSdk] Failed to create WebSocket:', error)
+      console.error('[Salvetron] Failed to create WebSocket:', error)
       this.scheduleReconnect()
     }
   }
@@ -314,7 +314,7 @@ export class RnTuiSdkClient {
   private scheduleReconnect(): void {
     if (this.manualDisconnect) return
     if (this.reconnectAttempts >= RECONNECT_CONFIG.maxAttempts) {
-      console.warn('[RnTuiSdk] Max reconnection attempts reached')
+      console.warn('[Salvetron] Max reconnection attempts reached')
       return
     }
 
@@ -325,7 +325,7 @@ export class RnTuiSdkClient {
     this.reconnectAttempts++
 
     console.log(
-      `[RnTuiSdk] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`
+      `[Salvetron] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`
     )
 
     this.reconnectTimeout = setTimeout(() => {
@@ -368,7 +368,7 @@ export class RnTuiSdkClient {
       try {
         this.ws.send(JSON.stringify(event))
       } catch (error) {
-        console.error('[RnTuiSdk] Failed to send event:', error)
+        console.error('[Salvetron] Failed to send event:', error)
         this.messageQueue.push(event)
       }
     } else {
@@ -385,10 +385,10 @@ export class RnTuiSdkClient {
       }
       this.send(event)
       console.log(
-        `[RnTuiSdk] Project registered: ${projectInfo.appName} (${projectInfo.projectId})`
+        `[Salvetron] Project registered: ${projectInfo.appName} (${projectInfo.projectId})`
       )
     } catch (error) {
-      console.warn('[RnTuiSdk] Failed to send project info:', error)
+      console.warn('[Salvetron] Failed to send project info:', error)
     }
   }
 
@@ -403,10 +403,10 @@ export class RnTuiSdkClient {
       }
       this.send(event)
       console.log(
-        `[RnTuiSdk] Device registered: ${deviceInfo.deviceName} (${deviceInfo.deviceId})`
+        `[Salvetron] Device registered: ${deviceInfo.deviceName} (${deviceInfo.deviceId})`
       )
     } catch (error) {
-      console.warn('[RnTuiSdk] Failed to send device info:', error)
+      console.warn('[Salvetron] Failed to send device info:', error)
     }
   }
 
@@ -427,7 +427,7 @@ export class RnTuiSdkClient {
 
     const success = xhrInterceptor.enable(this.networkHandler.getCallbacks())
     if (success) {
-      console.log('[RnTuiSdk] Network capture enabled')
+      console.log('[Salvetron] Network capture enabled')
     }
   }
 }

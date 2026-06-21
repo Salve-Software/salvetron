@@ -1,4 +1,4 @@
-import { RnTuiSdkClient } from './rn-tui-sdk-client'
+import { SalvetronClient } from './salvetron-client'
 
 export {
   DEFAULT_IGNORED_URLS,
@@ -6,4 +6,4 @@ export {
   DEFAULT_CONFIG,
 } from './constants'
 
-export const client = new RnTuiSdkClient()
+export const client = new SalvetronClient()

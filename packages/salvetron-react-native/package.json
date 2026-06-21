@@ -1,7 +1,7 @@
 {
-  "name": "@salve-software/rn-tui-sdk",
+  "name": "@salve-software/salvetron-react-native",
   "version": "1.0.1",
-  "description": "rn-tui-sdk is a react native package built with Nitro",
+  "description": "salvetron-react-native is a React Native package built with Nitro",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
@@ -17,7 +17,7 @@
   },
   "keywords": [
     "react-native",
-    "rn-tui-sdk"
+    "salvetron"
   ],
   "files": [
     "src",
@@ -46,13 +46,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Salve-Software/rn-tui.git",
-    "directory": "packages/rn-tui-sdk"
+    "url": "https://github.com/Salve-Software/salvetron.git",
+    "directory": "packages/salvetron-react-native"
   },
   "author": "Gabriel-Pereira1788",
   "license": "MIT",
-  "bugs": "https://github.com/Salve-Software/rn-tui/issues",
-  "homepage": "https://github.com/Salve-Software/rn-tui/tree/main/packages/rn-tui-sdk#readme",
+  "bugs": "https://github.com/Salve-Software/salvetron/issues",
+  "homepage": "https://github.com/Salve-Software/salvetron/tree/main/packages/salvetron-react-native#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -122,7 +122,7 @@
     ]
   },
   "dependencies": {
-    "@salve-software/rn-tui-types": "^1.0.0",
+    "@salve-software/salvetron-types": "^1.0.0",
     "jest": "^30.4.2"
   }
 }

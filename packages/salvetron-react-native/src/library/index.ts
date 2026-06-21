@@ -1,15 +1,15 @@
 /**
- * RN TUI SDK for React Native
+ * Salvetron SDK for React Native
  *
- * Captures network requests and sends them to the RN TUI CLI
+ * Captures network requests and sends them to the Salvetron CLI
  * for debugging and inspection.
  *
  * @example
  * ```typescript
- * import RnTuiSdk from '@salve-software/rn-tui-sdk';
+ * import Salvetron from '@salve-software/salvetron-react-native';
  *
  * if (__DEV__) {
- *   RnTuiSdk.connect({
+ *   Salvetron.connect({
  *     host: 'localhost',
  *     port: 8765,
  *   });
@@ -18,41 +18,41 @@
  */
 
 import { client } from './client'
-import type { RnTuiSdkConfig } from './types'
+import type { SalvetronConfig } from './types'
 
 /**
- * RN TUI SDK main interface
+ * Salvetron SDK main interface
  */
 export default {
   /**
-   * Connect to RN TUI CLI
+   * Connect to Salvetron CLI
    *
    * @param config - Configuration options
    * @example
    * ```typescript
-   * RnTuiSdk.connect({
+   * Salvetron.connect({
    *   host: '192.168.1.100', // Mac IP address
    *   port: 8765,
    *   enableNetworkCapture: true,
    *   ignoredUrls: [/my-internal-api/],
-   *   onConnect: () => console.log('Connected to RN TUI'),
-   *   onDisconnect: () => console.log('Disconnected from RN TUI'),
+   *   onConnect: () => console.log('Connected to Salvetron'),
+   *   onDisconnect: () => console.log('Disconnected from Salvetron'),
    * });
    * ```
    */
-  connect(config?: RnTuiSdkConfig): void {
+  connect(config?: SalvetronConfig): void {
     client.connect(config)
   },
 
   /**
-   * Disconnect from RN TUI CLI
+   * Disconnect from Salvetron CLI
    */
   disconnect(): void {
     client.disconnect()
   },
 
   /**
-   * Check if currently connected to RN TUI
+   * Check if currently connected to Salvetron
    */
   isConnected(): boolean {
     return client.isConnected()
@@ -145,7 +145,7 @@ export default {
 
 // Export types for consumers
 export type {
-  RnTuiSdkConfig,
+  SalvetronConfig,
   NetworkRequestEvent,
   NetworkResponseEvent,
   NetworkEvent,

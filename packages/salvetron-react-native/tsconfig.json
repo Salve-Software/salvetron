@@ -24,8 +24,8 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
-      "@rn-tui/types": ["../rn-tui-types/dist"],
-      "@rn-tui/types/*": ["../rn-tui-types/dist/*"]
+      "@salvetron/types": ["../salvetron-types/dist"],
+      "@salvetron/types/*": ["../salvetron-types/dist/*"]
     }
   },
   "exclude": [

@@ -6,7 +6,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@salve-software/rn-tui-sdk": ["../src"]
+      "@salve-software/salvetron-react-native": ["../src"]
     }
   }
 }

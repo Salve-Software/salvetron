@@ -24,7 +24,7 @@ export class PerformanceHandler {
    */
   start(): boolean {
     if (this.isMonitoring) {
-      console.warn('[RnTuiSdk] Performance monitoring already enabled')
+      console.warn('[Salvetron] Performance monitoring already enabled')
       return false
     }
 
@@ -42,15 +42,15 @@ export class PerformanceHandler {
           try {
             this.nitroRnTuiSdk.recordJsFrame()
           } catch (error) {
-            console.error('[RnTuiSdk] Failed to record JS frame:', error)
+            console.error('[Salvetron] Failed to record JS frame:', error)
           }
         }, 16)
 
-        console.log('[RnTuiSdk] Performance monitoring enabled')
+        console.log('[Salvetron] Performance monitoring enabled')
       }
       return success
     } catch (error) {
-      console.error('[RnTuiSdk] Failed to start performance monitoring:', error)
+      console.error('[Salvetron] Failed to start performance monitoring:', error)
       return false
     }
   }
@@ -71,9 +71,9 @@ export class PerformanceHandler {
       // Stop native monitoring
       this.nitroRnTuiSdk.stopPerformanceMonitoring()
       this.isMonitoring = false
-      console.log('[RnTuiSdk] Performance monitoring disabled')
+      console.log('[Salvetron] Performance monitoring disabled')
     } catch (error) {
-      console.error('[RnTuiSdk] Failed to stop performance monitoring:', error)
+      console.error('[Salvetron] Failed to stop performance monitoring:', error)
     }
   }
 

@@ -31,7 +31,7 @@ export class XHRInterceptor {
 
   public enable(callbacks: NetworkCallbacks): boolean {
     if (this.enabled) {
-      console.warn('[RnTuiSdk] Network interceptor already enabled');
+      console.warn('[Salvetron] Network interceptor already enabled');
       return false;
     }
 
@@ -101,7 +101,7 @@ export class XHRInterceptor {
 
     this.enabled = true;
 
-    console.log('[RnTuiSdk] Network interception enabled (XMLHttpRequest monkey-patch)');
+    console.log('[Salvetron] Network interception enabled (XMLHttpRequest monkey-patch)');
 
     return true;
   }
@@ -118,6 +118,6 @@ export class XHRInterceptor {
     this.callbacks = {};
     this.enabled = false;
 
-    console.log('[RnTuiSdk] Network interception disabled');
+    console.log('[Salvetron] Network interception disabled');
   }
 }
