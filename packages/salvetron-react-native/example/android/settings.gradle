@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'NitroTraceExample'
+rootProject.name = "Salvetron"
 include ':app'
 includeBuild('../../node_modules/@react-native/gradle-plugin')

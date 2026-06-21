@@ -13,7 +13,7 @@
     "build": "yarn typecheck && bob build",
     "codegen": "nitrogen --logLevel=\"debug\" && yarn build && node post-script.js",
     "test": "jest",
-    "example": "yarn workspace react-native-nitro-trace-example"
+    "example": "yarn workspace salvetron-react-native-example"
   },
   "keywords": [
     "react-native",

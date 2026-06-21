@@ -77,9 +77,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.nitrotraceexample"
+    namespace "com.salvetron.example"
     defaultConfig {
-        applicationId "com.nitrotraceexample"
+        applicationId "com.salvetron.example"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
