@@ -29,18 +29,9 @@ Salvetron is a real-time debugging tool for React Native developers, delivered a
 
 ## Screenshots
 
-<!-- Add your screenshots here -->
-
 <p align="center">
-  <em>Screenshots coming soon...</em>
+  <img src="assets/screenshot-1.png" alt="Salvetron Screenshot" width="800">
 </p>
-
-<!--
-Example:
-<p align="center">
-  <img src="assets/screenshots/main-view.png" alt="Main View" width="800">
-</p>
--->
 
 ## Architecture
 
