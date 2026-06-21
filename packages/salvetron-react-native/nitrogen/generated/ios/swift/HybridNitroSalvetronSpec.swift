@@ -25,6 +25,7 @@ public protocol HybridNitroSalvetronSpec_protocol: HybridObject {
   func isPerformanceMonitoring() throws -> Bool
   func getPerformanceSnapshot() throws -> PerformanceMetrics
   func recordJsFrame() throws -> Void
+  func triggerNativeTestLog(level: NativeLogLevel, message: String, tag: String?) throws -> Void
 }
 
 public extension HybridNitroSalvetronSpec_protocol {

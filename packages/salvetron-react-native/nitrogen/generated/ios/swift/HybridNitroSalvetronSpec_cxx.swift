@@ -286,4 +286,22 @@ open class HybridNitroSalvetronSpec_cxx {
       return bridge.create_Result_void_(__exceptionPtr)
     }
   }
+  
+  @inline(__always)
+  public final func triggerNativeTestLog(level: Int32, message: std.string, tag: bridge.std__optional_std__string_) -> bridge.Result_void_ {
+    do {
+      try self.__implementation.triggerNativeTestLog(level: margelo.nitro.salvetron.NativeLogLevel(rawValue: level)!, message: String(message), tag: { () -> String? in
+        if bridge.has_value_std__optional_std__string_(tag) {
+          let __unwrapped = bridge.get_std__optional_std__string_(tag)
+          return String(__unwrapped)
+        } else {
+          return nil
+        }
+      }())
+      return bridge.create_Result_void_()
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_void_(__exceptionPtr)
+    }
+  }
 }

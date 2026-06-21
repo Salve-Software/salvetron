@@ -120,5 +120,9 @@ namespace margelo::nitro::salvetron {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void()>("recordJsFrame");
     method(_javaPart);
   }
+  void JHybridNitroSalvetronSpec::triggerNativeTestLog(NativeLogLevel level, const std::string& message, const std::optional<std::string>& tag) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JNativeLogLevel> /* level */, jni::alias_ref<jni::JString> /* message */, jni::alias_ref<jni::JString> /* tag */)>("triggerNativeTestLog");
+    method(_javaPart, JNativeLogLevel::fromCpp(level), jni::make_jstring(message), tag.has_value() ? jni::make_jstring(tag.value()) : nullptr);
+  }
 
 } // namespace margelo::nitro::salvetron

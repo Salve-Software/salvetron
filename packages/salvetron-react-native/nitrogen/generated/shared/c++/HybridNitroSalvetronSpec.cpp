@@ -26,6 +26,7 @@ namespace margelo::nitro::salvetron {
       prototype.registerHybridMethod("isPerformanceMonitoring", &HybridNitroSalvetronSpec::isPerformanceMonitoring);
       prototype.registerHybridMethod("getPerformanceSnapshot", &HybridNitroSalvetronSpec::getPerformanceSnapshot);
       prototype.registerHybridMethod("recordJsFrame", &HybridNitroSalvetronSpec::recordJsFrame);
+      prototype.registerHybridMethod("triggerNativeTestLog", &HybridNitroSalvetronSpec::triggerNativeTestLog);
     });
   }
 

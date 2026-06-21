@@ -167,6 +167,12 @@ namespace margelo::nitro::salvetron {
         std::rethrow_exception(__result.error());
       }
     }
+    inline void triggerNativeTestLog(NativeLogLevel level, const std::string& message, const std::optional<std::string>& tag) override {
+      auto __result = _swiftPart.triggerNativeTestLog(static_cast<int>(level), message, tag);
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+    }
 
   private:
     NitroSalvetron::HybridNitroSalvetronSpec_cxx _swiftPart;
