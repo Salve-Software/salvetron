@@ -10,10 +10,10 @@ import NitroModules
 /**
  * Represents an instance of `PerformanceMetrics`, backed by a C++ struct.
  */
-public typealias PerformanceMetrics = margelo.nitro.rntuisdk.PerformanceMetrics
+public typealias PerformanceMetrics = margelo.nitro.salvetron.PerformanceMetrics
 
 public extension PerformanceMetrics {
-  private typealias bridge = margelo.nitro.rntuisdk.bridge.swift
+  private typealias bridge = margelo.nitro.salvetron.bridge.swift
 
   /**
    * Create a new instance of `PerformanceMetrics`.

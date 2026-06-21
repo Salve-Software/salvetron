@@ -10,10 +10,10 @@ import NitroModules
 /**
  * Represents an instance of `DeviceInfoResult`, backed by a C++ struct.
  */
-public typealias DeviceInfoResult = margelo.nitro.rntuisdk.DeviceInfoResult
+public typealias DeviceInfoResult = margelo.nitro.salvetron.DeviceInfoResult
 
 public extension DeviceInfoResult {
-  private typealias bridge = margelo.nitro.rntuisdk.bridge.swift
+  private typealias bridge = margelo.nitro.salvetron.bridge.swift
 
   /**
    * Create a new instance of `DeviceInfoResult`.

@@ -29,12 +29,12 @@
 #endif
 
 // Forward declaration of `NativeLogLevel` to properly resolve imports.
-namespace margelo::nitro::rntuisdk { enum class NativeLogLevel; }
+namespace margelo::nitro::salvetron { enum class NativeLogLevel; }
 
 #include "NativeLogLevel.hpp"
 #include <string>
 
-namespace margelo::nitro::rntuisdk {
+namespace margelo::nitro::salvetron {
 
   /**
    * A struct which can be represented as a JavaScript object (NativeLogEntry).
@@ -54,25 +54,25 @@ namespace margelo::nitro::rntuisdk {
     friend bool operator==(const NativeLogEntry& lhs, const NativeLogEntry& rhs) = default;
   };
 
-} // namespace margelo::nitro::rntuisdk
+} // namespace margelo::nitro::salvetron
 
 namespace margelo::nitro {
 
   // C++ NativeLogEntry <> JS NativeLogEntry (object)
   template <>
-  struct JSIConverter<margelo::nitro::rntuisdk::NativeLogEntry> final {
-    static inline margelo::nitro::rntuisdk::NativeLogEntry fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::salvetron::NativeLogEntry> final {
+    static inline margelo::nitro::salvetron::NativeLogEntry fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       jsi::Object obj = arg.asObject(runtime);
-      return margelo::nitro::rntuisdk::NativeLogEntry(
-        JSIConverter<margelo::nitro::rntuisdk::NativeLogLevel>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "level"))),
+      return margelo::nitro::salvetron::NativeLogEntry(
+        JSIConverter<margelo::nitro::salvetron::NativeLogLevel>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "level"))),
         JSIConverter<std::string>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "message"))),
         JSIConverter<std::string>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "tag"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "timestamp")))
       );
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::rntuisdk::NativeLogEntry& arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::salvetron::NativeLogEntry& arg) {
       jsi::Object obj(runtime);
-      obj.setProperty(runtime, PropNameIDCache::get(runtime, "level"), JSIConverter<margelo::nitro::rntuisdk::NativeLogLevel>::toJSI(runtime, arg.level));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "level"), JSIConverter<margelo::nitro::salvetron::NativeLogLevel>::toJSI(runtime, arg.level));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "message"), JSIConverter<std::string>::toJSI(runtime, arg.message));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "tag"), JSIConverter<std::string>::toJSI(runtime, arg.tag));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "timestamp"), JSIConverter<double>::toJSI(runtime, arg.timestamp));
@@ -86,7 +86,7 @@ namespace margelo::nitro {
       if (!nitro::isPlainObject(runtime, obj)) {
         return false;
       }
-      if (!JSIConverter<margelo::nitro::rntuisdk::NativeLogLevel>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "level")))) return false;
+      if (!JSIConverter<margelo::nitro::salvetron::NativeLogLevel>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "level")))) return false;
       if (!JSIConverter<std::string>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "message")))) return false;
       if (!JSIConverter<std::string>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "tag")))) return false;
       if (!JSIConverter<double>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "timestamp")))) return false;

@@ -15,7 +15,7 @@
 #include <NitroModules/JNICallable.hpp>
 #include "JPerformanceMetrics.hpp"
 
-namespace margelo::nitro::rntuisdk {
+namespace margelo::nitro::salvetron {
 
   using namespace facebook;
 
@@ -25,7 +25,7 @@ namespace margelo::nitro::rntuisdk {
    */
   struct JFunc_void_PerformanceMetrics: public jni::JavaClass<JFunc_void_PerformanceMetrics> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/rntuisdk/Func_void_PerformanceMetrics;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/salvetron/Func_void_PerformanceMetrics;";
 
   public:
     /**
@@ -61,7 +61,7 @@ namespace margelo::nitro::rntuisdk {
     }
 
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/rntuisdk/Func_void_PerformanceMetrics_cxx;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/salvetron/Func_void_PerformanceMetrics_cxx;";
     static void registerNatives() {
       registerHybrid({makeNativeMethod("invoke_cxx", JFunc_void_PerformanceMetrics_cxx::invoke_cxx)});
     }
@@ -74,4 +74,4 @@ namespace margelo::nitro::rntuisdk {
     std::function<void(const PerformanceMetrics& /* metrics */)> _func;
   };
 
-} // namespace margelo::nitro::rntuisdk
+} // namespace margelo::nitro::salvetron

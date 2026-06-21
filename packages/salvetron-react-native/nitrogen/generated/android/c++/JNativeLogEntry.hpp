@@ -14,7 +14,7 @@
 #include "NativeLogLevel.hpp"
 #include <string>
 
-namespace margelo::nitro::rntuisdk {
+namespace margelo::nitro::salvetron {
 
   using namespace facebook;
 
@@ -23,7 +23,7 @@ namespace margelo::nitro::rntuisdk {
    */
   struct JNativeLogEntry final: public jni::JavaClass<JNativeLogEntry> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/rntuisdk/NativeLogEntry;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/salvetron/NativeLogEntry;";
 
   public:
     /**
@@ -68,4 +68,4 @@ namespace margelo::nitro::rntuisdk {
     }
   };
 
-} // namespace margelo::nitro::rntuisdk
+} // namespace margelo::nitro::salvetron

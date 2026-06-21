@@ -12,7 +12,7 @@
 
 #include <string>
 
-namespace margelo::nitro::rntuisdk {
+namespace margelo::nitro::salvetron {
 
   using namespace facebook;
 
@@ -21,7 +21,7 @@ namespace margelo::nitro::rntuisdk {
    */
   struct JDeviceInfoResult final: public jni::JavaClass<JDeviceInfoResult> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/rntuisdk/DeviceInfoResult;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/salvetron/DeviceInfoResult;";
 
   public:
     /**
@@ -66,4 +66,4 @@ namespace margelo::nitro::rntuisdk {
     }
   };
 
-} // namespace margelo::nitro::rntuisdk
+} // namespace margelo::nitro::salvetron

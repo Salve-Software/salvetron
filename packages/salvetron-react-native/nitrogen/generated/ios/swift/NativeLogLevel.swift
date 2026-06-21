@@ -8,7 +8,7 @@
 /**
  * Represents the JS union `NativeLogLevel`, backed by a C++ enum.
  */
-public typealias NativeLogLevel = margelo.nitro.rntuisdk.NativeLogLevel
+public typealias NativeLogLevel = margelo.nitro.salvetron.NativeLogLevel
 
 public extension NativeLogLevel {
   /**

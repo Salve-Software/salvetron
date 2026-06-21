@@ -14,7 +14,7 @@ import type {
   NativeLogSource,
   ProjectInfoEvent,
 } from '../types'
-import type { NitroRnTuiSdk as NitroRnTuiSdkSpec } from '../../specs/rn-tui-sdk.nitro'
+import type { NitroSalvetron as NitroSalvetronSpec } from '../../specs/salvetron.nitro'
 
 import {
   DEFAULT_IGNORED_URLS,
@@ -40,7 +40,7 @@ export class SalvetronClient {
   private manualDisconnect = false
 
   // Native log capture
-  private nitroRnTuiSdk: NitroRnTuiSdkSpec | null = null
+  private nitroSalvetron: NitroSalvetronSpec | null = null
   private nativeLogCaptureEnabled = false
 
   // Network handler
@@ -134,7 +134,7 @@ export class SalvetronClient {
     }
 
     try {
-      const nitro = this.getNitroRnTuiSdk()
+      const nitro = this.getNitroSalvetron()
       const success = nitro.startLogCapture((log) => {
         this.handleNativeLog(log)
       })
@@ -157,7 +157,7 @@ export class SalvetronClient {
     if (!this.nativeLogCaptureEnabled) return
 
     try {
-      const nitro = this.getNitroRnTuiSdk()
+      const nitro = this.getNitroSalvetron()
       nitro.stopLogCapture()
       this.nativeLogCaptureEnabled = false
       console.log('[Salvetron] Native log capture disabled')
@@ -183,7 +183,7 @@ export class SalvetronClient {
     }
 
     this.performanceHandler = new PerformanceHandler({
-      nitroRnTuiSdk: this.getNitroRnTuiSdk(),
+      nitroSalvetron: this.getNitroSalvetron(),
       onEvent: (event) => this.send(event),
     })
 
@@ -220,12 +220,12 @@ export class SalvetronClient {
     return this.performanceMonitoringEnabled
   }
 
-  private getNitroRnTuiSdk(): NitroRnTuiSdkSpec {
-    if (!this.nitroRnTuiSdk) {
-      this.nitroRnTuiSdk =
-        NitroModules.createHybridObject<NitroRnTuiSdkSpec>('NitroRnTuiSdk')
+  private getNitroSalvetron(): NitroSalvetronSpec {
+    if (!this.nitroSalvetron) {
+      this.nitroSalvetron =
+        NitroModules.createHybridObject<NitroSalvetronSpec>('NitroSalvetron')
     }
-    return this.nitroRnTuiSdk
+    return this.nitroSalvetron
   }
 
   private handleNativeLog(log: {

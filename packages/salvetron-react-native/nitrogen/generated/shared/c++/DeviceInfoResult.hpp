@@ -32,7 +32,7 @@
 
 #include <string>
 
-namespace margelo::nitro::rntuisdk {
+namespace margelo::nitro::salvetron {
 
   /**
    * A struct which can be represented as a JavaScript object (DeviceInfoResult).
@@ -52,23 +52,23 @@ namespace margelo::nitro::rntuisdk {
     friend bool operator==(const DeviceInfoResult& lhs, const DeviceInfoResult& rhs) = default;
   };
 
-} // namespace margelo::nitro::rntuisdk
+} // namespace margelo::nitro::salvetron
 
 namespace margelo::nitro {
 
   // C++ DeviceInfoResult <> JS DeviceInfoResult (object)
   template <>
-  struct JSIConverter<margelo::nitro::rntuisdk::DeviceInfoResult> final {
-    static inline margelo::nitro::rntuisdk::DeviceInfoResult fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::salvetron::DeviceInfoResult> final {
+    static inline margelo::nitro::salvetron::DeviceInfoResult fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       jsi::Object obj = arg.asObject(runtime);
-      return margelo::nitro::rntuisdk::DeviceInfoResult(
+      return margelo::nitro::salvetron::DeviceInfoResult(
         JSIConverter<std::string>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "deviceId"))),
         JSIConverter<std::string>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "deviceName"))),
         JSIConverter<std::string>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "appName"))),
         JSIConverter<std::string>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "bundleId")))
       );
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::rntuisdk::DeviceInfoResult& arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::salvetron::DeviceInfoResult& arg) {
       jsi::Object obj(runtime);
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "deviceId"), JSIConverter<std::string>::toJSI(runtime, arg.deviceId));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "deviceName"), JSIConverter<std::string>::toJSI(runtime, arg.deviceName));

@@ -3,18 +3,18 @@
  * Tracks JS thread responsiveness and forwards native performance metrics
  */
 
-import type { NitroRnTuiSdk as NitroRnTuiSdkSpec } from '../../specs/rn-tui-sdk.nitro'
+import type { NitroSalvetron as NitroSalvetronSpec } from '../../specs/salvetron.nitro'
 import type { PerformanceHandlerConfig, PerformanceMetricsEvent } from './types'
 
 export class PerformanceHandler {
-  private nitroRnTuiSdk: NitroRnTuiSdkSpec
+  private nitroSalvetron: NitroSalvetronSpec
   private onEvent: (event: PerformanceMetricsEvent) => void
   private intervalMs: number
   private isMonitoring = false
   private jsFrameInterval: ReturnType<typeof setInterval> | null = null
 
   constructor(config: PerformanceHandlerConfig) {
-    this.nitroRnTuiSdk = config.nitroRnTuiSdk
+    this.nitroSalvetron = config.nitroSalvetron
     this.onEvent = config.onEvent
     this.intervalMs = config.intervalMs ?? 1000
   }
@@ -30,7 +30,7 @@ export class PerformanceHandler {
 
     try {
       // Start native performance monitoring
-      const success = this.nitroRnTuiSdk.startPerformanceMonitoring((metrics) => {
+      const success = this.nitroSalvetron.startPerformanceMonitoring((metrics) => {
         this.handleMetrics(metrics)
       }, this.intervalMs)
 
@@ -40,7 +40,7 @@ export class PerformanceHandler {
         // Start JS frame tracking - call recordJsFrame every 16ms (~60fps)
         this.jsFrameInterval = setInterval(() => {
           try {
-            this.nitroRnTuiSdk.recordJsFrame()
+            this.nitroSalvetron.recordJsFrame()
           } catch (error) {
             console.error('[Salvetron] Failed to record JS frame:', error)
           }
@@ -69,7 +69,7 @@ export class PerformanceHandler {
       }
 
       // Stop native monitoring
-      this.nitroRnTuiSdk.stopPerformanceMonitoring()
+      this.nitroSalvetron.stopPerformanceMonitoring()
       this.isMonitoring = false
       console.log('[Salvetron] Performance monitoring disabled')
     } catch (error) {

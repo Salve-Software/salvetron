@@ -12,7 +12,7 @@ import NitroModules
  * This class can be used from C++, e.g. to wrap the Swift closure as a `std::function`.
  */
 public final class Func_void_PerformanceMetrics {
-  public typealias bridge = margelo.nitro.rntuisdk.bridge.swift
+  public typealias bridge = margelo.nitro.salvetron.bridge.swift
 
   private let closure: (_ metrics: PerformanceMetrics) -> Void
 

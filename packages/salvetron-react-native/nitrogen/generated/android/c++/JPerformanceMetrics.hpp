@@ -12,7 +12,7 @@
 
 
 
-namespace margelo::nitro::rntuisdk {
+namespace margelo::nitro::salvetron {
 
   using namespace facebook;
 
@@ -21,7 +21,7 @@ namespace margelo::nitro::rntuisdk {
    */
   struct JPerformanceMetrics final: public jni::JavaClass<JPerformanceMetrics> {
   public:
-    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/rntuisdk/PerformanceMetrics;";
+    static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/salvetron/PerformanceMetrics;";
 
   public:
     /**
@@ -66,4 +66,4 @@ namespace margelo::nitro::rntuisdk {
     }
   };
 
-} // namespace margelo::nitro::rntuisdk
+} // namespace margelo::nitro::salvetron

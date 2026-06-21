@@ -23,7 +23,7 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
-namespace margelo::nitro::rntuisdk {
+namespace margelo::nitro::salvetron {
 
   /**
    * An enum which can be represented as a JavaScript union (NativeLogLevel).
@@ -35,30 +35,30 @@ namespace margelo::nitro::rntuisdk {
     ERROR      SWIFT_NAME(error) = 3,
   } CLOSED_ENUM;
 
-} // namespace margelo::nitro::rntuisdk
+} // namespace margelo::nitro::salvetron
 
 namespace margelo::nitro {
 
   // C++ NativeLogLevel <> JS NativeLogLevel (union)
   template <>
-  struct JSIConverter<margelo::nitro::rntuisdk::NativeLogLevel> final {
-    static inline margelo::nitro::rntuisdk::NativeLogLevel fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::salvetron::NativeLogLevel> final {
+    static inline margelo::nitro::salvetron::NativeLogLevel fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       std::string unionValue = JSIConverter<std::string>::fromJSI(runtime, arg);
       switch (hashString(unionValue.c_str(), unionValue.size())) {
-        case hashString("verbose"): return margelo::nitro::rntuisdk::NativeLogLevel::VERBOSE;
-        case hashString("info"): return margelo::nitro::rntuisdk::NativeLogLevel::INFO;
-        case hashString("warn"): return margelo::nitro::rntuisdk::NativeLogLevel::WARN;
-        case hashString("error"): return margelo::nitro::rntuisdk::NativeLogLevel::ERROR;
+        case hashString("verbose"): return margelo::nitro::salvetron::NativeLogLevel::VERBOSE;
+        case hashString("info"): return margelo::nitro::salvetron::NativeLogLevel::INFO;
+        case hashString("warn"): return margelo::nitro::salvetron::NativeLogLevel::WARN;
+        case hashString("error"): return margelo::nitro::salvetron::NativeLogLevel::ERROR;
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert \"" + unionValue + "\" to enum NativeLogLevel - invalid value!");
       }
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::rntuisdk::NativeLogLevel arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, margelo::nitro::salvetron::NativeLogLevel arg) {
       switch (arg) {
-        case margelo::nitro::rntuisdk::NativeLogLevel::VERBOSE: return JSIConverter<std::string>::toJSI(runtime, "verbose");
-        case margelo::nitro::rntuisdk::NativeLogLevel::INFO: return JSIConverter<std::string>::toJSI(runtime, "info");
-        case margelo::nitro::rntuisdk::NativeLogLevel::WARN: return JSIConverter<std::string>::toJSI(runtime, "warn");
-        case margelo::nitro::rntuisdk::NativeLogLevel::ERROR: return JSIConverter<std::string>::toJSI(runtime, "error");
+        case margelo::nitro::salvetron::NativeLogLevel::VERBOSE: return JSIConverter<std::string>::toJSI(runtime, "verbose");
+        case margelo::nitro::salvetron::NativeLogLevel::INFO: return JSIConverter<std::string>::toJSI(runtime, "info");
+        case margelo::nitro::salvetron::NativeLogLevel::WARN: return JSIConverter<std::string>::toJSI(runtime, "warn");
+        case margelo::nitro::salvetron::NativeLogLevel::ERROR: return JSIConverter<std::string>::toJSI(runtime, "error");
         default: [[unlikely]]
           throw std::invalid_argument("Cannot convert NativeLogLevel to JS - invalid value: "
                                     + std::to_string(static_cast<int>(arg)) + "!");

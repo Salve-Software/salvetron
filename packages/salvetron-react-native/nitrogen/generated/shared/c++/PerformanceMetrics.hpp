@@ -32,7 +32,7 @@
 
 
 
-namespace margelo::nitro::rntuisdk {
+namespace margelo::nitro::salvetron {
 
   /**
    * A struct which can be represented as a JavaScript object (PerformanceMetrics).
@@ -52,23 +52,23 @@ namespace margelo::nitro::rntuisdk {
     friend bool operator==(const PerformanceMetrics& lhs, const PerformanceMetrics& rhs) = default;
   };
 
-} // namespace margelo::nitro::rntuisdk
+} // namespace margelo::nitro::salvetron
 
 namespace margelo::nitro {
 
   // C++ PerformanceMetrics <> JS PerformanceMetrics (object)
   template <>
-  struct JSIConverter<margelo::nitro::rntuisdk::PerformanceMetrics> final {
-    static inline margelo::nitro::rntuisdk::PerformanceMetrics fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
+  struct JSIConverter<margelo::nitro::salvetron::PerformanceMetrics> final {
+    static inline margelo::nitro::salvetron::PerformanceMetrics fromJSI(jsi::Runtime& runtime, const jsi::Value& arg) {
       jsi::Object obj = arg.asObject(runtime);
-      return margelo::nitro::rntuisdk::PerformanceMetrics(
+      return margelo::nitro::salvetron::PerformanceMetrics(
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "uiFps"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "jsFps"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "memoryUsageMB"))),
         JSIConverter<double>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "cpuUsagePercent")))
       );
     }
-    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::rntuisdk::PerformanceMetrics& arg) {
+    static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::salvetron::PerformanceMetrics& arg) {
       jsi::Object obj(runtime);
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "uiFps"), JSIConverter<double>::toJSI(runtime, arg.uiFps));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "jsFps"), JSIConverter<double>::toJSI(runtime, arg.jsFps));

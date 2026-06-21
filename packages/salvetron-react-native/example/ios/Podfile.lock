@@ -26,7 +26,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - NitroRnTuiSdk (1.0.1):
+  - NitroSalvetron (1.0.1):
     - hermes-engine
     - NitroModules
     - RCTRequired
@@ -1907,7 +1907,7 @@ DEPENDENCIES:
   - FBLazyVector (from `../../node_modules/react-native/Libraries/FBLazyVector`)
   - hermes-engine (from `../../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - NitroModules (from `../../node_modules/react-native-nitro-modules`)
-  - NitroRnTuiSdk (from `../..`)
+  - NitroSalvetron (from `../..`)
   - RCTDeprecation (from `../../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
   - RCTRequired (from `../../node_modules/react-native/Libraries/Required`)
   - RCTSwiftUI (from `../../node_modules/react-native/ReactApple/RCTSwiftUI`)
@@ -1990,7 +1990,7 @@ EXTERNAL SOURCES:
     :tag: hermes-v250829098.0.9
   NitroModules:
     :path: "../../node_modules/react-native-nitro-modules"
-  NitroRnTuiSdk:
+  NitroSalvetron:
     :path: "../.."
   RCTDeprecation:
     :path: "../../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation"
@@ -2141,7 +2141,7 @@ SPEC CHECKSUMS:
   FBLazyVector: e97c19a5a442429d1988f182a1940fb08df514da
   hermes-engine: 4399faeacfb5c61b2de9053161d6e736c6a7848f
   NitroModules: f45159491c5a0e7161685a301b1c6c11440b3ab1
-  NitroRnTuiSdk: 3064bc05ac461397315cb35aae1a7947a60be44d
+  NitroSalvetron: 3911def16179c0e9d9d56c865cd97951a242af40
   RCTDeprecation: af44b104091a34482596cd9bd7e8d90c4e9b4bd7
   RCTRequired: bb77b070f75f53398ce43c0aaaa58337cebe2bf6
   RCTSwiftUI: afc0a0a635860da1040a0b894bfd529da06d7810

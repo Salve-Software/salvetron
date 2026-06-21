@@ -2,10 +2,10 @@
  * Performance handler types
  */
 
-import type { NitroRnTuiSdk as NitroRnTuiSdkSpec } from '../../specs/rn-tui-sdk.nitro'
+import type { NitroSalvetron as NitroSalvetronSpec } from '../../specs/salvetron.nitro'
 
 export interface PerformanceHandlerConfig {
-  nitroRnTuiSdk: NitroRnTuiSdkSpec
+  nitroSalvetron: NitroSalvetronSpec
   onEvent: (event: PerformanceMetricsEvent) => void
   intervalMs?: number
 }

@@ -1,22 +1,22 @@
 {
   "$schema": "https://nitro.margelo.com/nitro.schema.json",
-  "cxxNamespace": ["rntuisdk"],
+  "cxxNamespace": ["salvetron"],
   "ios": {
-    "iosModuleName": "NitroRnTuiSdk"
+    "iosModuleName": "NitroSalvetron"
   },
   "android": {
-    "androidNamespace": ["rntuisdk"],
-    "androidCxxLibName": "NitroRnTuiSdk"
+    "androidNamespace": ["salvetron"],
+    "androidCxxLibName": "NitroSalvetron"
   },
   "autolinking": {
-    "NitroRnTuiSdk": {
+    "NitroSalvetron": {
       "ios": {
         "language": "swift",
-        "implementationClassName": "HybridRnTuiSdk"
+        "implementationClassName": "HybridSalvetron"
       },
       "android": {
         "language": "kotlin",
-        "implementationClassName": "HybridRnTuiSdk"
+        "implementationClassName": "HybridSalvetron"
       }
     }
   },

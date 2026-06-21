@@ -10,10 +10,10 @@ import NitroModules
 /**
  * Represents an instance of `NativeLogEntry`, backed by a C++ struct.
  */
-public typealias NativeLogEntry = margelo.nitro.rntuisdk.NativeLogEntry
+public typealias NativeLogEntry = margelo.nitro.salvetron.NativeLogEntry
 
 public extension NativeLogEntry {
-  private typealias bridge = margelo.nitro.rntuisdk.bridge.swift
+  private typealias bridge = margelo.nitro.salvetron.bridge.swift
 
   /**
    * Create a new instance of `NativeLogEntry`.
