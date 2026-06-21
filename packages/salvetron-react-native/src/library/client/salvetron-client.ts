@@ -255,6 +255,8 @@ export class SalvetronClient {
       onLog: (level, message, metadata) => this.sendLog(level, message, metadata),
     })
 
+    this.startNativeLogCapture()
+
     if (this.isConnecting || this.isConnected()) return
 
     this.isConnecting = true
@@ -280,8 +282,6 @@ export class SalvetronClient {
         if (this.config.enablePerformanceMonitoring) {
           this.startPerformanceMonitoring()
         }
-
-        this.startNativeLogCapture()
       }
 
       this.ws.onclose = () => {

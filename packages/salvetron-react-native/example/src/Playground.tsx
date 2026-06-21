@@ -9,6 +9,10 @@ export const Playground: React.FC = () => {
   const [perfOn, setPerfOn] = useState(false);
 
   useEffect(() => {
+    Salvetron.connect();
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setConnected(Salvetron.isConnected());
       setNativeCaptureOn(Salvetron.isNativeLogCaptureEnabled());
