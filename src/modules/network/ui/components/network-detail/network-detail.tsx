@@ -49,17 +49,17 @@ export function NetworkDetail({ log, width, bodyLines, bodyScrollOffset, bodyVis
           : null
         }
       </Box>
-      <Text color="whiteBright">{log.url.slice(0, width - 2)}</Text>
+      <Text color="whiteBright" wrap="truncate-end">{log.url.slice(0, width - 2)}</Text>
       {reqHeaders.length > 0
         ?
-        <Text color="whiteBright" dimColor>
+        <Text color="whiteBright" dimColor wrap="truncate-end">
           req: {reqHeaders.slice(0, 3).map(([k, v]) => `${k}: ${v}`).join('  ')}
         </Text>
         : null
       }
       {resHeaders.length > 0
         ?
-        <Text color="whiteBright" dimColor>
+        <Text color="whiteBright" dimColor wrap="truncate-end">
           res: {resHeaders.slice(0, 3).map(([k, v]) => `${k}: ${v}`).join('  ')}
         </Text>
         : null

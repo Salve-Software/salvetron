@@ -21,6 +21,8 @@ export function Panel({ title, focused = false, flexGrow, height, children }: Pa
       borderColor={color}
       paddingX={1}
       flexGrow={flexGrow}
+      flexShrink={0}
+      overflow="hidden"
       height={height}
     >
       <Text bold color={color}>{title}</Text>

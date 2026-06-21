@@ -28,21 +28,15 @@ import type { LogEvent, NativeLogEvent, NetworkLog } from "@salve-software/salve
 type FocusPanel = "logs" | "network" | "native";
 const PANELS: FocusPanel[] = ["logs", "network", "native"];
 
-// Chrome rendered by App around DashboardContainer's content area:
-// AsciiLogo (6) + TabBar (marginTop 2 + content 1 + borderBottom 1 = 4) +
-// content wrapper paddingTop (1) = 11 above; StatusBar (borderTop 1 +
-// content 1 = 2) + content wrapper paddingBottom (1) = 3 below.
 const APP_OVERHEAD_ROWS = 14;
 const FOOTER_ROWS = 1;
 const PERF_PANEL_ROWS = 7;
-const PANEL_CHROME_ROWS = 3; // title (1) + border (2) per list Panel
+const PANEL_CHROME_ROWS = 3;
 const NETWORK_HEADER_ROWS = 1;
-// NetworkDetail's leading content (border + header + url + req headers + res
-// headers + body header) can take up to 6 rows, plus the wrapper Box's own
-// top/bottom border (2 rows) — use that as the shared budget for all 3 detail
-// types so content never exceeds maxHeight (overflow="hidden" + an
-// over-budget frame corrupts Ink's redraw).
 const DETAIL_FIXED_ROWS = 8;
+const APP_HORIZONTAL_PADDING = 2;
+const DETAIL_CHROME_COLS = 6;
+const PANEL_CHROME_COLS = 4;
 
 export function DashboardContainer() {
   const [cols, rows] = useTerminalSize();
@@ -54,14 +48,17 @@ export function DashboardContainer() {
   const networkLogs = useNetworkLogs();
   const nativeLogs = useNativeLogs();
 
-  const panelInner = Math.max(10, Math.floor(cols / 3) - 4);
+  const rowWidth = Math.max(0, cols - APP_HORIZONTAL_PADDING);
+  const listColWidth = Math.floor(rowWidth / 3);
+  const detailColWidth = rowWidth - listColWidth;
+  const detailContentWidth = Math.max(1, detailColWidth - DETAIL_CHROME_COLS);
+
+  const panelInner = Math.max(10, listColWidth - PANEL_CHROME_COLS);
   const sparkWidth = Math.max(4, panelInner - 27);
   const urlMaxWidth = Math.max(6, panelInner - 28);
   const logsMsgWidth = Math.max(8, panelInner - 14);
   const nativeMsgWidth = Math.max(8, panelInner - 26);
 
-  // Row budget derived only from the terminal's real row count — never from
-  // measured/rendered content, which would feed back into itself and loop.
   const availableRows = rows - APP_OVERHEAD_ROWS - FOOTER_ROWS;
   const logsPanelRows = Math.max(
     1,
@@ -190,7 +187,7 @@ export function DashboardContainer() {
   return (
     <Box flexDirection="column" flexGrow={1}>
       <Box flexDirection="row" flexGrow={1}>
-        <Box flexDirection="column">
+        <Box flexDirection="column" width={listColWidth} flexShrink={0} overflow="hidden">
           <PerformancePanel
             latest={latest}
             snapshots={snapshots}
@@ -244,8 +241,9 @@ export function DashboardContainer() {
           flexDirection="column"
           height={focusedDetailOpen ? undefined : 0}
           maxHeight={focusedDetailOpen ? detailRows : 0}
+          width={detailColWidth}
+          flexShrink={0}
           overflow="hidden"
-          flexGrow={1}
           borderStyle="single"
           borderColor="gray"
           paddingX={2}
@@ -253,7 +251,7 @@ export function DashboardContainer() {
           {focused === "logs" && logsDetail.detailOpen && selLog ? (
             <LogDetail
               log={selLog}
-              width={cols}
+              width={detailContentWidth}
               metaLines={logMeta}
               metaScrollOffset={logsDetail.detailScrollOffset}
               metaVisibleRows={detailBodyVisibleRows}
@@ -263,7 +261,7 @@ export function DashboardContainer() {
           {focused === "network" && netDetail.detailOpen && selNet ? (
             <NetworkDetail
               log={selNet}
-              width={cols}
+              width={detailContentWidth}
               bodyLines={netBody}
               bodyScrollOffset={netDetail.detailScrollOffset}
               bodyVisibleRows={detailBodyVisibleRows}
@@ -273,7 +271,7 @@ export function DashboardContainer() {
           {focused === "native" && nativeDetail.detailOpen && selNative ? (
             <NativeLogDetail
               log={selNative}
-              width={cols}
+              width={detailContentWidth}
               metaLines={nativeMeta}
               metaScrollOffset={nativeDetail.detailScrollOffset}
               metaVisibleRows={detailBodyVisibleRows}
