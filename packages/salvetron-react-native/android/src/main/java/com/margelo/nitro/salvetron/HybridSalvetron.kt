@@ -19,6 +19,8 @@ class HybridSalvetron : HybridNitroSalvetronSpec() {
     private var isCapturingLogs = false
     private var logcatProcess: Process? = null
     private var readerThread: Thread? = null
+    private var hasRecoveredHistory = false
+    private var lastLogTimestamp: String? = null
 
     // Storage constants
     private val PREFS_NAME = "salvetron_prefs"
@@ -51,17 +53,35 @@ class HybridSalvetron : HybridNitroSalvetronSpec() {
             // Get current process PID
             val pid = android.os.Process.myPid()
 
-            // Clear logcat buffer first
-            try {
-                Runtime.getRuntime().exec(arrayOf("logcat", "-c")).waitFor()
-            } catch (e: Exception) {
-                // Ignore clear errors
+            // Recover pre-existing history from the OS logcat buffer once per process
+            // lifetime — this is what surfaces logs emitted before startLogCapture was
+            // ever called (e.g. MainApplication.onCreate), instead of discarding them.
+            if (!hasRecoveredHistory) {
+                hasRecoveredHistory = true
+                try {
+                    val dumpProcess = Runtime.getRuntime().exec(
+                        arrayOf("logcat", "-d", "-v", "threadtime", "--pid=$pid")
+                    )
+                    val dumpReader = BufferedReader(InputStreamReader(dumpProcess.inputStream))
+                    var dumpLine: String? = null
+                    while (true) {
+                        dumpLine = dumpReader.readLine() ?: break
+                        processLogLine(dumpLine)
+                    }
+                    dumpProcess.waitFor()
+                } catch (e: Exception) {
+                    // Ignore history recovery errors — live capture still proceeds
+                }
             }
 
-            // Start logcat for current process only
-            logcatProcess = Runtime.getRuntime().exec(
+            // Start logcat for current process only, resuming right after the last
+            // recovered/streamed line so we don't replay or drop entries on reconnect
+            val liveArgs = if (lastLogTimestamp != null) {
+                arrayOf("logcat", "-v", "threadtime", "-T", lastLogTimestamp!!, "--pid=$pid")
+            } else {
                 arrayOf("logcat", "-v", "threadtime", "--pid=$pid")
-            )
+            }
+            logcatProcess = Runtime.getRuntime().exec(liveArgs)
 
             // Read logcat output in background thread
             readerThread = thread(start = true, isDaemon = true, name = "Salvetron-Logcat") {
@@ -151,6 +171,10 @@ class HybridSalvetron : HybridNitroSalvetronSpec() {
         val match = pattern.find(line)
 
         val (level, tag, message) = if (match != null) {
+            // logcat -T accepts the same "MM-DD HH:MM:SS.mmm" format it prints,
+            // so we can resume the live stream right after the last seen line.
+            lastLogTimestamp = "${match.groupValues[1]} ${match.groupValues[2]}"
+
             val levelChar = match.groupValues[3]
             val extractedTag = match.groupValues[4].trim()
             val extractedMessage = match.groupValues[5]
