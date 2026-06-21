@@ -9,12 +9,12 @@ on:
       - main
     paths:
       - '.github/workflows/lint.yml'
-      - '!packages/rn-tui-sdk/**'
+      - '!packages/salvetron-react-native/**'
       - '**'
   pull_request:
     paths:
       - '.github/workflows/lint.yml'
-      - '!packages/rn-tui-sdk/**'
+      - '!packages/salvetron-react-native/**'
       - '**'
   workflow_dispatch:
 

@@ -1,9 +1,9 @@
-'lib: rn-tui-sdk':
+'lib: salvetron-react-native':
   - changed-files:
-    - any-glob-to-any-file: 'packages/rn-tui-sdk/**'
+    - any-glob-to-any-file: 'packages/salvetron-react-native/**'
 
-'lib: rn-tui':
+'lib: salvetron':
   - changed-files:
     - any-glob-to-any-file:
       - '**'
-      - '!packages/rn-tui-sdk/**'
+      - '!packages/salvetron-react-native/**'
