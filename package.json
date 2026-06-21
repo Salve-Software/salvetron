@@ -1,7 +1,7 @@
 {
   "name": "salvetron",
   "description": "Terminal UI debugger for React Native",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "packageManager": "yarn@4.9.1",
   "workspaces": [
@@ -23,7 +23,8 @@
     "sim": "node scripts/salvetron-sim.mjs",
     "typecheck": "yarn build && tsc --noEmit",
     "build": "yarn workspace @salve-software/salvetron-types build",
-    "test": "yarn workspaces foreach -Apt run test"
+    "test": "yarn workspaces foreach -Apt run test",
+    "prepublishOnly": "node ./scripts/assert-yarn-publish.mjs && yarn build"
   },
   "dependencies": {
     "@salve-software/salvetron-types": "workspace:^",
