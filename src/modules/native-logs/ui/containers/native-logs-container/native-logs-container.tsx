@@ -110,7 +110,7 @@ export function NativeLogsContainer() {
           scrollOffset={scrollOffset}
         />
       </Box>
-      <Text color="gray" dimColor>/ search · x clear</Text>
+      <Text color="whiteBright" dimColor>/ search · x clear</Text>
       {clearPending ? <Text color="yellow">⚠ press x again to clear · esc to cancel</Text> : null}
       {detailOpen && selectedLog
         ?
