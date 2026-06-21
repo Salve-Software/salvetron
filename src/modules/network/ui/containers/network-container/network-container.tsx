@@ -9,7 +9,7 @@ import { NetworkRow } from '../../components/network-row/index.js'
 import { NetworkDetail } from '../../components/network-detail/index.js'
 import { formatBody, formatPlainBody } from '../../../../../shared/utils/format-body.js'
 import { buildCurlCommand } from '../../../../../shared/utils/build-curl-command.js'
-import type { NetworkLog } from '@salve-software/rn-tui-types'
+import type { NetworkLog } from '@salve-software/salvetron-types'
 
 const OVERHEAD_ROWS = 6
 const DETAIL_FIXED_ROWS = 5

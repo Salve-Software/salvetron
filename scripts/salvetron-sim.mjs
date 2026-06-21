@@ -1,6 +1,6 @@
 import WebSocket from 'ws'
 
-const PORT = Number(process.env.RN_TUI_PORT ?? 8765)
+const PORT = Number(process.env.SALVETRON_PORT ?? 8765)
 const ws = new WebSocket(`ws://localhost:${PORT}`)
 
 ws.on('open', () => {

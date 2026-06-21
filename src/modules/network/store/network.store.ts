@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
-import type { NetworkEvent, NetworkLog } from '@salve-software/rn-tui-types'
-import { normalizeHttpMethod } from '@salve-software/rn-tui-types'
+import type { NetworkEvent, NetworkLog } from '@salve-software/salvetron-types'
+import { normalizeHttpMethod } from '@salve-software/salvetron-types'
 
 interface NetworkStore {
   logsArray: NetworkLog[]

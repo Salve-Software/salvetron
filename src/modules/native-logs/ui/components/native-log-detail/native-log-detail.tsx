@@ -1,5 +1,5 @@
 import { Box, Text } from 'ink'
-import type { NativeLogEvent } from '@salve-software/rn-tui-types'
+import type { NativeLogEvent } from '@salve-software/salvetron-types'
 import type { CopyFeedback } from '../../../../../shared/hooks/use-detail-panel.js'
 
 const LEVEL_COLOR: Record<string, string> = {

@@ -1,4 +1,4 @@
-import type { NetworkLog } from '@salve-software/rn-tui-types'
+import type { NetworkLog } from '@salve-software/salvetron-types'
 
 function shellSingleQuote(value: string): string {
   return `'${value.replace(/'/g, "'\\''")}'`

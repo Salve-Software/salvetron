@@ -1,14 +1,13 @@
 {
-  "name": "@salve-software/rn-tui",
+  "name": "salvetron",
   "description": "Terminal UI debugger for React Native",
-  "private": true,
   "version": "0.1.0",
   "type": "module",
   "packageManager": "yarn@4.9.1",
   "workspaces": [
-    "packages/rn-tui-types"
+    "packages/salvetron-types"
   ],
-  "bin": "./bin/rn-tui.tsx",
+  "bin": "./bin/salvetron.tsx",
   "files": [
     "bin",
     "src",
@@ -18,15 +17,15 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev": "tsx bin/rn-tui.tsx",
-    "start": "tsx bin/rn-tui.tsx",
-    "sim": "node scripts/rn-tui-sim.mjs",
+    "dev": "tsx bin/salvetron.tsx",
+    "start": "tsx bin/salvetron.tsx",
+    "sim": "node scripts/salvetron-sim.mjs",
     "typecheck": "yarn build && tsc --noEmit",
-    "build": "yarn workspace @salve-software/rn-tui-types build",
+    "build": "yarn workspace @salve-software/salvetron-types build",
     "test": "yarn workspaces foreach -Apt run test"
   },
   "dependencies": {
-    "@salve-software/rn-tui-types": "workspace:^",
+    "@salve-software/salvetron-types": "workspace:^",
     "figlet": "^1.11.0",
     "ink": "^7.0.6",
     "json-colorizer": "^3.0.1",

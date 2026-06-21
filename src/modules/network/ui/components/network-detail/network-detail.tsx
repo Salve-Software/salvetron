@@ -1,5 +1,5 @@
 import { Box, Text } from 'ink'
-import type { NetworkLog } from '@salve-software/rn-tui-types'
+import type { NetworkLog } from '@salve-software/salvetron-types'
 import { METHOD_COLOR, getStatusColor } from '../../../library/constants.js'
 import type { CopyFeedback } from '../../../../../shared/hooks/use-detail-panel.js'
 

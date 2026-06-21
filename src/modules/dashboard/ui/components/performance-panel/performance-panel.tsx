@@ -1,5 +1,5 @@
 import { Text } from "ink";
-import type { PerformanceMetricsEvent } from "@salve-software/rn-tui-types";
+import type { PerformanceMetricsEvent } from "@salve-software/salvetron-types";
 import { Panel } from "../../../../../shared/components/panel/index.js";
 import { MetricRow } from "../metric-row/index.js";
 
