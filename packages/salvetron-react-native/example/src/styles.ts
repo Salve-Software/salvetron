@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#111',
+  },
   scroll: {
     flex: 1,
     backgroundColor: '#111',
@@ -8,6 +12,12 @@ export const styles = StyleSheet.create({
   scrollContent: {
     padding: 16,
     paddingBottom: 48,
+  },
+  logo: {
+    width: 120,
+    height: 80,
+    alignSelf: 'center',
+    marginBottom: 12,
   },
   title: {
     fontSize: 24,
