@@ -66,6 +66,7 @@ namespace margelo::nitro::salvetron {
     bool isPerformanceMonitoring() override;
     PerformanceMetrics getPerformanceSnapshot() override;
     void recordJsFrame() override;
+    void triggerNativeTestLog(NativeLogLevel level, const std::string& message, const std::optional<std::string>& tag) override;
 
   private:
     jni::global_ref<JHybridNitroSalvetronSpec::JavaPart> _javaPart;

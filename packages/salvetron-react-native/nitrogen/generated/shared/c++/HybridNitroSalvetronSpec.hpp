@@ -19,6 +19,8 @@ namespace margelo::nitro::salvetron { struct NativeLogEntry; }
 namespace margelo::nitro::salvetron { struct DeviceInfoResult; }
 // Forward declaration of `PerformanceMetrics` to properly resolve imports.
 namespace margelo::nitro::salvetron { struct PerformanceMetrics; }
+// Forward declaration of `NativeLogLevel` to properly resolve imports.
+namespace margelo::nitro::salvetron { enum class NativeLogLevel; }
 
 #include "NativeLogEntry.hpp"
 #include <functional>
@@ -26,6 +28,7 @@ namespace margelo::nitro::salvetron { struct PerformanceMetrics; }
 #include <string>
 #include <optional>
 #include "PerformanceMetrics.hpp"
+#include "NativeLogLevel.hpp"
 
 namespace margelo::nitro::salvetron {
 
@@ -70,6 +73,7 @@ namespace margelo::nitro::salvetron {
       virtual bool isPerformanceMonitoring() = 0;
       virtual PerformanceMetrics getPerformanceSnapshot() = 0;
       virtual void recordJsFrame() = 0;
+      virtual void triggerNativeTestLog(NativeLogLevel level, const std::string& message, const std::optional<std::string>& tag) = 0;
 
     protected:
       // Hybrid Setup

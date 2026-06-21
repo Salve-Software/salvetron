@@ -228,6 +228,18 @@ class HybridSalvetron : HybridNitroSalvetronSpec() {
         performanceMonitor.recordJsFrame()
     }
 
+    // MARK: - Test-only Methods
+
+    override fun triggerNativeTestLog(level: NativeLogLevel, message: String, tag: String?) {
+        val logTag = tag ?: "Salvetron-Example"
+        when (level) {
+            NativeLogLevel.VERBOSE -> android.util.Log.v(logTag, message)
+            NativeLogLevel.INFO -> android.util.Log.i(logTag, message)
+            NativeLogLevel.WARN -> android.util.Log.w(logTag, message)
+            NativeLogLevel.ERROR -> android.util.Log.e(logTag, message)
+        }
+    }
+
     protected fun finalize() {
         stopLogCapture()
         performanceMonitor.stop()

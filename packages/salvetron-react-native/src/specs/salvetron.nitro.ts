@@ -111,4 +111,14 @@ export interface NitroSalvetron extends HybridObject<{ ios: 'swift', android: 'k
    * Record a JS frame tick (called from JS to track JS thread responsiveness)
    */
   recordJsFrame(): void
+
+  /**
+   * Test-only: emits a real native log on demand to verify native log capture
+   * (stderr pipe on iOS, logcat streaming on Android). Use console.log for
+   * real logging — this is not a logging API.
+   * @param level Native log level to emit
+   * @param message The log message
+   * @param tag Optional tag (defaults to 'Salvetron-Example')
+   */
+  triggerNativeTestLog(level: NativeLogLevel, message: string, tag?: string): void
 }

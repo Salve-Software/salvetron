@@ -238,6 +238,19 @@ class HybridSalvetron: HybridNitroSalvetronSpec {
         performanceMonitor.recordJsFrame()
     }
 
+    // MARK: - Test-only Methods
+
+    func triggerNativeTestLog(level: NativeLogLevel, message: String, tag: String?) throws {
+        let levelLabel: String
+        switch level {
+        case .verbose: levelLabel = "DEBUG"
+        case .info: levelLabel = "INFO"
+        case .warn: levelLabel = "WARNING"
+        case .error: levelLabel = "ERROR"
+        }
+        NSLog("[\(tag ?? "Salvetron-Example")] \(levelLabel): \(message)")
+    }
+
     deinit {
         try? stopLogCapture()
         performanceMonitor.stop()

@@ -85,6 +85,10 @@ abstract class HybridNitroSalvetronSpec: HybridObject() {
   @DoNotStrip
   @Keep
   abstract fun recordJsFrame(): Unit
+  
+  @DoNotStrip
+  @Keep
+  abstract fun triggerNativeTestLog(level: NativeLogLevel, message: String, tag: String?): Unit
 
   // Default implementation of `HybridObject.toString()`
   override fun toString(): String {
