@@ -5,8 +5,10 @@ import { useMemo, useState } from 'react'
 import { AsciiLogo, pickRandomColor } from './shared/components/ascii-logo/index.js'
 import { TabBar } from './shared/components/tab-bar/index.js'
 import { StatusBar } from './shared/components/status-bar/index.js'
-import { useProject } from './shared/store/device.store.js'
+import { useSelectedDevice } from './shared/store/device.store.js'
 import { useIsSearchBarOpen } from './shared/store/search-bar.store.js'
+import { useDeviceSelectorStore, useIsDeviceSelectorOpen } from './shared/store/device-selector.store.js'
+import { DeviceSelector } from './shared/components/device-selector/index.js'
 import { DashboardContainer } from './modules/dashboard/ui/containers/dashboard-container/index.js'
 import { JsLogsContainer } from './modules/js-logs/ui/containers/js-logs-container/index.js'
 import { NetworkContainer } from './modules/network/ui/containers/network-container/index.js'
@@ -19,8 +21,9 @@ const DEFAULT_LOGO_COLOR = '#61DAFB'
 
 export function App() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
-  const appName = useProject()?.appName
+  const appName = useSelectedDevice()?.project?.appName
   const isSearchBarOpen = useIsSearchBarOpen()
+  const isDeviceSelectorOpen = useIsDeviceSelectorOpen()
 
   const logoColor = useMemo(
     () => (appName ? pickRandomColor() : DEFAULT_LOGO_COLOR),
@@ -28,7 +31,11 @@ export function App() {
   )
 
   useInput((input, key) => {
-    if (isSearchBarOpen) return
+    if (isSearchBarOpen || isDeviceSelectorOpen) return
+    if (input === 'd') {
+      useDeviceSelectorStore.getState().open()
+      return
+    }
     if (input === '1') setActiveTab('dashboard')
     if (input === '2') setActiveTab('js-logs')
     if (input === '3') setActiveTab('network')
@@ -43,6 +50,10 @@ export function App() {
     <Box flexDirection="column" height="100%" paddingTop={1}>
       <AsciiLogo color={logoColor} />
       <TabBar active={activeTab} />
+      {isDeviceSelectorOpen
+        ? <DeviceSelector />
+        : null
+      }
       <Box flexGrow={1} flexDirection="column" paddingX={1}>
         {activeTab === 'dashboard'
           ? <DashboardContainer />

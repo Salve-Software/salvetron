@@ -11,6 +11,7 @@ import { useClearConfirm } from '../../../../../shared/hooks/use-clear-confirm.j
 import { SearchBar } from '../../../../../shared/components/search-bar/index.js'
 import { FilterBar } from '../../../../../shared/components/filter-bar/index.js'
 import { useNativeLogs, useNativeLogsStore } from '../../../store/native-logs.store.js'
+import { useSelectedDeviceId } from '../../../../../shared/store/device.store.js'
 import { NATIVE_LOG_FILTER_GROUPS, matchesNativeLog } from '../../../library/filters.js'
 import { NativeLogList } from '../../components/native-log-list/index.js'
 import { NativeLogDetail } from '../../components/native-log-detail/index.js'
@@ -25,7 +26,12 @@ const BAR_CHROME_COLS = 4
 
 export function NativeLogsContainer() {
   const [cols, rows] = useTerminalSize()
-  const logs = useNativeLogs()
+  const allLogs = useNativeLogs()
+  const selectedDeviceId = useSelectedDeviceId()
+  const logs = useMemo(
+    () => selectedDeviceId ? allLogs.filter((log) => (log.deviceId ?? 'unknown') === selectedDeviceId) : allLogs,
+    [allLogs, selectedDeviceId],
+  )
 
   const { isOpen, query, focusedGroupIndex, focusedChipIndex } = useSearchFilter({ groups: NATIVE_LOG_FILTER_GROUPS })
   const { active } = useFilterChips({

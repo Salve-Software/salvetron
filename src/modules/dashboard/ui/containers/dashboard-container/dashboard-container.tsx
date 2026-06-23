@@ -8,10 +8,7 @@ import { useDetailPanel } from "../../../../../shared/hooks/use-detail-panel.js"
 import { Panel } from "../../../../../shared/components/panel/index.js";
 import { formatBody, formatPlainBody } from "../../../../../shared/utils/format-body.js";
 import { buildCurlCommand } from "../../../../../shared/utils/build-curl-command.js";
-import {
-  useDashboardSnapshots,
-  useLatestSnapshot,
-} from "../../../store/dashboard.store.js";
+import { useDashboardSnapshots } from "../../../store/dashboard.store.js";
 import { PerformancePanel } from "../../components/performance-panel/index.js";
 import { useJsLogs } from "../../../../js-logs/store/js-logs.store.js";
 import { LogList } from "../../../../js-logs/ui/components/log-list/index.js";
@@ -23,6 +20,7 @@ import { NetworkDetail } from "../../../../network/ui/components/network-detail/
 import { useNativeLogs } from "../../../../native-logs/store/native-logs.store.js";
 import { NativeLogList } from "../../../../native-logs/ui/components/native-log-list/index.js";
 import { NativeLogDetail } from "../../../../native-logs/ui/components/native-log-detail/index.js";
+import { useSelectedDeviceId } from "../../../../../shared/store/device.store.js";
 import type { LogEvent, NativeLogEvent, NetworkLog } from "@salve-software/salvetron-types";
 
 type FocusPanel = "logs" | "network" | "native";
@@ -42,11 +40,29 @@ export function DashboardContainer() {
   const [cols, rows] = useTerminalSize();
   const [focused, setFocused] = useState<FocusPanel>("logs");
 
-  const snapshots = useDashboardSnapshots();
-  const latest = useLatestSnapshot();
-  const jsLogs = useJsLogs();
-  const networkLogs = useNetworkLogs();
-  const nativeLogs = useNativeLogs();
+  const selectedDeviceId = useSelectedDeviceId();
+  const allSnapshots = useDashboardSnapshots();
+  const allJsLogs = useJsLogs();
+  const allNetworkLogs = useNetworkLogs();
+  const allNativeLogs = useNativeLogs();
+
+  const snapshots = useMemo(
+    () => selectedDeviceId ? allSnapshots.filter((s) => (s.deviceId ?? "unknown") === selectedDeviceId) : allSnapshots,
+    [allSnapshots, selectedDeviceId],
+  );
+  const latest = snapshots[snapshots.length - 1] ?? null;
+  const jsLogs = useMemo(
+    () => selectedDeviceId ? allJsLogs.filter((l) => (l.deviceId ?? "unknown") === selectedDeviceId) : allJsLogs,
+    [allJsLogs, selectedDeviceId],
+  );
+  const networkLogs = useMemo(
+    () => selectedDeviceId ? allNetworkLogs.filter((l) => l.deviceId === selectedDeviceId) : allNetworkLogs,
+    [allNetworkLogs, selectedDeviceId],
+  );
+  const nativeLogs = useMemo(
+    () => selectedDeviceId ? allNativeLogs.filter((l) => (l.deviceId ?? "unknown") === selectedDeviceId) : allNativeLogs,
+    [allNativeLogs, selectedDeviceId],
+  );
 
   const rowWidth = Math.max(0, cols - APP_HORIZONTAL_PADDING);
   const listColWidth = Math.floor(rowWidth / 3);
