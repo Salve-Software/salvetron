@@ -23,7 +23,7 @@
     "sim": "node scripts/salvetron-sim.mjs",
     "typecheck": "yarn build && tsc --noEmit",
     "build": "yarn workspace @salve-software/salvetron-types build",
-    "test": "tsx --test \"src/**/__tests__/*.test.ts\" && yarn workspaces foreach -Apt run test",
+    "test": "yarn build && tsx --test \"src/**/__tests__/*.test.ts\" && yarn workspaces foreach -Apt run test",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
