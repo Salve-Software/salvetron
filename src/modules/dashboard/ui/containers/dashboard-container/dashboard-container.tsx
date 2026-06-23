@@ -21,6 +21,7 @@ import { useNativeLogs } from "../../../../native-logs/store/native-logs.store.j
 import { NativeLogList } from "../../../../native-logs/ui/components/native-log-list/index.js";
 import { NativeLogDetail } from "../../../../native-logs/ui/components/native-log-detail/index.js";
 import { useSelectedDeviceId } from "../../../../../shared/store/device.store.js";
+import { useIsDeviceSelectorOpen } from "../../../../../shared/store/device-selector.store.js";
 import type { LogEvent, NativeLogEvent, NetworkLog } from "@salve-software/salvetron-types";
 
 type FocusPanel = "logs" | "network" | "native";
@@ -41,6 +42,7 @@ export function DashboardContainer() {
   const [focused, setFocused] = useState<FocusPanel>("logs");
 
   const selectedDeviceId = useSelectedDeviceId();
+  const isDeviceSelectorOpen = useIsDeviceSelectorOpen();
   const allSnapshots = useDashboardSnapshots();
   const allJsLogs = useJsLogs();
   const allNetworkLogs = useNetworkLogs();
@@ -119,14 +121,14 @@ export function DashboardContainer() {
     linesRef: logsLinesRef,
     visibleRows: detailBodyVisibleRows,
     scrollStep: 5,
-    isActive: focused === "logs",
+    isActive: focused === "logs" && !isDeviceSelectorOpen,
     onCopyBody: onCopyLogBody,
   });
   const netDetail = useDetailPanel({
     linesRef: netLinesRef,
     visibleRows: detailBodyVisibleRows,
     scrollStep: 5,
-    isActive: focused === "network",
+    isActive: focused === "network" && !isDeviceSelectorOpen,
     onCopyBody: onCopyNetBody,
     onCopyExtra: onCopyNetExtra,
   });
@@ -134,7 +136,7 @@ export function DashboardContainer() {
     linesRef: nativeLinesRef,
     visibleRows: detailBodyVisibleRows,
     scrollStep: 5,
-    isActive: focused === "native",
+    isActive: focused === "native" && !isDeviceSelectorOpen,
     onCopyBody: onCopyNativeBody,
   });
 
@@ -146,17 +148,17 @@ export function DashboardContainer() {
   const logsNav = useListNavigation({
     count: jsLogs.length,
     visibleRows: logsPanelRows,
-    isActive: focused === "logs",
+    isActive: focused === "logs" && !isDeviceSelectorOpen,
   });
   const netNav = useListNavigation({
     count: networkLogs.length,
     visibleRows: networkPanelRows,
-    isActive: focused === "network",
+    isActive: focused === "network" && !isDeviceSelectorOpen,
   });
   const nativeNav = useListNavigation({
     count: nativeLogs.length,
     visibleRows: nativePanelRows,
-    isActive: focused === "native",
+    isActive: focused === "native" && !isDeviceSelectorOpen,
   });
 
   const selLog = jsLogs[logsNav.selectedIndex] ?? null;
@@ -198,7 +200,7 @@ export function DashboardContainer() {
       const i = PANELS.indexOf(focused);
       setFocused(PANELS[(i + 1) % PANELS.length]);
     }
-  });
+  }, { isActive: !isDeviceSelectorOpen });
 
   return (
     <Box flexDirection="column" flexGrow={1}>

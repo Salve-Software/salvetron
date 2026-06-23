@@ -12,6 +12,7 @@ import { SearchBar } from '../../../../../shared/components/search-bar/index.js'
 import { FilterBar } from '../../../../../shared/components/filter-bar/index.js'
 import { useNativeLogs, useNativeLogsStore } from '../../../store/native-logs.store.js'
 import { useSelectedDeviceId } from '../../../../../shared/store/device.store.js'
+import { useIsDeviceSelectorOpen } from '../../../../../shared/store/device-selector.store.js'
 import { NATIVE_LOG_FILTER_GROUPS, matchesNativeLog } from '../../../library/filters.js'
 import { NativeLogList } from '../../components/native-log-list/index.js'
 import { NativeLogDetail } from '../../components/native-log-detail/index.js'
@@ -33,7 +34,11 @@ export function NativeLogsContainer() {
     [allLogs, selectedDeviceId],
   )
 
-  const { isOpen, query, focusedGroupIndex, focusedChipIndex } = useSearchFilter({ groups: NATIVE_LOG_FILTER_GROUPS })
+  const isDeviceSelectorOpen = useIsDeviceSelectorOpen()
+  const { isOpen, query, focusedGroupIndex, focusedChipIndex } = useSearchFilter({
+    groups: NATIVE_LOG_FILTER_GROUPS,
+    isActive: !isDeviceSelectorOpen,
+  })
   const { active } = useFilterChips({
     groups: NATIVE_LOG_FILTER_GROUPS,
     focusedGroupIndex,
@@ -42,7 +47,7 @@ export function NativeLogsContainer() {
   })
   const { pending: clearPending } = useClearConfirm({
     onClear: () => useNativeLogsStore.getState().clear(),
-    isActive: !isOpen,
+    isActive: !isOpen && !isDeviceSelectorOpen,
   })
 
   const filtered = useMemo(
@@ -70,7 +75,7 @@ export function NativeLogsContainer() {
     linesRef: metaLinesRef,
     visibleRows: metaVisibleRows,
     scrollStep: 5,
-    isActive: !isOpen,
+    isActive: !isOpen && !isDeviceSelectorOpen,
     onCopyBody,
   })
 
@@ -81,7 +86,7 @@ export function NativeLogsContainer() {
   const { selectedIndex, scrollOffset } = useListNavigation({
     count: filtered.length,
     visibleRows: listRows,
-    isActive: !isOpen,
+    isActive: !isOpen && !isDeviceSelectorOpen,
   })
 
   const selectedLog = filtered[selectedIndex] ?? null

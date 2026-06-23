@@ -12,6 +12,7 @@ import { SearchBar } from '../../../../../shared/components/search-bar/index.js'
 import { FilterBar } from '../../../../../shared/components/filter-bar/index.js'
 import { useJsLogs, useJsLogsStore } from '../../../store/js-logs.store.js'
 import { useSelectedDeviceId } from '../../../../../shared/store/device.store.js'
+import { useIsDeviceSelectorOpen } from '../../../../../shared/store/device-selector.store.js'
 import { JS_LOG_FILTER_GROUPS, matchesJsLog } from '../../../library/filters.js'
 import { LogList } from '../../components/log-list/index.js'
 import { LogDetail } from '../../components/log-detail/index.js'
@@ -33,7 +34,11 @@ export function JsLogsContainer() {
     [allLogs, selectedDeviceId],
   )
 
-  const { isOpen, query, focusedGroupIndex, focusedChipIndex } = useSearchFilter({ groups: JS_LOG_FILTER_GROUPS })
+  const isDeviceSelectorOpen = useIsDeviceSelectorOpen()
+  const { isOpen, query, focusedGroupIndex, focusedChipIndex } = useSearchFilter({
+    groups: JS_LOG_FILTER_GROUPS,
+    isActive: !isDeviceSelectorOpen,
+  })
   const { active } = useFilterChips({
     groups: JS_LOG_FILTER_GROUPS,
     focusedGroupIndex,
@@ -42,7 +47,7 @@ export function JsLogsContainer() {
   })
   const { pending: clearPending } = useClearConfirm({
     onClear: () => useJsLogsStore.getState().clear(),
-    isActive: !isOpen,
+    isActive: !isOpen && !isDeviceSelectorOpen,
   })
 
   const filtered = useMemo(
@@ -70,7 +75,7 @@ export function JsLogsContainer() {
     linesRef: metaLinesRef,
     visibleRows: metaVisibleRows,
     scrollStep: 5,
-    isActive: !isOpen,
+    isActive: !isOpen && !isDeviceSelectorOpen,
     onCopyBody,
   })
 
@@ -81,7 +86,7 @@ export function JsLogsContainer() {
   const { selectedIndex, scrollOffset } = useListNavigation({
     count: filtered.length,
     visibleRows: listRows,
-    isActive: !isOpen,
+    isActive: !isOpen && !isDeviceSelectorOpen,
   })
 
   const selectedLog = filtered[selectedIndex] ?? null
