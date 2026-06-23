@@ -119,6 +119,7 @@ export class SalvetronClient {
       message,
       timestamp: Date.now(),
       metadata,
+      deviceId: deviceHandler.getDeviceId(),
       projectId: projectHandler.getProjectId(),
     }
     this.send(event)
@@ -244,6 +245,7 @@ export class SalvetronClient {
       message: log.message,
       timestamp: log.timestamp,
       metadata: log.tag ? { tag: log.tag } : undefined,
+      deviceId: deviceHandler.getDeviceId(),
       projectId: projectHandler.getProjectId(),
     }
 

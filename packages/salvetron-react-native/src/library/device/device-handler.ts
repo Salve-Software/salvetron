@@ -35,6 +35,10 @@ export class DeviceHandler {
     }
   }
 
+  getDeviceId(): string {
+    return this.getOrCreateDeviceId()
+  }
+
   getDeviceName(): string {
     if (this.cachedDeviceName) {
       return this.cachedDeviceName

@@ -5,6 +5,7 @@
 
 import type { NitroSalvetron as NitroSalvetronSpec } from '../../specs/salvetron.nitro'
 import type { PerformanceHandlerConfig, PerformanceMetricsEvent } from './types'
+import { deviceHandler } from '../device'
 
 export class PerformanceHandler {
   private nitroSalvetron: NitroSalvetronSpec
@@ -97,6 +98,7 @@ export class PerformanceHandler {
       jsFps: metrics.jsFps,
       memoryUsage: metrics.memoryUsageMB,
       cpuUsage: metrics.cpuUsagePercent,
+      deviceId: deviceHandler.getDeviceId(),
     }
 
     this.onEvent(event)
