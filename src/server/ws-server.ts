@@ -43,7 +43,7 @@ export function startWsServer(port: number) {
   })
 }
 
-function dispatch(event: RnTuiEvent, socket: WebSocket, socketState: Map<WebSocket, SocketState>) {
+export function dispatch(event: RnTuiEvent, socket: WebSocket, socketState: Map<WebSocket, SocketState>) {
   const state = socketState.get(socket) ?? {}
 
   switch (event.type) {
@@ -68,16 +68,16 @@ function dispatch(event: RnTuiEvent, socket: WebSocket, socketState: Map<WebSock
       break
     }
     case 'log':
-      useJsLogsStore.getState().addLog(event)
+      useJsLogsStore.getState().addLog({ ...event, deviceId: event.deviceId ?? state.deviceId })
       break
     case 'native':
-      useNativeLogsStore.getState().addLog(event)
+      useNativeLogsStore.getState().addLog({ ...event, deviceId: event.deviceId ?? state.deviceId })
       break
     case 'network':
-      useNetworkStore.getState().addOrUpdateLog(event)
+      useNetworkStore.getState().addOrUpdateLog({ ...event, deviceId: event.deviceId ?? state.deviceId })
       break
     case 'performance_metrics':
-      useDashboardStore.getState().addSnapshot(event)
+      useDashboardStore.getState().addSnapshot({ ...event, deviceId: event.deviceId ?? state.deviceId })
       break
   }
 }
