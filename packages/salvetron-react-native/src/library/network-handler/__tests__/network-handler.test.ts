@@ -1,3 +1,17 @@
+jest.mock('react-native', () => ({
+  Platform: {
+    OS: 'ios',
+  },
+}));
+
+jest.mock('../../../index', () => ({
+  NitroSalvetron: {
+    getDeviceInfo: jest.fn(),
+    getStoredDeviceId: jest.fn(),
+    storeDeviceId: jest.fn(),
+  },
+}));
+
 import { NetworkHandler } from '../index';
 
 import * as utils from '../utils';

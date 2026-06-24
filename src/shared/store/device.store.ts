@@ -1,25 +1,90 @@
 import { create } from 'zustand'
-import type { DeviceInfoEvent, ProjectInfoEvent } from '@salve-software/salvetron-types'
+import { useShallow } from 'zustand/react/shallow'
+import type { Device, DeviceInfoEvent, ProjectInfoEvent } from '@salve-software/salvetron-types'
 
-interface DeviceStore {
-  device: DeviceInfoEvent | null
+export interface DeviceEntry {
+  device: Device
   project: ProjectInfoEvent | null
   connected: boolean
-  setInfo: (event: DeviceInfoEvent | ProjectInfoEvent) => void
-  setDisconnected: () => void
 }
 
-export const useDeviceStore = create<DeviceStore>((set) => ({
-  device: null,
-  project: null,
-  connected: false,
-  setInfo: (event) => {
-    if (event.type === 'device_info') set({ device: event, connected: true })
-    if (event.type === 'project_info') set({ project: event })
+interface DeviceStore {
+  devices: Record<string, DeviceEntry>
+  selectedDeviceId: string | null
+  upsertDevice: (event: DeviceInfoEvent) => void
+  setProjectInfo: (deviceId: string, event: ProjectInfoEvent) => void
+  setDeviceDisconnected: (deviceId: string) => void
+  selectDevice: (deviceId: string) => void
+}
+
+function pickNextSelected(devices: Record<string, DeviceEntry>, excludeId: string): string | null {
+  const connected = Object.values(devices).find((entry) => entry.connected && entry.device.deviceId !== excludeId)
+  return connected?.device.deviceId ?? null
+}
+
+export const useDeviceStore = create<DeviceStore>((set, get) => ({
+  devices: {},
+  selectedDeviceId: null,
+
+  upsertDevice: (event) => {
+    const { devices, selectedDeviceId } = get()
+    const existing = devices[event.deviceId]
+    const device: Device = {
+      type: event.type,
+      deviceId: event.deviceId,
+      deviceName: event.deviceName,
+      platform: event.platform,
+      appName: event.appName,
+      bundleId: event.bundleId,
+      projectId: event.projectId,
+    }
+
+    set({
+      devices: {
+        ...devices,
+        [event.deviceId]: { device, project: existing?.project ?? null, connected: true },
+      },
+      selectedDeviceId: selectedDeviceId ?? event.deviceId,
+    })
   },
-  setDisconnected: () => set({ connected: false, device: null, project: null }),
+
+  setProjectInfo: (deviceId, event) => {
+    const { devices } = get()
+    const existing = devices[deviceId]
+    if (!existing) return
+
+    set({
+      devices: {
+        ...devices,
+        [deviceId]: { ...existing, project: event },
+      },
+    })
+  },
+
+  setDeviceDisconnected: (deviceId) => {
+    const { devices, selectedDeviceId } = get()
+    const existing = devices[deviceId]
+    if (!existing) return
+
+    const updatedDevices = {
+      ...devices,
+      [deviceId]: { ...existing, connected: false },
+    }
+
+    set({
+      devices: updatedDevices,
+      selectedDeviceId:
+        selectedDeviceId === deviceId ? pickNextSelected(updatedDevices, deviceId) : selectedDeviceId,
+    })
+  },
+
+  selectDevice: (deviceId) => set({ selectedDeviceId: deviceId }),
 }))
 
-export const useDevice = () => useDeviceStore((s) => s.device)
-export const useProject = () => useDeviceStore((s) => s.project)
-export const useConnectionStatus = () => useDeviceStore((s) => s.connected)
+export const useDevices = () =>
+  useDeviceStore(useShallow((s) => Object.values(s.devices)))
+export const useSelectedDeviceId = () => useDeviceStore((s) => s.selectedDeviceId)
+export const useSelectedDevice = () =>
+  useDeviceStore((s) => (s.selectedDeviceId ? s.devices[s.selectedDeviceId] ?? null : null))
+export const useConnectedDeviceCount = () =>
+  useDeviceStore((s) => Object.values(s.devices).filter((d) => d.connected).length)

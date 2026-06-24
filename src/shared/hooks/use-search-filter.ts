@@ -5,6 +5,7 @@ import { useSearchBarStore } from '../store/search-bar.store.js'
 
 interface UseSearchFilterParams {
   groups: FilterGroup[]
+  isActive?: boolean
 }
 
 interface UseSearchFilterResult {
@@ -22,7 +23,7 @@ interface UseSearchFilterResult {
  * search-text and chip-navigation key handling never both react to the same
  * keypress.
  */
-export function useSearchFilter({ groups }: UseSearchFilterParams): UseSearchFilterResult {
+export function useSearchFilter({ groups, isActive = true }: UseSearchFilterParams): UseSearchFilterResult {
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [focusedGroupIndex, setFocusedGroupIndex] = useState(-1)
@@ -89,7 +90,7 @@ export function useSearchFilter({ groups }: UseSearchFilterParams): UseSearchFil
     if (key.rightArrow) {
       setFocusedChipIndex((i) => Math.min(group.chips.length - 1, i + 1))
     }
-  })
+  }, { isActive })
 
   return { isOpen, query, focusedGroupIndex, focusedChipIndex, close }
 }

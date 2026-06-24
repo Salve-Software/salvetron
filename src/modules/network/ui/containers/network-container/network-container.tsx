@@ -11,6 +11,8 @@ import { useClearConfirm } from '../../../../../shared/hooks/use-clear-confirm.j
 import { SearchBar } from '../../../../../shared/components/search-bar/index.js'
 import { FilterBar } from '../../../../../shared/components/filter-bar/index.js'
 import { useNetworkLogs, useNetworkStore } from '../../../store/network.store.js'
+import { useSelectedDeviceId } from '../../../../../shared/store/device.store.js'
+import { useIsDeviceSelectorOpen } from '../../../../../shared/store/device-selector.store.js'
 import { NETWORK_FILTER_GROUPS, matchesNetworkLog } from '../../../library/filters.js'
 import { NetworkTableHeader } from '../../components/network-table-header/index.js'
 import { NetworkRow } from '../../components/network-row/index.js'
@@ -27,9 +29,18 @@ const BAR_CHROME_COLS = 4
 
 export function NetworkContainer() {
   const [cols, rows] = useTerminalSize()
-  const logs = useNetworkLogs()
+  const allLogs = useNetworkLogs()
+  const selectedDeviceId = useSelectedDeviceId()
+  const logs = useMemo(
+    () => selectedDeviceId ? allLogs.filter((log) => log.deviceId === selectedDeviceId) : allLogs,
+    [allLogs, selectedDeviceId],
+  )
 
-  const { isOpen, query, focusedGroupIndex, focusedChipIndex } = useSearchFilter({ groups: NETWORK_FILTER_GROUPS })
+  const isDeviceSelectorOpen = useIsDeviceSelectorOpen()
+  const { isOpen, query, focusedGroupIndex, focusedChipIndex } = useSearchFilter({
+    groups: NETWORK_FILTER_GROUPS,
+    isActive: !isDeviceSelectorOpen,
+  })
   const { active } = useFilterChips({
     groups: NETWORK_FILTER_GROUPS,
     focusedGroupIndex,
@@ -38,7 +49,7 @@ export function NetworkContainer() {
   })
   const { pending: clearPending } = useClearConfirm({
     onClear: () => useNetworkStore.getState().clear(),
-    isActive: !isOpen,
+    isActive: !isOpen && !isDeviceSelectorOpen,
   })
 
   const filtered = useMemo(
@@ -68,7 +79,7 @@ export function NetworkContainer() {
     linesRef: bodyLinesRef,
     visibleRows: bodyVisibleRows,
     scrollStep: 5,
-    isActive: !isOpen,
+    isActive: !isOpen && !isDeviceSelectorOpen,
     onCopyBody,
     onCopyExtra,
   })
@@ -80,7 +91,7 @@ export function NetworkContainer() {
   const { selectedIndex, scrollOffset } = useListNavigation({
     count: filtered.length,
     visibleRows: listRows,
-    isActive: !isOpen,
+    isActive: !isOpen && !isDeviceSelectorOpen,
   })
 
   const selectedLog = filtered[selectedIndex] ?? null

@@ -8,10 +8,7 @@ import { useDetailPanel } from "../../../../../shared/hooks/use-detail-panel.js"
 import { Panel } from "../../../../../shared/components/panel/index.js";
 import { formatBody, formatPlainBody } from "../../../../../shared/utils/format-body.js";
 import { buildCurlCommand } from "../../../../../shared/utils/build-curl-command.js";
-import {
-  useDashboardSnapshots,
-  useLatestSnapshot,
-} from "../../../store/dashboard.store.js";
+import { useDashboardSnapshots } from "../../../store/dashboard.store.js";
 import { PerformancePanel } from "../../components/performance-panel/index.js";
 import { useJsLogs } from "../../../../js-logs/store/js-logs.store.js";
 import { LogList } from "../../../../js-logs/ui/components/log-list/index.js";
@@ -23,6 +20,8 @@ import { NetworkDetail } from "../../../../network/ui/components/network-detail/
 import { useNativeLogs } from "../../../../native-logs/store/native-logs.store.js";
 import { NativeLogList } from "../../../../native-logs/ui/components/native-log-list/index.js";
 import { NativeLogDetail } from "../../../../native-logs/ui/components/native-log-detail/index.js";
+import { useSelectedDeviceId } from "../../../../../shared/store/device.store.js";
+import { useIsDeviceSelectorOpen } from "../../../../../shared/store/device-selector.store.js";
 import type { LogEvent, NativeLogEvent, NetworkLog } from "@salve-software/salvetron-types";
 
 type FocusPanel = "logs" | "network" | "native";
@@ -42,11 +41,30 @@ export function DashboardContainer() {
   const [cols, rows] = useTerminalSize();
   const [focused, setFocused] = useState<FocusPanel>("logs");
 
-  const snapshots = useDashboardSnapshots();
-  const latest = useLatestSnapshot();
-  const jsLogs = useJsLogs();
-  const networkLogs = useNetworkLogs();
-  const nativeLogs = useNativeLogs();
+  const selectedDeviceId = useSelectedDeviceId();
+  const isDeviceSelectorOpen = useIsDeviceSelectorOpen();
+  const allSnapshots = useDashboardSnapshots();
+  const allJsLogs = useJsLogs();
+  const allNetworkLogs = useNetworkLogs();
+  const allNativeLogs = useNativeLogs();
+
+  const snapshots = useMemo(
+    () => selectedDeviceId ? allSnapshots.filter((s) => (s.deviceId ?? "unknown") === selectedDeviceId) : allSnapshots,
+    [allSnapshots, selectedDeviceId],
+  );
+  const latest = snapshots[snapshots.length - 1] ?? null;
+  const jsLogs = useMemo(
+    () => selectedDeviceId ? allJsLogs.filter((l) => (l.deviceId ?? "unknown") === selectedDeviceId) : allJsLogs,
+    [allJsLogs, selectedDeviceId],
+  );
+  const networkLogs = useMemo(
+    () => selectedDeviceId ? allNetworkLogs.filter((l) => l.deviceId === selectedDeviceId) : allNetworkLogs,
+    [allNetworkLogs, selectedDeviceId],
+  );
+  const nativeLogs = useMemo(
+    () => selectedDeviceId ? allNativeLogs.filter((l) => (l.deviceId ?? "unknown") === selectedDeviceId) : allNativeLogs,
+    [allNativeLogs, selectedDeviceId],
+  );
 
   const rowWidth = Math.max(0, cols - APP_HORIZONTAL_PADDING);
   const listColWidth = Math.floor(rowWidth / 3);
@@ -103,14 +121,14 @@ export function DashboardContainer() {
     linesRef: logsLinesRef,
     visibleRows: detailBodyVisibleRows,
     scrollStep: 5,
-    isActive: focused === "logs",
+    isActive: focused === "logs" && !isDeviceSelectorOpen,
     onCopyBody: onCopyLogBody,
   });
   const netDetail = useDetailPanel({
     linesRef: netLinesRef,
     visibleRows: detailBodyVisibleRows,
     scrollStep: 5,
-    isActive: focused === "network",
+    isActive: focused === "network" && !isDeviceSelectorOpen,
     onCopyBody: onCopyNetBody,
     onCopyExtra: onCopyNetExtra,
   });
@@ -118,7 +136,7 @@ export function DashboardContainer() {
     linesRef: nativeLinesRef,
     visibleRows: detailBodyVisibleRows,
     scrollStep: 5,
-    isActive: focused === "native",
+    isActive: focused === "native" && !isDeviceSelectorOpen,
     onCopyBody: onCopyNativeBody,
   });
 
@@ -130,17 +148,17 @@ export function DashboardContainer() {
   const logsNav = useListNavigation({
     count: jsLogs.length,
     visibleRows: logsPanelRows,
-    isActive: focused === "logs",
+    isActive: focused === "logs" && !isDeviceSelectorOpen,
   });
   const netNav = useListNavigation({
     count: networkLogs.length,
     visibleRows: networkPanelRows,
-    isActive: focused === "network",
+    isActive: focused === "network" && !isDeviceSelectorOpen,
   });
   const nativeNav = useListNavigation({
     count: nativeLogs.length,
     visibleRows: nativePanelRows,
-    isActive: focused === "native",
+    isActive: focused === "native" && !isDeviceSelectorOpen,
   });
 
   const selLog = jsLogs[logsNav.selectedIndex] ?? null;
@@ -182,7 +200,7 @@ export function DashboardContainer() {
       const i = PANELS.indexOf(focused);
       setFocused(PANELS[(i + 1) % PANELS.length]);
     }
-  });
+  }, { isActive: !isDeviceSelectorOpen });
 
   return (
     <Box flexDirection="column" flexGrow={1}>
