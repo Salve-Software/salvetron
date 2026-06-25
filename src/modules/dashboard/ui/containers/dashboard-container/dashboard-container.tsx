@@ -16,7 +16,6 @@ import {
   FOOTER_ROWS,
   PERF_PANEL_ROWS,
   PANEL_CHROME_ROWS,
-  PANEL_CHROME_COLS,
   NETWORK_HEADER_ROWS,
   DETAIL_FIXED_ROWS,
   APP_HORIZONTAL_PADDING,
@@ -37,9 +36,6 @@ export function DashboardContainer() {
   const listColWidth = Math.floor(rowWidth / 3);
   const detailColWidth = rowWidth - listColWidth;
   const detailContentWidth = Math.max(1, detailColWidth - DETAIL_CHROME_COLS);
-
-  const panelInner = Math.max(10, listColWidth - PANEL_CHROME_COLS);
-  const nativeMsgWidth = Math.max(8, panelInner - 26);
 
   const availableRows = rows - APP_OVERHEAD_ROWS - FOOTER_ROWS;
   const logsPanelRows = Math.max(
@@ -71,6 +67,7 @@ export function DashboardContainer() {
   const native = useNativePanelSection({
     focused: focused === "native",
     isActive,
+    listColWidth,
     listVisibleRows: nativePanelRows,
     detailVisibleRows: detailBodyVisibleRows,
   });
@@ -125,7 +122,7 @@ export function DashboardContainer() {
             selectedIndex={native.selectedIndex}
             scrollOffset={native.scrollOffset}
             visibleRows={nativePanelRows}
-            maxMessageWidth={nativeMsgWidth}
+            maxMessageWidth={native.maxMessageWidth}
             focused={focused === "native"}
           />
         </Box>
