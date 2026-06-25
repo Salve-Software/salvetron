@@ -39,7 +39,6 @@ export function DashboardContainer() {
   const detailContentWidth = Math.max(1, detailColWidth - DETAIL_CHROME_COLS);
 
   const panelInner = Math.max(10, listColWidth - PANEL_CHROME_COLS);
-  const urlMaxWidth = Math.max(6, panelInner - 28);
   const nativeMsgWidth = Math.max(8, panelInner - 26);
 
   const availableRows = rows - APP_OVERHEAD_ROWS - FOOTER_ROWS;
@@ -65,6 +64,7 @@ export function DashboardContainer() {
   const network = useNetworkPanelSection({
     focused: focused === "network",
     isActive,
+    listColWidth,
     listVisibleRows: networkPanelRows,
     detailVisibleRows: detailBodyVisibleRows,
   });
@@ -116,7 +116,7 @@ export function DashboardContainer() {
             selectedIndex={network.selectedIndex}
             scrollOffset={network.scrollOffset}
             visibleRows={networkPanelRows}
-            urlMaxWidth={urlMaxWidth}
+            urlMaxWidth={network.urlMaxWidth}
             focused={focused === "network"}
           />
 
