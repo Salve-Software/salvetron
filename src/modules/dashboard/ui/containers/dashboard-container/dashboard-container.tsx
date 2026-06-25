@@ -40,7 +40,6 @@ export function DashboardContainer() {
 
   const panelInner = Math.max(10, listColWidth - PANEL_CHROME_COLS);
   const urlMaxWidth = Math.max(6, panelInner - 28);
-  const logsMsgWidth = Math.max(8, panelInner - 14);
   const nativeMsgWidth = Math.max(8, panelInner - 26);
 
   const availableRows = rows - APP_OVERHEAD_ROWS - FOOTER_ROWS;
@@ -59,6 +58,7 @@ export function DashboardContainer() {
   const logs = useLogsPanelSection({
     focused: focused === "logs",
     isActive,
+    listColWidth,
     listVisibleRows: logsPanelRows,
     detailVisibleRows: detailBodyVisibleRows,
   });
@@ -107,7 +107,7 @@ export function DashboardContainer() {
             selectedIndex={logs.selectedIndex}
             scrollOffset={logs.scrollOffset}
             visibleRows={logsPanelRows}
-            maxMessageWidth={logsMsgWidth}
+            maxMessageWidth={logs.maxMessageWidth}
             focused={focused === "logs"}
           />
 
