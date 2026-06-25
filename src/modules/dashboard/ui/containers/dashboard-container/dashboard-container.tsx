@@ -2,7 +2,7 @@
 /** @jsxImportSource react */
 import { Box, Text, useInput } from "ink";
 import { useState } from "react";
-import { useTerminalSize } from "../../../../../shared/hooks/use-terminal-size.js";
+import { useDashboardLayout } from "./use-dashboard-layout.js";
 import { PerformancePanel, usePerformancePanel } from "../../components/performance-panel/index.js";
 import { LogsPanelSection, useLogsPanelSection } from "../../components/logs-panel-section/index.js";
 import { LogDetail } from "../../../../js-logs/ui/components/log-detail/index.js";
@@ -11,42 +11,19 @@ import { NetworkDetail } from "../../../../network/ui/components/network-detail/
 import { NativePanelSection, useNativePanelSection } from "../../components/native-panel-section/index.js";
 import { NativeLogDetail } from "../../../../native-logs/ui/components/native-log-detail/index.js";
 import { useIsDeviceSelectorOpen } from "../../../../../shared/store/device-selector.store.js";
-import {
-  APP_OVERHEAD_ROWS,
-  FOOTER_ROWS,
-  PERF_PANEL_ROWS,
-  PANEL_CHROME_ROWS,
-  NETWORK_HEADER_ROWS,
-  DETAIL_FIXED_ROWS,
-  APP_HORIZONTAL_PADDING,
-  DETAIL_CHROME_COLS,
-} from "../../../library/constants.js";
+import { PERF_PANEL_ROWS } from "../../../library/constants.js";
 
 type FocusPanel = "logs" | "network" | "native";
 const PANELS: FocusPanel[] = ["logs", "network", "native"];
 
 export function DashboardContainer() {
-  const [cols, rows] = useTerminalSize();
   const [focused, setFocused] = useState<FocusPanel>("logs");
 
   const isDeviceSelectorOpen = useIsDeviceSelectorOpen();
   const isActive = !isDeviceSelectorOpen;
 
-  const rowWidth = Math.max(0, cols - APP_HORIZONTAL_PADDING);
-  const listColWidth = Math.floor(rowWidth / 3);
-  const detailColWidth = rowWidth - listColWidth;
-  const detailContentWidth = Math.max(1, detailColWidth - DETAIL_CHROME_COLS);
-
-  const availableRows = rows - APP_OVERHEAD_ROWS - FOOTER_ROWS;
-  const logsPanelRows = Math.max(
-    1,
-    Math.floor((availableRows - PERF_PANEL_ROWS) / 3) - PANEL_CHROME_ROWS,
-  );
-  const nativePanelRows = logsPanelRows;
-  const networkPanelRows = Math.max(1, logsPanelRows - NETWORK_HEADER_ROWS);
-
-  const detailRows = availableRows;
-  const detailBodyVisibleRows = Math.max(1, detailRows - DETAIL_FIXED_ROWS);
+  const layout = useDashboardLayout();
+  const { listColWidth, detailColWidth, detailContentWidth, logsPanelRows, nativePanelRows, networkPanelRows, detailRows, detailBodyVisibleRows } = layout;
 
   const perf = usePerformancePanel({ listColWidth });
 
