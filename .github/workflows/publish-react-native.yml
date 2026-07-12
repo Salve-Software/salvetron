@@ -2,6 +2,7 @@ name: Publish salvetron-react-native
 
 permissions:
   contents: read
+  id-token: write
 
 on:
   push:
@@ -52,6 +53,9 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Update npm (OIDC trusted publishing requires >=11.5.1)
+        run: npm install -g npm@latest
+
       - name: Check if version already published
         id: check
         run: |
@@ -66,6 +70,4 @@ jobs:
 
       - name: Publish
         if: steps.check.outputs.published == 'true'
-        run: yarn npm publish
-        env:
-          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance
