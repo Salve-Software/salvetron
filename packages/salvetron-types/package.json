@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "Shared types for Salvetron ecosystem",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Salve-Software/salvetron.git",
+    "directory": "packages/salvetron-types"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
