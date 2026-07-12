@@ -296,11 +296,9 @@ export class SalvetronClient {
         }
       }
 
-      this.ws.onerror = (event) => {
+      this.ws.onerror = () => {
         this.isConnecting = false
-        const error = new Error('WebSocket error')
-        console.error('[Salvetron] Connection error:', event)
-        this.config.onError(error)
+        this.config.onError(new Error('WebSocket error'))
       }
 
       this.ws.onmessage = (event) => {
@@ -308,7 +306,7 @@ export class SalvetronClient {
       }
     } catch (error) {
       this.isConnecting = false
-      console.error('[Salvetron] Failed to create WebSocket:', error)
+      this.config.onError(error instanceof Error ? error : new Error(String(error)))
       this.scheduleReconnect()
     }
   }
@@ -316,7 +314,6 @@ export class SalvetronClient {
   private scheduleReconnect(): void {
     if (this.manualDisconnect) return
     if (this.reconnectAttempts >= RECONNECT_CONFIG.maxAttempts) {
-      console.warn('[Salvetron] Max reconnection attempts reached')
       return
     }
 
