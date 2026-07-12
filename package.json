@@ -17,6 +17,10 @@
   "engines": {
     "node": ">=18"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "dev": "yarn build && tsx bin/salvetron.tsx",
     "start": "tsx bin/salvetron.tsx",
