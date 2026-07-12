@@ -18,7 +18,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev": "tsx bin/salvetron.tsx",
+    "dev": "yarn build && tsx bin/salvetron.tsx",
     "start": "tsx bin/salvetron.tsx",
     "sim": "node scripts/salvetron-sim.mjs",
     "typecheck": "yarn build && tsc --noEmit",
