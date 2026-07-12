@@ -4,6 +4,10 @@
   "version": "0.1.10",
   "type": "module",
   "packageManager": "yarn@4.9.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Salve-Software/salvetron.git"
+  },
   "workspaces": [
     "packages/salvetron-types"
   ],
