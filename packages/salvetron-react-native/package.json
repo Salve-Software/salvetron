@@ -1,6 +1,6 @@
 {
   "name": "@salve-software/salvetron-react-native",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "salvetron-react-native is a React Native package built with Nitro",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
