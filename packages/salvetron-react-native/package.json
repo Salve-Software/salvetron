@@ -1,6 +1,6 @@
 {
   "name": "@salve-software/salvetron-react-native",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "salvetron-react-native is a React Native package built with Nitro",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "git clean -dfX",
     "build": "yarn typecheck && bob build",
-    "codegen": "nitrogen --logLevel=\"debug\" && yarn build && node post-script.js",
+    "codegen": "nitrogen --logLevel=\"debug\" && yarn build",
     "test": "jest",
     "example": "yarn workspace salvetron-react-native-example"
   },

@@ -29,7 +29,7 @@ int initialize(JavaVM* vm) {
 }
 
 struct JHybridNitroSalvetronSpecImpl: public jni::JavaClass<JHybridNitroSalvetronSpecImpl, JHybridNitroSalvetronSpec::JavaPart> {
-  static constexpr auto kJavaDescriptor = "Lcom/salvetron/HybridSalvetron;";
+  static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/salvetron/HybridSalvetron;";
   static std::shared_ptr<JHybridNitroSalvetronSpec> create() {
     static const auto constructorFn = javaClassStatic()->getConstructor<JHybridNitroSalvetronSpecImpl::javaobject()>();
     jni::local_ref<JHybridNitroSalvetronSpec::JavaPart> javaPart = javaClassStatic()->newObject(constructorFn);
